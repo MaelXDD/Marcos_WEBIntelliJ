@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <title>Phantom | Tienda de Videojuegos</title>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm py-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-3" th:href="@{/}" style="letter-spacing: 3px;">PHANTOM</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto text-uppercase">
+                <li class="nav-item"><a class="nav-link px-4 fs-6" href="#">Videojuegos</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" href="#">Consolas</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" href="#">Coleccionables</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" href="#">Novedades</a></li>
+            </ul>
+
+            <form class="d-flex me-3" role="search">
+                <input class="form-control me-2 py-2" type="search" placeholder="Buscar..."
+                       style="background: #fff; border: 1px solid #444; color: #000;">
+                <button class="btn btn-outline-success px-4" type="submit">Buscar</button>
+            </form>
+
+            <div class="d-flex align-items-center mt-3 mt-lg-0">
+                <a href="#" class="text-white me-3 fs-4" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="bi bi-person-circle"></i>
+                </a>
+
+                <a href="#" class="text-white fs-4 position-relative">
+                    <i class="bi bi-cart3"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                          style="font-size: 0.6rem;">0</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN -->
+<main class="flex-grow-1">
+    <section class="container my-5 py-5" id="nosotros">
+        <div class="row align-items-center">
+
+            <!-- IMAGEN -->
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="position-relative">
+                    <img th:src="@{/Imagenes/Equipo.jpeg}"
+                         alt="Equipo Phantom"
+                         class="img-fluid rounded-3 shadow-lg border border-secondary">
+
+                    <div class="position-absolute top-0 start-0 translate-middle p-3 bg-danger rounded-circle d-none d-lg-block"></div>
+                </div>
+            </div>
+
+            <!-- TEXTO -->
+            <div class="col-lg-6 ps-lg-5">
+                <h6 class="text-danger text-uppercase fw-bold mb-2" style="letter-spacing: 2px;">Nuestra Historia</h6>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Pasión por el Gaming en cada detalle</h2>
+
+                <p class="lead text-muted mb-4">
+                    En <strong>Phantom</strong>, no solo vendemos videojuegos; somos parte de la cultura gamer en Perú.
+                </p>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center text-dark">
+                            <i class="bi bi-check-circle-fill text-danger me-2"></i>
+                            <span>Productos Originales</span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center text-dark">
+                            <i class="bi bi-check-circle-fill text-danger me-2"></i>
+                            <span>Garantía Oficial</span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center text-dark">
+                            <i class="bi bi-check-circle-fill text-danger me-2"></i>
+                            <span>Envíos a todo el Perú</span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center text-dark">
+                            <i class="bi bi-check-circle-fill text-danger me-2"></i>
+                            <span>Soporte Especializado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- MODAL LOGIN -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title">INICIAR SESIÓN</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <form>
+                        <input type="email" class="form-control bg-secondary text-white border-0 mb-3" placeholder="Correo">
+                        <input type="password" class="form-control bg-secondary text-white border-0 mb-3" placeholder="Contraseña">
+                        <button class="btn btn-danger w-100 fw-bold">INGRESAR</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-black text-white pt-5 border-top border-secondary">
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-md-4">
+                <h4 class="fw-bold text-danger mb-3">PHANTOM</h4>
+                <p class="text-secondary small">Tu tienda gamer de confianza en Perú. Consolas, videojuegos y accesorios al mejor precio.</p>
+                <div class="mt-3">
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold text-uppercase mb-3">Tienda</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="#" class="footer-link">Videojuegos</a></li>
+                    <li><a href="#" class="footer-link">Consolas</a></li>
+                    <li><a href="#" class="footer-link">Accesorios</a></li>
+                    <li><a href="#" class="footer-link">Ofertas</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold text-uppercase mb-3">Empresa</h6>
+                <ul class="list-unstyled small">
+                    <!-- Enlaces de navegación internos -->
+                    <li><a th:href="@{/nosotros}" class="footer-link">Nosotros</a></li>
+                    <li><a th:href="@{/mision}" class="footer-link">Misión y Visión</a></li>
+                    <li><a href="#" class="footer-link">Tiendas</a></li>
+                    <li><a href="#" class="footer-link">Libro de Reclamaciones</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h6 class="fw-bold text-uppercase mb-3">Contacto</h6>
+                <p class="small text-secondary mb-2"><i class="bi bi-geo-alt-fill me-2 text-danger"></i> Lima, Perú</p>
+                <p class="small text-secondary mb-2"><i class="bi bi-envelope-fill me-2 text-danger"></i> soporte@phantom.pe</p>
+                <p class="small text-secondary mb-3"><i class="bi bi-telephone-fill me-2 text-danger"></i> +51 999 888 777</p>
+                <form class="d-flex">
+                    <input type="email" class="form-control bg-dark border-0 text-white me-2" placeholder="Ingresa tu correo...">
+                    <button class="btn btn-danger px-3"><i class="bi bi-send"></i></button>
+                </form>
+            </div>
+        </div>
+        <hr class="border-secondary my-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small text-secondary pb-3">
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
