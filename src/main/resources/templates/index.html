@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS enlazado con Thymeleaf -->
+    <link rel="stylesheet" th:href="@{/CSS/estilos.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <title>Phantom | Tienda de Videojuegos</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm py-3">
+    <div class="container">
+        <!-- Enlace al inicio -->
+        <a class="navbar-brand fw-bold fs-3" th:href="@{/}" style="letter-spacing: 3px;">PHANTOM</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto text-uppercase">
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/juegos}">Videojuegos</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/consolas}">Consolas</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/tarjetas}">Coleccionables</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/perifericos}">Periféricos</a></li>
+            </ul>
+            <form class="d-flex me-3" role="search">
+                <input class="form-control me-2 py-2" type="search" placeholder="Buscar..." style="background: #fff; border: 1px solid #444; color: #000;">
+                <button class="btn btn-outline-success px-4" type="submit">Buscar</button>
+            </form>
+            <div class="d-flex align-items-center mt-3 mt-lg-0">
+                <a href="#" class="text-white me-3 fs-4" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="bi bi-person-circle"></i>
+                </a>
+                <a href="#" class="text-white fs-4 position-relative">
+                    <i class="bi bi-cart3"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">0</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="flex-grow-1">
+
+    <!-- CARRUSEL -->
+    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="10000">
+                <a href="#"><img th:src="@{/Imagenes/Baner.jpg}" class="d-block w-100" alt="Banner 1"></a>
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+                <a href="#"><img th:src="@{/Imagenes/Baner2.jpg}" class="d-block w-100" alt="Banner 2"></a>
+            </div>
+            <div class="carousel-item">
+                <a href="#"><img th:src="@{/Imagenes/baner3.jpg}" class="d-block w-100" alt="Banner 3"></a>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+
+    <!-- NUESTRAS CATEGORÍAS -->
+    <section class="py-5 border-bottom border-top">
+        <div class="container">
+            <h6 class="text-center fw-bold mb-5 text-uppercase" style="letter-spacing: 2px;">Nuestras Categorías</h6>
+            <div class="row text-center justify-content-center g-4">
+                <!-- Consolas -->
+                <div class="col-6 col-sm-4 col-md-2">
+                    <a th:href="@{/categoria/consolas}" class="text-decoration-none text-dark d-flex flex-column align-items-center gap-3">
+                        <img th:src="@{/Imagenes/consolatarjeta.jpg}" alt="Consolas" class="img-fluid" style="height: 120px; object-fit: contain;">
+                        <span class="fw-bold text-uppercase" style="font-size: 13px; letter-spacing: 0.5px;">Consolas</span>
+                    </a>
+                </div>
+                <!-- Juegos -->
+                <div class="col-6 col-sm-4 col-md-2">
+                    <a th:href="@{/categoria/juegos}" class="text-decoration-none text-dark d-flex flex-column align-items-center gap-3">
+                        <img th:src="@{/Imagenes/videojuego.jpg}" alt="Juegos" class="img-fluid" style="height: 120px; object-fit: contain;">
+                        <span class="fw-bold text-uppercase" style="font-size: 13px; letter-spacing: 0.5px;">Juegos</span>
+                    </a>
+                </div>
+                <!-- Periféricos -->
+                <div class="col-6 col-sm-4 col-md-2">
+                    <a th:href="@{/categoria/perifericos}" class="text-decoration-none text-dark d-flex flex-column align-items-center gap-3">
+                        <img th:src="@{/Imagenes/mouse2.jpg}" alt="Periféricos" class="img-fluid" style="height: 120px; object-fit: contain;">
+                        <span class="fw-bold text-uppercase" style="font-size: 13px; letter-spacing: 0.5px;">Periféricos</span>
+                    </a>
+                </div>
+                <!-- Tarjetas Coleccionables -->
+                <div class="col-6 col-sm-4 col-md-2">
+                    <a th:href="@{/categoria/tarjetas}" class="text-decoration-none text-dark d-flex flex-column align-items-center gap-3">
+                        <img th:src="@{/Imagenes/tarjeta.jpg}" alt="Tarjetas Coleccionables" class="img-fluid" style="height: 120px; object-fit: contain;">
+                        <span class="fw-bold text-uppercase text-center" style="font-size: 13px; letter-spacing: 0.5px;">Tarjetas<br>Coleccionables</span>
+                    </a>
+                </div>
+                <!-- Sillas Gamer -->
+                <div class="col-6 col-sm-4 col-md-2">
+                    <a th:href="@{/categoria/sillas}" class="text-decoration-none text-dark d-flex flex-column align-items-center gap-3">
+                        <img th:src="@{/Imagenes/silla1.jpg}" alt="Sillas Gamer" class="img-fluid" style="height: 120px; object-fit: contain;">
+                        <span class="fw-bold text-uppercase" style="font-size: 13px; letter-spacing: 0.5px;">Sillas Gamer</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTOS -->
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img th:src="@{/imagenes/audifono1.jpg}" class="product-img" alt="">
+                    <div class="brand">Audio</div>
+                    <div class="product-title">Logitech G321 Lightspeed Audífonos - Negro</div>
+                    <div class="new-price">S/ 279.90</div>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img th:src="@{/imagenes/audifono2.jpg}" class="product-img" alt="">
+                    <div class="brand">Audio</div>
+                    <div class="product-title">Logitech G325 Audífonos Inalámbricos LIGHTSPEED - Lila </div>
+                    <div class="new-price">S/ 399.00</div>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img th:src="@{/imagenes/audifono3.jpg}" class="product-img" alt="">
+                    <div class="brand">Audio</div>
+                    <div class="product-title">Logitech G325 Audífonos Inalámbricos LIGHTSPEED - Blanco </div>
+                    <div class="new-price">S/ 399.90</div>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img th:src="@{/imagenes/teclado1.jpg}" class="product-img" alt="">
+                    <div class="brand">Teclados</div>
+                    <div class="product-title">Redragon Ucal Pro K673 Teclado Inalámbrico Switch Rojo - Negro </div>
+                    <div class="new-price">S/ 329.00</div>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img th:src="@{/imagenes/teclado2.jpg}" class="product-img" alt="">
+                    <div class="brand">Teclados</div>
+                    <div class="product-title">Royal Kludge RK-R87PRO Tecaldo Mecánico TKL Phantom - Creamy </div>
+                    <div class="new-price">S/ 299.00</div>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img th:src="@{/imagenes/teclado3.jpg}" class="product-img" alt="">
+                    <div class="brand">Teclados</div>
+                    <div class="product-title">Royal Kludge RK X87 Teclado BLACK NIGHT Creamy Switch </div>
+                    <div class="new-price">S/ 229.90</div>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img th:src="@{/imagenes/teclado4.jpg}" class="product-img" alt="">
+                    <div class="brand">Teclados</div>
+                    <div class="product-title">Royal Kludge RK X87 Teclado Blackberry Mouse Creamy Switch </div>
+                    <div class="new-price">S/ 229.90</div>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img th:src="@{/imagenes/mouse1.jpg}" class="product-img" alt="">
+                    <div class="brand">Mouse</div>
+                    <div class="product-title">Logitech G Pro X Superlight 2 SE Mouse Inalámbrico - Blanco </div>
+                    <div class="new-price">S/ 539.00</div>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img th:src="@{/imagenes/mouse2.jpg}" class="product-img" alt="">
+                    <div class="brand">Mouse</div>
+                    <div class="product-title">Logitech G Pro X Superlight 2 SE Mouse Inalámbrico - Negro</div>
+                    <div class="new-price">S/ 539.90</div>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img th:src="@{/imagenes/mouse3.jpg}" class="product-img" alt="">
+                    <div class="brand">Mouse</div>
+                    <div class="product-title">Razer Deathadder V4 Pro Mouse - Blanco </div>
+                    <div class="new-price">S/ 779.00</div>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img th:src="@{/imagenes/silla2.jpg}" class="product-img" alt="">
+                    <div class="brand">Sillas Gamer</div>
+                    <div class="product-title">Silla Gamer ThunderX3 Core Smart Modern - Negro</div>
+                    <div class="new-price">S/ 1299.90</div>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-card">
+                    <span class="discount-badge">-20%</span>
+                    <img th:src="@{/imagenes/silla3.jpg}" class="product-img" alt="">
+                    <div class="brand">Sillas Gamer</div>
+                    <div class="product-title">Silla Gamer Razer Iskur V2 X - Negro/Verde</div>
+                    <div class="old-price">S/ 1399.90</div>
+                    <div class="new-price">S/ 1249.90</div>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO PROMOCIONES -->
+    <section class="py-5 text-white text-center" style="background: radial-gradient(circle, #1a0b3d 0%, #000000 100%);">
+        <div class="container py-3">
+            <span class="badge bg-danger text-uppercase fw-bold mb-3 px-3 py-2" style="letter-spacing: 2px;">Tiempo Limitado</span>
+            <h1 class="display-4 fw-bold mb-3" style="letter-spacing: 3px;">PROMOCIONES ESPECIALES</h1>
+            <p class="lead text-secondary mb-0">Consola + Mando + Juego al mejor precio del mercado</p>
+        </div>
+    </section>
+
+    <!-- CARDS PROMOCIONES -->
+    <section class="container my-5 py-3">
+        <div class="row g-4 justify-content-center">
+            <!-- PS5 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 bg-dark text-white border-secondary shadow-lg">
+                    <div class="card-header bg-danger text-white text-uppercase fw-bold text-center py-3" style="letter-spacing: 2px;">
+                        <i class="bi bi-controller me-2"></i>PS5
+                    </div>
+                    <div class="card-body d-flex flex-column p-4">
+                        <div class="text-center mb-4">
+                            <img th:src="@{/Imagenes/PS5GOD.jpg}" alt="PS5" class="img-fluid rounded-3 img-promo">
+                        </div>
+                        <h5 class="card-title fw-bold text-center mb-4">Pack PlayStation 5</h5>
+                        <ul class="list-unstyled mb-4">
+                            <li class="d-flex align-items-center mb-3">
+                                <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+                                <span>Consola PlayStation 5 Digital / Disc</span>
+                            </li>
+                            <li class="d-flex align-items-center mb-3">
+                                <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+                                <span>1 Juego base (Exclusivo PlayStation 5)</span>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+                                <span>Garantía Oficial 12 meses</span>
+                            </li>
+                        </ul>
+                        <div class="mt-auto text-center">
+                            <p class="text-secondary text-decoration-line-through mb-1">S/ 2,999</p>
+                            <p class="fs-3 fw-bold text-danger mb-3">S/ 2,499</p>
+                            <button class="btn btn-danger w-100 fw-bold py-2 text-uppercase" style="letter-spacing: 1px;"
+                                    data-bs-toggle="modal" data-bs-target="#compraModal"
+                                    data-producto="Pack PS5 + Mando + Juego" data-precio="S/ 2,499">
+                                <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-dark border-secondary text-center py-2">
+                        <span class="badge bg-warning text-dark fw-bold px-3">AHORRA S/ 500</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NINTENDO -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 bg-dark text-white shadow-lg" style="border: 2px solid #dc3545;">
+                    <div class="card-header text-white text-uppercase fw-bold text-center py-3" style="letter-spacing: 2px; background-color: #cc0000;">
+                        <i class="bi bi-controller me-2"></i>Nintendo Switch
+                        <div class="mt-1">
+                            <span class="badge bg-warning text-dark" style="font-size: 0.65rem;">MÁS POPULAR</span>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column p-4">
+                        <div class="text-center mb-4">
+                            <img th:src="@{/Imagenes/SwitchMario.jpg}" alt="Nintendo Switch" class="img-fluid rounded-3 img-promo">
+                        </div>
+                        <h5 class="card-title fw-bold text-center mb-4">Pack Nintendo Switch</h5>
+                        <ul class="list-unstyled mb-4">
+                            <li class="d-flex align-items-center mb-3">
+                                <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+                                <span>Consola Nintendo Switch OLED</span>
+                            </li>
+                            <li class="d-flex align-items-center mb-3">
+                                <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+                                <span>1 Juego a elección (Exclusivo Nintendo)</span>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+                                <span>Garantía Oficial 12 meses</span>
+                            </li>
+                        </ul>
+                        <div class="mt-auto text-center">
+                            <p class="text-secondary text-decoration-line-through mb-1">S/ 1,899</p>
+                            <p class="fs-3 fw-bold text-danger mb-3">S/ 1,549</p>
+                            <button class="btn btn-danger w-100 fw-bold py-2 text-uppercase" style="letter-spacing: 1px;"
+                                    data-bs-toggle="modal" data-bs-target="#compraModal"
+                                    data-producto="Pack Nintendo Switch + Joy-Con + Juego" data-precio="S/ 1,549">
+                                <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-dark border-secondary text-center py-2">
+                        <span class="badge bg-warning text-dark fw-bold px-3">AHORRA S/ 350</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- XBOX -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 bg-dark text-white border-secondary shadow-lg">
+                    <div class="card-header bg-danger text-white text-uppercase fw-bold text-center py-3" style="letter-spacing: 2px;">
+                        <i class="bi bi-controller me-2"></i>Xbox
+                    </div>
+                    <div class="card-body d-flex flex-column p-4">
+                        <div class="text-center mb-4">
+                            <img th:src="@{/Imagenes/XboxFIFA.jpg}" alt="Xbox Series X" class="img-fluid rounded-3 img-promo">
+                        </div>
+                        <h5 class="card-title fw-bold text-center mb-4">Pack Xbox Series X</h5>
+                        <ul class="list-unstyled mb-4">
+                            <li class="d-flex align-items-center mb-3">
+                                <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+                                <span>Consola Xbox Series X / S</span>
+                            </li>
+                            <li class="d-flex align-items-center mb-3">
+                                <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+                                <span>1 Juego base (Exclusivo Xbox X Series)</span>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+                                <span>Garantía Oficial 12 meses</span>
+                            </li>
+                        </ul>
+                        <div class="mt-auto text-center">
+                            <p class="text-secondary text-decoration-line-through mb-1">S/ 2,799</p>
+                            <p class="fs-3 fw-bold text-danger mb-3">S/ 2,299</p>
+                            <button class="btn btn-danger w-100 fw-bold py-2 text-uppercase" style="letter-spacing: 1px;"
+                                    data-bs-toggle="modal" data-bs-target="#compraModal"
+                                    data-producto="Pack Xbox + Mando + Juego" data-precio="S/ 2,299">
+                                <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-dark border-secondary text-center py-2">
+                        <span class="badge bg-warning text-dark fw-bold px-3">AHORRA S/ 500</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- BENEFICIOS -->
+    <section class="py-5 bg-dark text-white border-top border-secondary">
+        <div class="container">
+            <div class="row text-center g-4">
+                <div class="col-6 col-md-3">
+                    <i class="bi bi-truck fs-2 text-danger mb-2 d-block"></i>
+                    <p class="fw-bold mb-0 small text-uppercase">Envío Gratis</p>
+                    <p class="text-secondary small mb-0">A todo el Perú</p>
+                </div>
+                <div class="col-6 col-md-3">
+                    <i class="bi bi-shield-check fs-2 text-danger mb-2 d-block"></i>
+                    <p class="fw-bold mb-0 small text-uppercase">Garantía Oficial</p>
+                    <p class="text-secondary small mb-0">12 meses</p>
+                </div>
+                <div class="col-6 col-md-3">
+                    <i class="bi bi-credit-card fs-2 text-danger mb-2 d-block"></i>
+                    <p class="fw-bold mb-0 small text-uppercase">Hasta 12 Cuotas</p>
+                    <p class="text-secondary small mb-0">Sin intereses</p>
+                </div>
+                <div class="col-6 col-md-3">
+                    <i class="bi bi-headset fs-2 text-danger mb-2 d-block"></i>
+                    <p class="fw-bold mb-0 small text-uppercase">Soporte 24/7</p>
+                    <p class="text-secondary small mb-0">Atención especializada</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- MODAL LOGIN -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="row g-0">
+                <div class="col-md-5 d-none d-md-block">
+                    <img th:src="@{/Imagenes/SmashBros.jpg}" style="width: 120%;">
+                </div>
+                <div class="col-md-7 bg-dark text-white">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title fw-bold text-danger">
+                            <i class="bi bi-person-circle me-2"></i>Iniciar Sesión
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label small text-secondary">Correo electrónico</label>
+                                <input type="email" class="form-control bg-black text-white border-secondary rounded-3" placeholder="ejemplo@correo.com">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small text-secondary">Contraseña</label>
+                                <input type="password" class="form-control bg-black text-white border-secondary rounded-3" placeholder="••••••••">
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox">
+                                    <label class="form-check-label small text-secondary">Recordarme</label>
+                                </div>
+                                <a href="#" class="small text-danger text-decoration-none">¿Olvidaste tu contraseña?</a>
+                            </div>
+                            <button type="submit" class="btn btn-danger w-100 fw-bold rounded-pill py-2">INGRESAR</button>
+                        </form>
+                        <hr class="border-secondary">
+                        <p class="text-center small text-secondary mb-0">
+                            ¿No tienes cuenta?
+                            <a href="#" class="text-danger text-decoration-none fw-bold">Regístrate</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL POPUP COMPRA -->
+<div class="modal fade" id="compraModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-secondary">
+            <div class="modal-header bg-danger border-0">
+                <h5 class="modal-title fw-bold text-uppercase">
+                    <i class="bi bi-cart-check me-2"></i>Producto Agregado
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4 text-center">
+                <i class="bi bi-check-circle-fill text-danger mb-3" style="font-size: 3.5rem;"></i>
+                <h5 id="modalProductoNombre" class="fw-bold mb-2"></h5>
+                <p id="modalProductoPrecio" class="fs-4 text-danger fw-bold mb-4"></p>
+                <p class="text-secondary small mb-4">¿Deseas continuar comprando o ir al carrito?</p>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-danger fw-bold text-uppercase py-2" data-bs-dismiss="modal">
+                        <i class="bi bi-bag me-2"></i>Seguir Comprando
+                    </button>
+                    <button class="btn btn-outline-light fw-bold text-uppercase py-2" data-bs-dismiss="modal">
+                        <i class="bi bi-cart3 me-2"></i>Ver Carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PROMO EMERGENTE -->
+<div class="modal fade" id="promoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="d-flex justify-content-end p-3">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-4 pt-0">
+                <p class="text-secondary small text-uppercase fw-semibold mb-3" style="letter-spacing: 1px;">
+                    ¡Nuevo Lanzamiento en Phantom!
+                </p>
+                <div class="d-flex justify-content-center mb-4">
+                    <img th:src="@{/Imagenes/popup.jpg}" class="img-fluid rounded-3 shadow-sm" style="max-height: 400px;" alt="Promo">
+                </div>
+                <p class="fs-5 px-3 mb-4" style="font-weight: 400; line-height: 1.4;">
+                    Paw Patrol: Championship ya está disponible. <br>
+                    <strong>¡No te quedes sin el tuyo!</strong>
+                </p>
+                <button type="button" class="btn btn-danger rounded-pill px-5 py-2 fw-bold shadow-sm" data-bs-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-black text-white pt-5 border-top border-secondary">
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-md-4">
+                <h4 class="fw-bold text-danger mb-3">PHANTOM</h4>
+                <p class="text-secondary small">Tu tienda gamer de confianza en Perú. Consolas, videojuegos y accesorios al mejor precio.</p>
+                <div class="mt-3">
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold text-uppercase mb-3">Tienda</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="#" class="footer-link">Videojuegos</a></li>
+                    <li><a href="#" class="footer-link">Consolas</a></li>
+                    <li><a href="#" class="footer-link">Accesorios</a></li>
+                    <li><a href="#" class="footer-link">Ofertas</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold text-uppercase mb-3">Empresa</h6>
+                <ul class="list-unstyled small">
+                    <!-- Enlaces de navegación internos -->
+                    <li><a th:href="@{/nosotros}" class="footer-link">Nosotros</a></li>
+                    <li><a th:href="@{/mision}" class="footer-link">Misión y Visión</a></li>
+                    <li><a href="#" class="footer-link">Tiendas</a></li>
+                    <li><a href="#" class="footer-link">Libro de Reclamaciones</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h6 class="fw-bold text-uppercase mb-3">Contacto</h6>
+                <p class="small text-secondary mb-2"><i class="bi bi-geo-alt-fill me-2 text-danger"></i> Lima, Perú</p>
+                <p class="small text-secondary mb-2"><i class="bi bi-envelope-fill me-2 text-danger"></i> soporte@phantom.pe</p>
+                <p class="small text-secondary mb-3"><i class="bi bi-telephone-fill me-2 text-danger"></i> +51 999 888 777</p>
+                <form class="d-flex">
+                    <input type="email" class="form-control bg-dark border-0 text-white me-2" placeholder="Ingresa tu correo...">
+                    <button class="btn btn-danger px-3"><i class="bi bi-send"></i></button>
+                </form>
+            </div>
+        </div>
+        <hr class="border-secondary my-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small text-secondary pb-3">
+        </div>
+    </div>
+</footer>
+
+<!-- Script enlazado con Thymeleaf -->
+<script th:src="@{/JS/emergente.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const compraModal = document.getElementById('compraModal');
+    compraModal.addEventListener('show.bs.modal', function (event) {
+        const boton = event.relatedTarget;
+        document.getElementById('modalProductoNombre').textContent = boton.getAttribute('data-producto');
+        document.getElementById('modalProductoPrecio').textContent = boton.getAttribute('data-precio');
+    });
+</script>
+</body>
+</html>

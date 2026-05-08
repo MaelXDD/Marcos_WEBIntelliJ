@@ -1,0 +1,198 @@
+/* ===== CAROUSEL ===== */
+.carousel-item {
+    background: radial-gradient(circle, #1a0b3d 0%, #000000 100%);
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 450px;
+    object-fit: contain;
+    background-color: transparent;
+}
+
+.carousel-item a {
+    cursor: pointer;
+    display: block;
+}
+
+/* ===== BODY ===== */
+body {
+    background-color: #fff;
+    color: #000000;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ===== NAVBAR ===== */
+.navbar .bi {
+    transition: color 0.3s ease;
+    color: #fff;
+}
+
+.navbar .bi:hover {
+    color: #ff0000;
+}
+
+/* ===== MODAL ===== */
+.modal-content input::placeholder {
+    color: #ccc;
+}
+
+/* ===== NOSOTROS ===== */
+#nosotros img {
+    transition: transform 0.5s ease;
+}
+
+#nosotros img:hover {
+    transform: scale(1.02);
+}
+
+/* ===== FOOTER ===== */
+footer a {
+    transition: 0.3s;
+}
+
+footer a:hover {
+    color: #ff0000 !important;
+}
+
+footer .bi-facebook:hover { color: #1877f2 !important; }
+footer .bi-instagram:hover { color: #e4405f !important; }
+footer .bi-tiktok:hover { color: #00f2ea !important; }
+
+/* ===== FOOTER PRO ===== */
+footer {
+    background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
+}
+
+/* LINKS */
+.footer-link {
+    color: #aaa;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #ff0000;
+    padding-left: 5px;
+}
+
+/* REDES */
+.social-icon {
+    transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+    transform: scale(1.2);
+}
+
+/* INPUT */
+footer input {
+    border-radius: 50px;
+    padding-left: 15px;
+}
+
+/* 🔥 FIX PLACEHOLDER (IMPORTANTE) */
+footer input::placeholder {
+    color: #bbb !important;
+    opacity: 1;
+}
+
+/* FOCUS INPUT */
+footer input:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+/* BOTÓN */
+footer button {
+    border-radius: 50px;
+    transition: 0.3s;
+}
+
+footer button:hover {
+    transform: scale(1.1);
+}
+
+/* LINEA */
+footer hr {
+    opacity: 0.2;
+}
+
+/* GLOW GAMER */
+footer h4, footer h6 {
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+}
+/* ===== PROMOCIONES ===== */
+.img-promo {
+    width: 100%;
+    max-height: 180px;
+    object-fit: contain;
+}
+.section-title {
+  color: #000000;
+  font-weight: bold;
+}
+
+.underline {
+  width: 60px;
+  height: 4px;
+  background-color: #ffffff;
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
+.product-card {
+  background-color: #2c2b2b;
+  border-radius: 15px;
+  padding: 15px;
+  position: relative;
+  transition: 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #8d8d8d;
+  color: white;
+  padding: 3px 8px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+.product-img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.brand {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 10px;
+}
+
+.product-title {
+  font-size: 15px;
+  margin: 5px 0;
+  color: white;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.new-price {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 18px;
+}

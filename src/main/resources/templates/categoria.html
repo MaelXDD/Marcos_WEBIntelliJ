@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/CSS/estilos.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <title th:text="'Phantom | ' + ${titulo}">Phantom | Categoría</title>
+
+    <style>
+        /* ── Tarjeta de producto ── */
+        .product-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,.08);
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 28px rgba(0,0,0,.15);
+        }
+        .product-img-wrap {
+            background: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 220px;
+            overflow: hidden;
+        }
+        .product-img-wrap img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+            padding: 12px;
+        }
+        .badge-categoria {
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: #1a0b3d;
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+        .product-title {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.4;
+            min-height: 42px;
+        }
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #cc0000;
+        }
+        .btn-add {
+            background: #1a0b3d;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: background 0.2s;
+        }
+        .btn-add:hover { background: #cc0000; color: #fff; }
+
+        /* ── Breadcrumb ── */
+        .breadcrumb-item a { color: #1a0b3d; text-decoration: none; }
+        .breadcrumb-item.active { color: #666; }
+
+        /* ── Sin productos ── */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #888;
+        }
+        .empty-state i { font-size: 64px; margin-bottom: 16px; }
+
+        /* ── Loader ── */
+        #loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 0;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm py-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-3" th:href="@{/}" style="letter-spacing: 3px;">PHANTOM</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto text-uppercase">
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/juegos}">Videojuegos</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/consolas}">Consolas</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/tarjetas}">Coleccionables</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/perifericos}">Periféricos</a></li>
+            </ul>
+            <div class="d-flex align-items-center mt-3 mt-lg-0">
+                <a href="#" class="text-white me-3 fs-4">
+                    <i class="bi bi-person-circle"></i>
+                </a>
+                <a href="#" class="text-white fs-4 position-relative">
+                    <i class="bi bi-cart3"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">0</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="flex-grow-1">
+
+    <!-- BREADCRUMB + TÍTULO -->
+    <section class="bg-light py-4 border-bottom">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-2">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+                    <li class="breadcrumb-item active" th:text="${titulo}">Categoría</li>
+                </ol>
+            </nav>
+            <h2 class="fw-bold mb-0 text-uppercase" style="letter-spacing: 2px;" th:text="${titulo}">Categoría</h2>
+        </div>
+    </section>
+
+    <!-- PRODUCTOS -->
+    <section class="py-5">
+        <div class="container">
+
+            <!-- Loading state (se oculta tras cargar la página) -->
+            <div id="loader" th:if="${productos == null}">
+                <div class="spinner-border text-dark mb-3" role="status"></div>
+                <p class="text-muted">Cargando productos...</p>
+            </div>
+
+            <!-- Sin productos -->
+            <div class="empty-state" th:if="${productos != null and #lists.isEmpty(productos)}">
+                <i class="bi bi-box-seam text-muted"></i>
+                <h5 class="mt-2">No hay productos en esta categoría aún</h5>
+                <p class="text-muted">Vuelve pronto, estamos actualizando nuestro inventario.</p>
+                <a th:href="@{/}" class="btn btn-dark mt-2 px-4">Volver al inicio</a>
+            </div>
+
+            <!-- Grid de productos cargados desde la BD -->
+            <div class="row g-4" th:if="${productos != null and !#lists.isEmpty(productos)}">
+
+                <!-- Contador de resultados -->
+                <div class="col-12 mb-2">
+                    <p class="text-muted small">
+                        <span th:text="${#lists.size(productos)}">0</span> producto(s) encontrado(s)
+                    </p>
+                </div>
+
+                <!-- Tarjeta por cada producto -->
+                <div class="col-6 col-sm-4 col-md-3" th:each="producto : ${productos}">
+                    <div class="product-card h-100 d-flex flex-column">
+
+                        <!-- Imagen del producto -->
+                        <div class="product-img-wrap">
+                            <img th:src="${producto.imagenUrl}"
+                                 th:alt="${producto.nombre}"
+                                 onerror="this.src='/Imagenes/consolatarjeta.jpg'">
+                        </div>
+
+                        <!-- Info -->
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <span class="badge-categoria mb-2 d-inline-block"
+                                  th:text="${producto.marca != null ? producto.marca : producto.categoria}">Marca</span>
+
+                            <p class="product-title mb-2" th:text="${producto.nombre}">Nombre del producto</p>
+
+                            <p class="text-muted small mb-3 flex-grow-1"
+                               th:text="${producto.descripcion != null ? #strings.abbreviate(producto.descripcion, 80) : ''}">
+                                Descripción corta
+                            </p>
+
+                            <!-- Precio y stock -->
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <span class="product-price"
+                                      th:text="'S/ ' + ${#numbers.formatDecimal(producto.precio, 1, 2)}">
+                                    S/ 0.00
+                                </span>
+                                <span class="badge bg-success" th:if="${producto.stock != null and producto.stock > 0}">
+                                    En stock
+                                </span>
+                                <span class="badge bg-secondary" th:if="${producto.stock != null and producto.stock <= 0}">
+                                    Agotado
+                                </span>
+                            </div>
+
+                            <!-- Botón agregar al carrito -->
+                            <button class="btn btn-add w-100 py-2"
+                                    th:disabled="${producto.stock != null and producto.stock <= 0}">
+                                <i class="bi bi-cart-plus me-1"></i>
+                                Agregar al carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /row -->
+        </div>
+    </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-dark text-white py-5 mt-auto">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-12 col-md-4">
+                <h5 class="fw-bold" style="letter-spacing: 3px;">PHANTOM</h5>
+                <p class="text-secondary small">Tu tienda gamer de confianza en Perú.</p>
+            </div>
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold text-uppercase mb-3" style="letter-spacing: 1px;">Categorías</h6>
+                <ul class="list-unstyled small">
+                    <li><a th:href="@{/categoria/juegos}" class="text-secondary text-decoration-none">Videojuegos</a></li>
+                    <li><a th:href="@{/categoria/consolas}" class="text-secondary text-decoration-none">Consolas</a></li>
+                    <li><a th:href="@{/categoria/perifericos}" class="text-secondary text-decoration-none">Periféricos</a></li>
+                    <li><a th:href="@{/categoria/sillas}" class="text-secondary text-decoration-none">Sillas Gamer</a></li>
+                    <li><a th:href="@{/categoria/tarjetas}" class="text-secondary text-decoration-none">Tarjetas</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold text-uppercase mb-3" style="letter-spacing: 1px;">Empresa</h6>
+                <ul class="list-unstyled small">
+                    <li><a th:href="@{/nosotros}" class="text-secondary text-decoration-none">Nosotros</a></li>
+                    <li><a th:href="@{/mision}" class="text-secondary text-decoration-none">Misión</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr class="border-secondary mt-4">
+        <p class="text-center text-secondary small mb-0">© 2025 Phantom. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
