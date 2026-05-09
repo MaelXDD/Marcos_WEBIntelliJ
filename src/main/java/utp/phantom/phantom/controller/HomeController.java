@@ -1,11 +1,13 @@
 package utp.phantom.phantom.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import utp.phantom.phantom.repository.ProductoRepository;
+import utp.phantom.phantom.service.CarritoService;
 
 import java.util.Map;
 
@@ -15,43 +17,70 @@ public class HomeController {
     @Autowired
     private ProductoRepository productoRepository;
 
-    private static final Map<String, String[]> CATEGORIAS = Map.of(
-            "consolas", new String[]{"Consolas", "Consolas"},
-            "juegos", new String[]{"Juegos", "Videojuegos"},
-            "perifericos", new String[]{"Periféricos", "Periféricos"},
-            "tarjetas", new String[]{"Tarjetas", "Tarjetas Coleccionables"},
-            "sillas", new String[]{"Sillas", "Sillas Gamer"}
+    @Autowired
+    private CarritoService carritoService;
+
+    // ── IDs numéricos según tu tabla "categorias" en Supabase ────
+    // id 1 = Consolas, 2 = Juegos, 3 = Periféricos, 4 = Tarjetas, 5 = Sillas
+    private static final Map<String, Long> CATEGORIA_IDS = Map.of(
+            "consolas",    1L,
+            "juegos",      2L,
+            "perifericos", 3L,
+            "tarjetas",    4L,
+            "sillas",      5L
     );
 
+    // ── Títulos visibles para el usuario ────────────────────────
+    private static final Map<String, String> CATEGORIA_TITULOS = Map.of(
+            "consolas",    "Consolas",
+            "juegos",      "Videojuegos",
+            "perifericos", "Periféricos",
+            "tarjetas",    "Tarjetas Coleccionables",
+            "sillas",      "Sillas Gamer"
+    );
+
+    // ── Helper: agrega el contador del carrito al navbar ─────────
+    private void agregarContadorCarrito(Model model, HttpSession session) {
+        model.addAttribute("carritoCount", carritoService.contarItems(session));
+    }
+
+    // ── Rutas ────────────────────────────────────────────────────
+
     @GetMapping("/")
-    public String index() {
-        return "index"; // Carga index.html
+    public String index(Model model, HttpSession session) {
+        agregarContadorCarrito(model, session);
+        return "index";
     }
 
     @GetMapping("/nosotros")
-    public String nosotros() {
+    public String nosotros(Model model, HttpSession session) {
+        agregarContadorCarrito(model, session);
         return "nosotros";
     }
 
     @GetMapping("/mision")
-    public String mision() {
+    public String mision(Model model, HttpSession session) {
+        agregarContadorCarrito(model, session);
         return "mision";
     }
 
     @GetMapping("/categoria/{slug}")
-    public String categoria(@PathVariable String slug, Model model) {
-        if (!CATEGORIAS.containsKey(slug)) {
+    public String categoria(@PathVariable String slug,
+                            Model model, HttpSession session) {
+
+        // Si el slug no existe en el mapa, redirige al inicio
+        if (!CATEGORIA_IDS.containsKey(slug)) {
             return "redirect:/";
         }
 
-        String[] info = CATEGORIAS.get(slug);
-        String nombreEnBD = info[0];
-        String titulo = info[1];
+        Long   categoriaId = CATEGORIA_IDS.get(slug);
+        String titulo      = CATEGORIA_TITULOS.get(slug);
 
-        model.addAttribute("titulo", titulo);
-        model.addAttribute("slug", slug);
-        var productos = productoRepository.findByCategoria_NombreIgnoreCase(nombreEnBD);
-        model.addAttribute("productos", productos);
+        model.addAttribute("titulo",    titulo);
+        model.addAttribute("slug",      slug);
+        model.addAttribute("productos", productoRepository.findByCategoriaId(categoriaId));
+
+        agregarContadorCarrito(model, session);
 
         return "categoria";
     }

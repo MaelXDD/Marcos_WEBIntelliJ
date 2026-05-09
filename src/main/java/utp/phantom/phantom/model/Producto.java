@@ -23,11 +23,12 @@ public class Producto {
 
     private String marca;
 
+    // Cambiado: ahora es el ID numérico que apunta a la tabla "categorias"
+    @Column(name = "categoria_id")
+    private Long categoriaId;
+
+    @Column(name = "imagen_url")
     private String imagenUrl;
 
     private Integer stock;
-
-    @ManyToOne
-    @JoinColumn(name = "categoria_id")
-    private Categoria categoria;
 }

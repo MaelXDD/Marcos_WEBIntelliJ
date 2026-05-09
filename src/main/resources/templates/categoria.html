@@ -110,9 +110,13 @@
                 <a href="#" class="text-white me-3 fs-4">
                     <i class="bi bi-person-circle"></i>
                 </a>
-                <a href="#" class="text-white fs-4 position-relative">
+                <!-- th:href apunta al controlador del carrito -->
+                <!-- carritoCount es un atributo que HomeController debe inyectar (ver instrucciones) -->
+                <a th:href="@{/carrito}" class="text-white fs-4 position-relative">
                     <i class="bi bi-cart3"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">0</span>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                          style="font-size: 0.6rem;"
+                          th:text="${carritoCount != null ? carritoCount : 0}">0</span>
                 </a>
             </div>
         </div>
@@ -154,7 +158,7 @@
 
             <!-- Grid de productos cargados desde la BD -->
             <div class="row g-4" th:if="${productos != null and !#lists.isEmpty(productos)}">
-                <p th:text="${#lists.size(productos)}"></p>
+
                 <!-- Contador de resultados -->
                 <div class="col-12 mb-2">
                     <p class="text-muted small">
@@ -175,10 +179,8 @@
 
                         <!-- Info -->
                         <div class="p-3 d-flex flex-column flex-grow-1">
-                                <span class="badge-categoria mb-2 d-inline-block"
-                                      th:text="${producto.marca}">
-                                    Marca
-                                </span>
+                            <span class="badge-categoria mb-2 d-inline-block"
+                                  th:text="${producto.marca != null ? producto.marca : producto.categoria}">Marca</span>
 
                             <p class="product-title mb-2" th:text="${producto.nombre}">Nombre del producto</p>
 
@@ -201,12 +203,17 @@
                                 </span>
                             </div>
 
-                            <!-- Botón agregar al carrito -->
-                            <button class="btn btn-add w-100 py-2"
-                                    th:disabled="${producto.stock != null and producto.stock <= 0}">
-                                <i class="bi bi-cart-plus me-1"></i>
-                                Agregar al carrito
-                            </button>
+                            <!-- BOTÓN AGREGAR AL CARRITO (ahora es un form POST real) -->
+                            <form th:action="@{/carrito/agregar}" method="post" class="m-0">
+                                <input type="hidden" name="productoId" th:value="${producto.id}">
+                                <input type="hidden" name="origen" th:value="'/categoria/' + ${slug}">
+                                <button type="submit"
+                                        class="btn btn-add w-100 py-2"
+                                        th:disabled="${producto.stock != null and producto.stock <= 0}">
+                                    <i class="bi bi-cart-plus me-1"></i>
+                                    Agregar al carrito
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
