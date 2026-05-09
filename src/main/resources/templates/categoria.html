@@ -154,7 +154,7 @@
 
             <!-- Grid de productos cargados desde la BD -->
             <div class="row g-4" th:if="${productos != null and !#lists.isEmpty(productos)}">
-
+                <p th:text="${#lists.size(productos)}"></p>
                 <!-- Contador de resultados -->
                 <div class="col-12 mb-2">
                     <p class="text-muted small">
@@ -175,8 +175,10 @@
 
                         <!-- Info -->
                         <div class="p-3 d-flex flex-column flex-grow-1">
-                            <span class="badge-categoria mb-2 d-inline-block"
-                                  th:text="${producto.marca != null ? producto.marca : producto.categoria}">Marca</span>
+                                <span class="badge-categoria mb-2 d-inline-block"
+                                      th:text="${producto.marca}">
+                                    Marca
+                                </span>
 
                             <p class="product-title mb-2" th:text="${producto.nombre}">Nombre del producto</p>
 

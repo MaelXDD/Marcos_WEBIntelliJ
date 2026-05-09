@@ -15,13 +15,12 @@ public class HomeController {
     @Autowired
     private ProductoRepository productoRepository;
 
-    // Mapeo amigable: slug de URL -> nombre de categoría en BD y título visible
     private static final Map<String, String[]> CATEGORIAS = Map.of(
-        "consolas",  new String[]{"consolas",  "Consolas"},
-        "juegos",    new String[]{"juegos",    "Videojuegos"},
-        "perifericos", new String[]{"perifericos", "Periféricos"},
-        "tarjetas",  new String[]{"tarjetas",  "Tarjetas Coleccionables"},
-        "sillas",    new String[]{"sillas",    "Sillas Gamer"}
+            "consolas", new String[]{"Consolas", "Consolas"},
+            "juegos", new String[]{"Juegos", "Videojuegos"},
+            "perifericos", new String[]{"Periféricos", "Periféricos"},
+            "tarjetas", new String[]{"Tarjetas", "Tarjetas Coleccionables"},
+            "sillas", new String[]{"Sillas", "Sillas Gamer"}
     );
 
     @GetMapping("/")
@@ -42,17 +41,18 @@ public class HomeController {
     @GetMapping("/categoria/{slug}")
     public String categoria(@PathVariable String slug, Model model) {
         if (!CATEGORIAS.containsKey(slug)) {
-            return "redirect:/"; // Si el slug no existe, redirige al inicio
+            return "redirect:/";
         }
 
         String[] info = CATEGORIAS.get(slug);
         String nombreEnBD = info[0];
-        String titulo     = info[1];
+        String titulo = info[1];
 
         model.addAttribute("titulo", titulo);
         model.addAttribute("slug", slug);
-        model.addAttribute("productos", productoRepository.findByCategoriaIgnoreCase(nombreEnBD));
+        var productos = productoRepository.findByCategoria_NombreIgnoreCase(nombreEnBD);
+        model.addAttribute("productos", productos);
 
-        return "categoria"; // Carga templates/categoria.html
+        return "categoria";
     }
 }

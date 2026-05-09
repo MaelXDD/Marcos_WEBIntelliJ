@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
-    // Buscar todos los productos de una categoría (ignorando mayúsculas)
-    List<Producto> findByCategoriaIgnoreCase(String categoria);
+    List<Producto> findByCategoria_NombreIgnoreCase(String nombre);
 }

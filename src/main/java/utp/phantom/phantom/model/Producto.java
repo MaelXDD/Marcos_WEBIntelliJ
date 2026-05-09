@@ -23,12 +23,11 @@ public class Producto {
 
     private String marca;
 
-    // La categoría debe coincidir con los slugs: consolas, juegos, perifericos, tarjetas, sillas
-    @Column(nullable = false)
-    private String categoria;
-
-    // URL de imagen (puede ser de Supabase Storage o externa)
     private String imagenUrl;
 
     private Integer stock;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
 }
