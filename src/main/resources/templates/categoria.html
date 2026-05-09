@@ -9,7 +9,6 @@
     <title th:text="'Phantom | ' + ${titulo}">Phantom | Categoría</title>
 
     <style>
-        /* ── Tarjeta de producto ── */
         .product-card {
             border: none;
             border-radius: 12px;
@@ -67,20 +66,10 @@
             transition: background 0.2s;
         }
         .btn-add:hover { background: #cc0000; color: #fff; }
-
-        /* ── Breadcrumb ── */
         .breadcrumb-item a { color: #1a0b3d; text-decoration: none; }
         .breadcrumb-item.active { color: #666; }
-
-        /* ── Sin productos ── */
-        .empty-state {
-            text-align: center;
-            padding: 80px 20px;
-            color: #888;
-        }
+        .empty-state { text-align: center; padding: 80px 20px; color: #888; }
         .empty-state i { font-size: 64px; margin-bottom: 16px; }
-
-        /* ── Loader ── */
         #loader {
             display: flex;
             flex-direction: column;
@@ -88,6 +77,35 @@
             justify-content: center;
             padding: 80px 0;
         }
+        /* Modal */
+        .modal-content { border-radius: 16px !important; }
+        .modal-img {
+            width: 72px;
+            height: 72px;
+            object-fit: contain;
+            background: #f8f8f8;
+            border-radius: 10px;
+            padding: 6px;
+            flex-shrink: 0;
+        }
+        .btn-seguir {
+            background: #fff;
+            border: 2px solid #1a0b3d;
+            color: #1a0b3d;
+            font-weight: 600;
+            border-radius: 30px;
+            transition: all .2s;
+        }
+        .btn-seguir:hover { background: #1a0b3d; color: #fff; }
+        .btn-ir-carro {
+            background: #1a0b3d;
+            color: #fff !important;
+            font-weight: 700;
+            border-radius: 30px;
+            border: none;
+            transition: background .2s;
+        }
+        .btn-ir-carro:hover { background: #cc0000; }
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -107,14 +125,10 @@
                 <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/perifericos}">Periféricos</a></li>
             </ul>
             <div class="d-flex align-items-center mt-3 mt-lg-0">
-                <a href="#" class="text-white me-3 fs-4">
-                    <i class="bi bi-person-circle"></i>
-                </a>
-                <!-- th:href apunta al controlador del carrito -->
-                <!-- carritoCount es un atributo que HomeController debe inyectar (ver instrucciones) -->
+                <a href="#" class="text-white me-3 fs-4"><i class="bi bi-person-circle"></i></a>
                 <a th:href="@{/carrito}" class="text-white fs-4 position-relative">
                     <i class="bi bi-cart3"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-carrito"
                           style="font-size: 0.6rem;"
                           th:text="${carritoCount != null ? carritoCount : 0}">0</span>
                 </a>
@@ -125,7 +139,7 @@
 
 <main class="flex-grow-1">
 
-    <!-- BREADCRUMB + TÍTULO -->
+    <!-- BREADCRUMB -->
     <section class="bg-light py-4 border-bottom">
         <div class="container">
             <nav aria-label="breadcrumb">
@@ -142,13 +156,11 @@
     <section class="py-5">
         <div class="container">
 
-            <!-- Loading state (se oculta tras cargar la página) -->
             <div id="loader" th:if="${productos == null}">
                 <div class="spinner-border text-dark mb-3" role="status"></div>
                 <p class="text-muted">Cargando productos...</p>
             </div>
 
-            <!-- Sin productos -->
             <div class="empty-state" th:if="${productos != null and #lists.isEmpty(productos)}">
                 <i class="bi bi-box-seam text-muted"></i>
                 <h5 class="mt-2">No hay productos en esta categoría aún</h5>
@@ -156,105 +168,203 @@
                 <a th:href="@{/}" class="btn btn-dark mt-2 px-4">Volver al inicio</a>
             </div>
 
-            <!-- Grid de productos cargados desde la BD -->
             <div class="row g-4" th:if="${productos != null and !#lists.isEmpty(productos)}">
 
-                <!-- Contador de resultados -->
                 <div class="col-12 mb-2">
                     <p class="text-muted small">
                         <span th:text="${#lists.size(productos)}">0</span> producto(s) encontrado(s)
                     </p>
                 </div>
 
-                <!-- Tarjeta por cada producto -->
                 <div class="col-6 col-sm-4 col-md-3" th:each="producto : ${productos}">
                     <div class="product-card h-100 d-flex flex-column">
 
-                        <!-- Imagen del producto -->
                         <div class="product-img-wrap">
                             <img th:src="${producto.imagenUrl}"
                                  th:alt="${producto.nombre}"
                                  onerror="this.src='/Imagenes/consolatarjeta.jpg'">
                         </div>
 
-                        <!-- Info -->
                         <div class="p-3 d-flex flex-column flex-grow-1">
                             <span class="badge-categoria mb-2 d-inline-block"
-                                  th:text="${producto.marca != null ? producto.marca : producto.categoria}">Marca</span>
+                                  th:text="${producto.marca != null ? producto.marca : ''}">Marca</span>
 
                             <p class="product-title mb-2" th:text="${producto.nombre}">Nombre del producto</p>
 
                             <p class="text-muted small mb-3 flex-grow-1"
                                th:text="${producto.descripcion != null ? #strings.abbreviate(producto.descripcion, 80) : ''}">
-                                Descripción corta
+                                Descripción
                             </p>
 
-                            <!-- Precio y stock -->
                             <div class="d-flex align-items-center justify-content-between mb-3">
                                 <span class="product-price"
                                       th:text="'S/ ' + ${#numbers.formatDecimal(producto.precio, 1, 2)}">
                                     S/ 0.00
                                 </span>
-                                <span class="badge bg-success" th:if="${producto.stock != null and producto.stock > 0}">
-                                    En stock
-                                </span>
-                                <span class="badge bg-secondary" th:if="${producto.stock != null and producto.stock <= 0}">
-                                    Agotado
-                                </span>
+                                <span class="badge bg-success"
+                                      th:if="${producto.stock != null and producto.stock > 0}">En stock</span>
+                                <span class="badge bg-secondary"
+                                      th:if="${producto.stock != null and producto.stock <= 0}">Agotado</span>
                             </div>
 
-                            <!-- BOTÓN AGREGAR AL CARRITO (ahora es un form POST real) -->
-                            <form th:action="@{/carrito/agregar}" method="post" class="m-0">
-                                <input type="hidden" name="productoId" th:value="${producto.id}">
-                                <input type="hidden" name="origen" th:value="'/categoria/' + ${slug}">
-                                <button type="submit"
-                                        class="btn btn-add w-100 py-2"
-                                        th:disabled="${producto.stock != null and producto.stock <= 0}">
-                                    <i class="bi bi-cart-plus me-1"></i>
-                                    Agregar al carrito
-                                </button>
-                            </form>
+                            <!--
+                              Los atributos th:data-* escriben los datos del producto
+                              en el HTML para que JavaScript los lea al hacer clic.
+                              No hay <form>, el botón llama directo a agregarAlCarrito().
+                            -->
+                            <button type="button"
+                                    class="btn btn-add w-100 py-2"
+                                    th:disabled="${producto.stock != null and producto.stock <= 0}"
+                                    th:data-id="${producto.id}"
+                                    th:data-nombre="${producto.nombre}"
+                                    th:data-precio="${#numbers.formatDecimal(producto.precio, 1, 2)}"
+                                    th:data-imagen="${producto.imagenUrl}"
+                                    th:data-marca="${producto.marca != null ? producto.marca : ''}"
+                                    th:data-origen="'/categoria/' + ${slug}"
+                                    onclick="agregarAlCarrito(this)">
+                                <i class="bi bi-cart-plus me-1"></i>
+                                Agregar al carrito
+                            </button>
                         </div>
                     </div>
                 </div>
 
-            </div><!-- /row -->
+            </div>
         </div>
     </section>
-
 </main>
 
-<!-- FOOTER -->
-<footer class="bg-dark text-white py-5 mt-auto">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-12 col-md-4">
-                <h5 class="fw-bold" style="letter-spacing: 3px;">PHANTOM</h5>
-                <p class="text-secondary small">Tu tienda gamer de confianza en Perú.</p>
-            </div>
-            <div class="col-6 col-md-2">
-                <h6 class="fw-bold text-uppercase mb-3" style="letter-spacing: 1px;">Categorías</h6>
-                <ul class="list-unstyled small">
-                    <li><a th:href="@{/categoria/juegos}" class="text-secondary text-decoration-none">Videojuegos</a></li>
-                    <li><a th:href="@{/categoria/consolas}" class="text-secondary text-decoration-none">Consolas</a></li>
-                    <li><a th:href="@{/categoria/perifericos}" class="text-secondary text-decoration-none">Periféricos</a></li>
-                    <li><a th:href="@{/categoria/sillas}" class="text-secondary text-decoration-none">Sillas Gamer</a></li>
-                    <li><a th:href="@{/categoria/tarjetas}" class="text-secondary text-decoration-none">Tarjetas</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md-2">
-                <h6 class="fw-bold text-uppercase mb-3" style="letter-spacing: 1px;">Empresa</h6>
-                <ul class="list-unstyled small">
-                    <li><a th:href="@{/nosotros}" class="text-secondary text-decoration-none">Nosotros</a></li>
-                    <li><a th:href="@{/mision}" class="text-secondary text-decoration-none">Misión</a></li>
-                </ul>
+<!-- ══════════════════════════════════════
+     MODAL: Producto agregado al carrito
+     ══════════════════════════════════════ -->
+<div class="modal fade" id="modalCarrito" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-body p-4">
+
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-check-circle-fill text-success fs-4 me-2"></i>
+                    <span class="fw-bold fs-6">Producto agregado a tu Carro</span>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
+                </div>
+
+                <hr class="my-2">
+
+                <div class="d-flex align-items-center gap-3 my-3">
+                    <img id="modalImg" src="" alt="producto" class="modal-img">
+                    <div>
+                        <p class="text-muted small mb-1" id="modalMarca">Marca</p>
+                        <p class="fw-semibold mb-1" id="modalNombre">Nombre</p>
+                        <p class="fw-bold text-danger mb-0 fs-5" id="modalPrecio">S/ 0.00</p>
+                    </div>
+                </div>
+
+                <hr class="my-2">
+
+                <div class="d-flex gap-2 mt-3">
+                    <button class="btn btn-seguir w-50 py-2" data-bs-dismiss="modal">
+                        Seguir comprando
+                    </button>
+                    <a href="/carrito" class="btn btn-ir-carro w-50 py-2 text-center text-decoration-none">
+                        Ir al Carro
+                    </a>
+                </div>
+
             </div>
         </div>
-        <hr class="border-secondary mt-4">
-        <p class="text-center text-secondary small mb-0">© 2025 Phantom. Todos los derechos reservados.</p>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-black text-white pt-5 border-top border-secondary">
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-md-4">
+                <h4 class="fw-bold text-danger mb-3">PHANTOM</h4>
+                <p class="text-secondary small">Tu tienda gamer de confianza en Perú. Consolas, videojuegos y accesorios al mejor precio.</p>
+                <div class="mt-3">
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold text-uppercase mb-3">Tienda</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="#" class="footer-link">Videojuegos</a></li>
+                    <li><a href="#" class="footer-link">Consolas</a></li>
+                    <li><a href="#" class="footer-link">Accesorios</a></li>
+                    <li><a href="#" class="footer-link">Ofertas</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold text-uppercase mb-3">Empresa</h6>
+                <ul class="list-unstyled small">
+                    <!-- Enlaces de navegación internos -->
+                    <li><a th:href="@{/nosotros}" class="footer-link">Nosotros</a></li>
+                    <li><a th:href="@{/mision}" class="footer-link">Misión y Visión</a></li>
+                    <li><a href="#" class="footer-link">Tiendas</a></li>
+                    <li><a href="#" class="footer-link">Libro de Reclamaciones</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h6 class="fw-bold text-uppercase mb-3">Contacto</h6>
+                <p class="small text-secondary mb-2"><i class="bi bi-geo-alt-fill me-2 text-danger"></i> Lima, Perú</p>
+                <p class="small text-secondary mb-2"><i class="bi bi-envelope-fill me-2 text-danger"></i> soporte@phantom.pe</p>
+                <p class="small text-secondary mb-3"><i class="bi bi-telephone-fill me-2 text-danger"></i> +51 999 888 777</p>
+                <form class="d-flex">
+                    <input type="email" class="form-control bg-dark border-0 text-white me-2" placeholder="Ingresa tu correo...">
+                    <button class="btn btn-danger px-3"><i class="bi bi-send"></i></button>
+                </form>
+            </div>
+        </div>
+        <hr class="border-secondary my-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small text-secondary pb-3">
+        </div>
     </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Agregar al carrito con AJAX (sin recargar la página)
+    function agregarAlCarrito(btn) {
+        const id     = btn.dataset.id;
+        const origen = btn.dataset.origen;
+
+        // Llenar el modal con los datos del botón
+        document.getElementById('modalNombre').textContent = btn.dataset.nombre;
+        document.getElementById('modalMarca').textContent  = btn.dataset.marca || '';
+        document.getElementById('modalPrecio').textContent = 'S/ ' + btn.dataset.precio;
+        const img = document.getElementById('modalImg');
+        img.src = btn.dataset.imagen || '/Imagenes/consolatarjeta.jpg';
+        img.onerror = () => { img.src = '/Imagenes/consolatarjeta.jpg'; };
+
+        // Enviar al servidor en segundo plano
+        fetch('/carrito/agregar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'productoId=' + id + '&origen=' + encodeURIComponent(origen)
+        })
+            .then(() => {
+                // Mostrar modal
+                new bootstrap.Modal(document.getElementById('modalCarrito')).show();
+                // Actualizar badge del navbar
+                actualizarBadge();
+            })
+            .catch(err => console.error('Error:', err));
+    }
+
+    // Actualiza el número del badge sin recargar la página
+    function actualizarBadge() {
+        fetch('/carrito/count')
+            .then(r => r.text())
+            .then(count => {
+                document.querySelectorAll('.badge-carrito')
+                    .forEach(b => b.textContent = count);
+            });
+    }
+</script>
+
 </body>
 </html>
