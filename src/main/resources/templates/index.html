@@ -36,7 +36,8 @@
                 </a>
                 <a href="#" class="text-white fs-4 position-relative">
                     <i class="bi bi-cart3"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">0</span>
+                    <span class="badge-carrito position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                          style="font-size: 0.6rem;">0</span>
                 </a>
             </div>
         </div>
@@ -558,6 +559,17 @@
         document.getElementById('modalProductoNombre').textContent = boton.getAttribute('data-producto');
         document.getElementById('modalProductoPrecio').textContent = boton.getAttribute('data-precio');
     });
+
+    //script para actaulizar numero de carrito//
+    document.addEventListener("DOMContentLoaded", actualizarBadge);
+    function actualizarBadge() {
+        fetch('/carrito/count')
+            .then(r => r.text())
+            .then(count => {
+                document.querySelectorAll('.badge-carrito')
+                    .forEach(b => b.textContent = count);
+            });
+    }
 </script>
 </body>
 </html>
