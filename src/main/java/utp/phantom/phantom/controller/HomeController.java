@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import utp.phantom.phantom.repository.ProductoRepository;
 import utp.phantom.phantom.service.CarritoService;
 
@@ -20,8 +21,6 @@ public class HomeController {
     @Autowired
     private CarritoService carritoService;
 
-    // ── IDs numéricos según tu tabla "categorias" en Supabase ────
-    // id 1 = Consolas, 2 = Juegos, 3 = Periféricos, 4 = Tarjetas, 5 = Sillas
     private static final Map<String, Long> CATEGORIA_IDS = Map.of(
             "consolas",    1L,
             "juegos",      2L,
@@ -30,7 +29,6 @@ public class HomeController {
             "sillas",      5L
     );
 
-    // ── Títulos visibles para el usuario ────────────────────────
     private static final Map<String, String> CATEGORIA_TITULOS = Map.of(
             "consolas",    "Consolas",
             "juegos",      "Videojuegos",
@@ -39,15 +37,16 @@ public class HomeController {
             "sillas",      "Sillas Gamer"
     );
 
-    // ── Helper: agrega el contador del carrito al navbar ─────────
     private void agregarContadorCarrito(Model model, HttpSession session) {
         model.addAttribute("carritoCount", carritoService.contarItems(session));
     }
 
-    // ── Rutas ────────────────────────────────────────────────────
-
     @GetMapping("/")
-    public String index(Model model, HttpSession session) {
+    public String index(@RequestParam(required = false) String loginError,
+                        Model model, HttpSession session) {
+        if (loginError != null) {
+            model.addAttribute("loginError", true);
+        }
         agregarContadorCarrito(model, session);
         return "index";
     }
@@ -68,7 +67,6 @@ public class HomeController {
     public String categoria(@PathVariable String slug,
                             Model model, HttpSession session) {
 
-        // Si el slug no existe en el mapa, redirige al inicio
         if (!CATEGORIA_IDS.containsKey(slug)) {
             return "redirect:/";
         }
