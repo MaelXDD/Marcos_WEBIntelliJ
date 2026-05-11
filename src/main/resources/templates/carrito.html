@@ -1,10 +1,4 @@
 <!DOCTYPE html>
-<!--
-  carrito.html
-  Vista del carrito de compras usando Bootstrap 5 + Thymeleaf.
-  Muestra los productos agregados, permite cambiar cantidad,
-  eliminar ítems y ver el total a pagar.
--->
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -15,6 +9,7 @@
     <title>Phantom | Mi Carrito</title>
 
     <style>
+        /* ── Imagen del ítem en la tabla ── */
         .cart-img {
             width: 72px;
             height: 72px;
@@ -24,6 +19,7 @@
             padding: 4px;
         }
 
+        /* ── Resumen de pago lateral ── */
         .resumen-card {
             border: none;
             border-radius: 14px;
@@ -31,11 +27,13 @@
             background: #fff;
         }
 
+        /* ── Input de cantidad pequeño ── */
         .qty-input {
             width: 60px;
             text-align: center;
         }
 
+        /* ── Botón eliminar (rojo suave) ── */
         .btn-eliminar {
             background: transparent;
             border: none;
@@ -45,6 +43,7 @@
         }
         .btn-eliminar:hover { color: #8b0000; }
 
+        /* ── Botón comprar ── */
         .btn-comprar {
             background: #1a0b3d;
             color: #fff;
@@ -55,12 +54,12 @@
         }
         .btn-comprar:hover { background: #cc0000; color: #fff; }
 
+        /* ── Estado vacío ── */
         .empty-cart { text-align: center; padding: 80px 20px; color: #888; }
         .empty-cart i { font-size: 72px; }
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
-
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm py-3">
     <div class="container">
@@ -101,7 +100,6 @@
             <i class="bi bi-cart3 me-2"></i>Mi Carrito
         </h2>
 
-
         <div class="alert alert-success alert-dismissible fade show"
              role="alert"
              th:if="${mensajeOk}">
@@ -110,7 +108,19 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
 
-        <
+        <!-- Alerta de error de stock al procesar pago -->
+        <div class="alert alert-danger alert-dismissible fade show"
+             role="alert"
+             th:if="${erroresPago != null and !#lists.isEmpty(erroresPago)}">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <strong>No se pudo completar el pago:</strong>
+            <ul class="mb-0 mt-1">
+                <li th:each="error : ${erroresPago}" th:text="${error}">Error</li>
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+
         <div class="empty-cart" th:if="${#lists.isEmpty(items)}">
             <i class="bi bi-cart-x text-muted d-block mb-3"></i>
             <h5 class="fw-bold">Tu carrito está vacío</h5>
@@ -123,6 +133,7 @@
 
         <div class="row g-4" th:if="${!#lists.isEmpty(items)}">
 
+            <!-- ── Columna izquierda: tabla de ítems ─────────── -->
             <div class="col-lg-8">
                 <div class="card border-0 shadow-sm rounded-3">
                     <div class="card-body p-0">
@@ -157,7 +168,6 @@
                                             </span>
                                     </td>
 
-
                                     <td class="text-center">
                                         <form th:action="@{/carrito/actualizar}"
                                               method="post">
@@ -173,20 +183,17 @@
                                         </form>
                                     </td>
 
-                                    <!-- Precio unitario -->
                                     <td class="text-end fw-semibold">
                                             <span th:text="'S/ ' + ${#numbers.formatDecimal(item.precio, 1, 2)}">
                                                 S/ 0.00
                                             </span>
                                     </td>
 
-                                    <!-- Subtotal (precio × cantidad) -->
                                     <td class="text-end fw-bold text-danger">
                                             <span th:text="'S/ ' + ${#numbers.formatDecimal(item.subtotal, 1, 2)}">
                                                 S/ 0.00
                                             </span>
                                     </td>
-
 
                                     <td class="text-center">
                                         <form th:action="@{/carrito/eliminar}"
@@ -269,10 +276,13 @@
                     </div>
 
                     <!-- Botón de pago -->
-                    <button class="btn btn-comprar w-100 py-3 fs-6">
-                        <i class="bi bi-credit-card-fill me-2"></i>
-                        Proceder al pago
-                    </button>
+                    <!-- Formulario de pago: POST a /pago/procesar -->
+                    <form th:action="@{/pago/procesar}" method="post">
+                        <button type="submit" class="btn btn-comprar w-100 py-3 fs-6">
+                            <i class="bi bi-credit-card-fill me-2"></i>
+                            Proceder al pago
+                        </button>
+                    </form>
 
                     <!-- Métodos de pago aceptados (visual) -->
                     <p class="text-center text-muted small mt-3 mb-0">
@@ -288,33 +298,52 @@
 <!-- ════════════════════════════════════════════════════
      FOOTER
      ════════════════════════════════════════════════════ -->
-<footer class="bg-dark text-white py-5 mt-auto">
+<!-- FOOTER -->
+<footer class="bg-black text-white pt-5 border-top border-secondary">
     <div class="container">
-        <div class="row g-4">
-            <div class="col-12 col-md-4">
-                <h5 class="fw-bold" style="letter-spacing:3px;">PHANTOM</h5>
-                <p class="text-secondary small">Tu tienda gamer de confianza en Perú.</p>
+        <div class="row gy-4">
+            <div class="col-md-4">
+                <h4 class="fw-bold text-danger mb-3">PHANTOM</h4>
+                <p class="text-secondary small">Tu tienda gamer de confianza en Perú. Consolas, videojuegos y accesorios al mejor precio.</p>
+                <div class="mt-3">
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-tiktok"></i></a>
+                </div>
             </div>
             <div class="col-6 col-md-2">
-                <h6 class="fw-bold text-uppercase mb-3" style="letter-spacing:1px;">Categorías</h6>
+                <h6 class="fw-bold text-uppercase mb-3">Tienda</h6>
                 <ul class="list-unstyled small">
-                    <li><a th:href="@{/categoria/juegos}"     class="text-secondary text-decoration-none">Videojuegos</a></li>
-                    <li><a th:href="@{/categoria/consolas}"   class="text-secondary text-decoration-none">Consolas</a></li>
-                    <li><a th:href="@{/categoria/perifericos}"class="text-secondary text-decoration-none">Periféricos</a></li>
-                    <li><a th:href="@{/categoria/sillas}"     class="text-secondary text-decoration-none">Sillas Gamer</a></li>
-                    <li><a th:href="@{/categoria/tarjetas}"   class="text-secondary text-decoration-none">Tarjetas</a></li>
+                    <li><a href="#" class="footer-link">Videojuegos</a></li>
+                    <li><a href="#" class="footer-link">Consolas</a></li>
+                    <li><a href="#" class="footer-link">Accesorios</a></li>
+                    <li><a href="#" class="footer-link">Ofertas</a></li>
                 </ul>
             </div>
             <div class="col-6 col-md-2">
-                <h6 class="fw-bold text-uppercase mb-3" style="letter-spacing:1px;">Empresa</h6>
+                <h6 class="fw-bold text-uppercase mb-3">Empresa</h6>
                 <ul class="list-unstyled small">
-                    <li><a th:href="@{/nosotros}" class="text-secondary text-decoration-none">Nosotros</a></li>
-                    <li><a th:href="@{/mision}"   class="text-secondary text-decoration-none">Misión</a></li>
+                    <!-- Enlaces de navegación internos -->
+                    <li><a th:href="@{/nosotros}" class="footer-link">Nosotros</a></li>
+                    <li><a th:href="@{/mision}" class="footer-link">Misión y Visión</a></li>
+                    <li><a href="#" class="footer-link">Tiendas</a></li>
+                    <li><a href="#" class="footer-link">Libro de Reclamaciones</a></li>
                 </ul>
+            </div>
+            <div class="col-md-4">
+                <h6 class="fw-bold text-uppercase mb-3">Contacto</h6>
+                <p class="small text-secondary mb-2"><i class="bi bi-geo-alt-fill me-2 text-danger"></i> Lima, Perú</p>
+                <p class="small text-secondary mb-2"><i class="bi bi-envelope-fill me-2 text-danger"></i> soporte@phantom.pe</p>
+                <p class="small text-secondary mb-3"><i class="bi bi-telephone-fill me-2 text-danger"></i> +51 999 888 777</p>
+                <form class="d-flex">
+                    <input type="email" class="form-control bg-dark border-0 text-white me-2" placeholder="Ingresa tu correo...">
+                    <button class="btn btn-danger px-3"><i class="bi bi-send"></i></button>
+                </form>
             </div>
         </div>
-        <hr class="border-secondary mt-4">
-        <p class="text-center text-secondary small mb-0">© 2025 Phantom. Todos los derechos reservados.</p>
+        <hr class="border-secondary my-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small text-secondary pb-3">
+        </div>
     </div>
 </footer>
 
