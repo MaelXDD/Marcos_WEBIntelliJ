@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- CSS enlazado con Thymeleaf -->
     <link rel="stylesheet" th:href="@{/CSS/estilos.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <title>Phantom | Tienda de Videojuegos</title>
@@ -14,7 +13,6 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm py-3">
     <div class="container">
-        <!-- Enlace al inicio -->
         <a class="navbar-brand fw-bold fs-3" th:href="@{/}" style="letter-spacing: 3px;">PHANTOM</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -36,7 +34,7 @@
                 </a>
                 <a href="#" class="text-white fs-4 position-relative">
                     <i class="bi bi-cart3"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">0</span>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;" th:text="${carritoCount}">0</span>
                 </a>
             </div>
         </div>
@@ -71,35 +69,30 @@
         <div class="container">
             <h6 class="text-center fw-bold mb-5 text-uppercase" style="letter-spacing: 2px;">Nuestras Categorías</h6>
             <div class="row text-center justify-content-center g-4">
-                <!-- Consolas -->
                 <div class="col-6 col-sm-4 col-md-2">
                     <a th:href="@{/categoria/consolas}" class="text-decoration-none text-dark d-flex flex-column align-items-center gap-3">
                         <img th:src="@{/Imagenes/consolatarjeta.jpg}" alt="Consolas" class="img-fluid" style="height: 120px; object-fit: contain;">
                         <span class="fw-bold text-uppercase" style="font-size: 13px; letter-spacing: 0.5px;">Consolas</span>
                     </a>
                 </div>
-                <!-- Juegos -->
                 <div class="col-6 col-sm-4 col-md-2">
                     <a th:href="@{/categoria/juegos}" class="text-decoration-none text-dark d-flex flex-column align-items-center gap-3">
                         <img th:src="@{/Imagenes/videojuego.jpg}" alt="Juegos" class="img-fluid" style="height: 120px; object-fit: contain;">
                         <span class="fw-bold text-uppercase" style="font-size: 13px; letter-spacing: 0.5px;">Juegos</span>
                     </a>
                 </div>
-                <!-- Periféricos -->
                 <div class="col-6 col-sm-4 col-md-2">
                     <a th:href="@{/categoria/perifericos}" class="text-decoration-none text-dark d-flex flex-column align-items-center gap-3">
                         <img th:src="@{/Imagenes/mouse2.jpg}" alt="Periféricos" class="img-fluid" style="height: 120px; object-fit: contain;">
                         <span class="fw-bold text-uppercase" style="font-size: 13px; letter-spacing: 0.5px;">Periféricos</span>
                     </a>
                 </div>
-                <!-- Tarjetas Coleccionables -->
                 <div class="col-6 col-sm-4 col-md-2">
                     <a th:href="@{/categoria/tarjetas}" class="text-decoration-none text-dark d-flex flex-column align-items-center gap-3">
                         <img th:src="@{/Imagenes/tarjeta.jpg}" alt="Tarjetas Coleccionables" class="img-fluid" style="height: 120px; object-fit: contain;">
                         <span class="fw-bold text-uppercase text-center" style="font-size: 13px; letter-spacing: 0.5px;">Tarjetas<br>Coleccionables</span>
                     </a>
                 </div>
-                <!-- Sillas Gamer -->
                 <div class="col-6 col-sm-4 col-md-2">
                     <a th:href="@{/categoria/sillas}" class="text-decoration-none text-dark d-flex flex-column align-items-center gap-3">
                         <img th:src="@{/Imagenes/silla1.jpg}" alt="Sillas Gamer" class="img-fluid" style="height: 120px; object-fit: contain;">
@@ -126,7 +119,7 @@
                 <div class="product-card">
                     <img th:src="@{/imagenes/audifono2.jpg}" class="product-img" alt="">
                     <div class="brand">Audio</div>
-                    <div class="product-title">Logitech G325 Audífonos Inalámbricos LIGHTSPEED - Lila </div>
+                    <div class="product-title">Logitech G325 Audífonos Inalámbricos LIGHTSPEED - Lila</div>
                     <div class="new-price">S/ 399.00</div>
                     <a href="#" class="stretched-link"></a>
                 </div>
@@ -135,7 +128,7 @@
                 <div class="product-card">
                     <img th:src="@{/imagenes/audifono3.jpg}" class="product-img" alt="">
                     <div class="brand">Audio</div>
-                    <div class="product-title">Logitech G325 Audífonos Inalámbricos LIGHTSPEED - Blanco </div>
+                    <div class="product-title">Logitech G325 Audífonos Inalámbricos LIGHTSPEED - Blanco</div>
                     <div class="new-price">S/ 399.90</div>
                     <a href="#" class="stretched-link"></a>
                 </div>
@@ -144,7 +137,7 @@
                 <div class="product-card">
                     <img th:src="@{/imagenes/teclado1.jpg}" class="product-img" alt="">
                     <div class="brand">Teclados</div>
-                    <div class="product-title">Redragon Ucal Pro K673 Teclado Inalámbrico Switch Rojo - Negro </div>
+                    <div class="product-title">Redragon Ucal Pro K673 Teclado Inalámbrico Switch Rojo - Negro</div>
                     <div class="new-price">S/ 329.00</div>
                     <a href="#" class="stretched-link"></a>
                 </div>
@@ -153,7 +146,7 @@
                 <div class="product-card">
                     <img th:src="@{/imagenes/teclado2.jpg}" class="product-img" alt="">
                     <div class="brand">Teclados</div>
-                    <div class="product-title">Royal Kludge RK-R87PRO Tecaldo Mecánico TKL Phantom - Creamy </div>
+                    <div class="product-title">Royal Kludge RK-R87PRO Teclado Mecánico TKL Phantom - Creamy</div>
                     <div class="new-price">S/ 299.00</div>
                     <a href="#" class="stretched-link"></a>
                 </div>
@@ -162,7 +155,7 @@
                 <div class="product-card">
                     <img th:src="@{/imagenes/teclado3.jpg}" class="product-img" alt="">
                     <div class="brand">Teclados</div>
-                    <div class="product-title">Royal Kludge RK X87 Teclado BLACK NIGHT Creamy Switch </div>
+                    <div class="product-title">Royal Kludge RK X87 Teclado BLACK NIGHT Creamy Switch</div>
                     <div class="new-price">S/ 229.90</div>
                     <a href="#" class="stretched-link"></a>
                 </div>
@@ -171,7 +164,7 @@
                 <div class="product-card">
                     <img th:src="@{/imagenes/teclado4.jpg}" class="product-img" alt="">
                     <div class="brand">Teclados</div>
-                    <div class="product-title">Royal Kludge RK X87 Teclado Blackberry Mouse Creamy Switch </div>
+                    <div class="product-title">Royal Kludge RK X87 Teclado Blackberry Mouse Creamy Switch</div>
                     <div class="new-price">S/ 229.90</div>
                     <a href="#" class="stretched-link"></a>
                 </div>
@@ -180,7 +173,7 @@
                 <div class="product-card">
                     <img th:src="@{/imagenes/mouse1.jpg}" class="product-img" alt="">
                     <div class="brand">Mouse</div>
-                    <div class="product-title">Logitech G Pro X Superlight 2 SE Mouse Inalámbrico - Blanco </div>
+                    <div class="product-title">Logitech G Pro X Superlight 2 SE Mouse Inalámbrico - Blanco</div>
                     <div class="new-price">S/ 539.00</div>
                     <a href="#" class="stretched-link"></a>
                 </div>
@@ -198,7 +191,7 @@
                 <div class="product-card">
                     <img th:src="@{/imagenes/mouse3.jpg}" class="product-img" alt="">
                     <div class="brand">Mouse</div>
-                    <div class="product-title">Razer Deathadder V4 Pro Mouse - Blanco </div>
+                    <div class="product-title">Razer Deathadder V4 Pro Mouse - Blanco</div>
                     <div class="new-price">S/ 779.00</div>
                     <a href="#" class="stretched-link"></a>
                 </div>
@@ -238,6 +231,7 @@
     <!-- CARDS PROMOCIONES -->
     <section class="container my-5 py-3">
         <div class="row g-4 justify-content-center">
+
             <!-- PS5 -->
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 bg-dark text-white border-secondary shadow-lg">
@@ -403,7 +397,7 @@
         <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
             <div class="row g-0">
                 <div class="col-md-5 d-none d-md-block">
-                    <img th:src="@{/Imagenes/SmashBros.jpg}" style="width: 120%;">
+                    <img th:src="@{/Imagenes/SmashBros.jpg}" style="width: 120%; height: 100%; object-fit: cover;">
                 </div>
                 <div class="col-md-7 bg-dark text-white">
                     <div class="modal-header border-0">
@@ -413,31 +407,41 @@
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body p-4">
-                        <form>
+
+                        <!-- ERROR LOGIN -->
+                        <div th:if="${loginError}" class="alert alert-danger rounded-3 py-2 small">
+                            Correo o contraseña incorrectos
+                        </div>
+
+                        <form th:action="@{/login}" method="post">
                             <div class="mb-3">
                                 <label class="form-label small text-secondary">Correo electrónico</label>
-                                <input type="email" class="form-control bg-black text-white border-secondary rounded-3" placeholder="ejemplo@correo.com">
+                                <input type="email" name="username"
+                                       class="form-control bg-black text-white border-secondary rounded-3"
+                                       placeholder="ejemplo@correo.com" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small text-secondary">Contraseña</label>
-                                <input type="password" class="form-control bg-black text-white border-secondary rounded-3" placeholder="••••••••">
+                                <input type="password" name="password"
+                                       class="form-control bg-black text-white border-secondary rounded-3"
+                                       placeholder="••••••••" required>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox">
+                                    <input class="form-check-input" type="checkbox" name="remember-me">
                                     <label class="form-check-label small text-secondary">Recordarme</label>
                                 </div>
                                 <a href="#" class="small text-danger text-decoration-none ms-4">¿Olvidaste tu contraseña?</a>
                             </div>
                             <button type="submit" class="btn btn-danger w-100 fw-bold rounded-pill py-2">INGRESAR</button>
                         </form>
+
                         <hr class="border-secondary">
-                        <p class="text-center small text-secondary mb-0">
-                            ¿No tienes cuenta?
-                        </p>
+                        <p class="text-center small text-secondary mb-0">¿No tienes cuenta?</p>
                         <a th:href="@{/registro}" class="btn btn-outline-danger w-100 fw-bold rounded-pill mt-2">
                             REGÍSTRATE
                         </a>
+
                     </div>
                 </div>
             </div>
@@ -524,7 +528,6 @@
             <div class="col-6 col-md-2">
                 <h6 class="fw-bold text-uppercase mb-3">Empresa</h6>
                 <ul class="list-unstyled small">
-                    <!-- Enlaces de navegación internos -->
                     <li><a th:href="@{/nosotros}" class="footer-link">Nosotros</a></li>
                     <li><a th:href="@{/mision}" class="footer-link">Misión y Visión</a></li>
                     <li><a href="#" class="footer-link">Tiendas</a></li>
@@ -544,11 +547,11 @@
         </div>
         <hr class="border-secondary my-4">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small text-secondary pb-3">
+            <span>© 2026 Phantom. Todos los derechos reservados.</span>
         </div>
     </div>
 </footer>
 
-<!-- Script enlazado con Thymeleaf -->
 <script th:src="@{/JS/emergente.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -558,6 +561,12 @@
         document.getElementById('modalProductoNombre').textContent = boton.getAttribute('data-producto');
         document.getElementById('modalProductoPrecio').textContent = boton.getAttribute('data-precio');
     });
+
+    const loginError = [[${loginError}]];
+    if (loginError) {
+        const modal = new bootstrap.Modal(document.getElementById('loginModal'));
+        modal.show();
+    }
 </script>
 </body>
 </html>
