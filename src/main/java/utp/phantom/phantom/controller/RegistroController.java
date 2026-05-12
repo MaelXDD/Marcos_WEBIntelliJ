@@ -29,6 +29,8 @@ public class RegistroController {
             @RequestParam String email,
             @RequestParam String password,
             @RequestParam String confirmPassword,
+            @RequestParam(required = false) String dni,
+            @RequestParam(required = false) String direccion,
             Model model) {
 
         if (!password.equals(confirmPassword)) {
@@ -41,7 +43,7 @@ public class RegistroController {
             return "registro";
         }
 
-        usuarioService.registrar(nombre, email, password);
+        usuarioService.registrar(nombre, email, password, dni, direccion);
         return "redirect:/registro?exitoso=true";
     }
 }

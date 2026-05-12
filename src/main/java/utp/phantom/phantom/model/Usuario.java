@@ -2,6 +2,7 @@ package utp.phantom.phantom.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -23,4 +24,13 @@ public class Usuario {
 
     @Column(nullable = false)
     private String rol = "USER";
+
+    @Column(length = 8)
+    private String dni;
+
+    @Column(length = 255)
+    private String direccion;
+
+    @Column(name = "fecha_registro")
+    private LocalDateTime fechaRegistro = LocalDateTime.now();
 }
