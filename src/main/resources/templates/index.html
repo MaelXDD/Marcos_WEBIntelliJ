@@ -538,8 +538,8 @@
             <div class="col-6 col-md-2">
                 <h6 class="fw-bold text-uppercase mb-3">Empresa</h6>
                 <ul class="list-unstyled small">
-                    <li><a th:href="@{/nosotros.html}" class="footer-link">Nosotros</a></li>
-                    <li><a th:href="@{/mision.html}" class="footer-link">Misión y Visión</a></li>
+                    <li><a th:href="@{/nosotros}" class="footer-link">Nosotros</a></li>
+                    <li><a th:href="@{/mision}" class="footer-link">Misión y Visión</a></li>
                     <li><a href="#" class="footer-link">Tiendas</a></li>
                     <li><a href="#" class="footer-link">Libro de Reclamaciones</a></li>
                 </ul>
@@ -572,7 +572,8 @@
         document.getElementById('modalProductoPrecio').textContent = boton.getAttribute('data-precio');
     });
 
-    const loginError = [[${loginError}]];
+    const loginError = /*[[${loginError}]]*/ false;
+
     if (loginError) {
         const modal = new bootstrap.Modal(document.getElementById('loginModal'));
         modal.show();
