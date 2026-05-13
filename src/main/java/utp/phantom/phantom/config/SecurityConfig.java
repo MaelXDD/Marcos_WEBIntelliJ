@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .userDetailsService(customUserDetailsService)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/api/productos/buscar", "/registro", "/login",
+                        .requestMatchers("/","/nosotros", "/mision", "/api/productos/buscar", "/registro", "/login",
                                 "/CSS/**", "/Imagenes/**", "/JS/**",
                                 "/imagenes/**", "/categoria/**",
                                 "/carrito/**").permitAll()
