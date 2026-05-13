@@ -17,39 +17,44 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm py-3">
     <div class="container">
         <a class="navbar-brand fw-bold fs-3" th:href="@{/}" style="letter-spacing: 3px;">PHANTOM</a>
-
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mx-auto text-uppercase">
-                <li class="nav-item"><a class="nav-link px-4 fs-6" href="#">Videojuegos</a></li>
-                <li class="nav-item"><a class="nav-link px-4 fs-6" href="#">Consolas</a></li>
-                <li class="nav-item"><a class="nav-link px-4 fs-6" href="#">Coleccionables</a></li>
-                <li class="nav-item"><a class="nav-link px-4 fs-6" href="#">Novedades</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/juegos}">Videojuegos</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/consolas}">Consolas</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/tarjetas}">Coleccionables</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/perifericos}">Periféricos</a></li>
             </ul>
 
-            <form class="d-flex me-3" role="search">
-                <input class="form-control me-2 py-2" type="search" placeholder="Buscar..."
-                       style="background: #fff; border: 1px solid #444; color: #000;">
-                <button class="btn btn-outline-success px-4" type="submit">Buscar</button>
-            </form>
+            <div class="position-relative me-3">
+                <div class="d-flex">
+                    <input id="inputBusqueda"
+                           class="form-control me-2 py-2 input-busqueda-phantom"
+                           type="search"
+                           placeholder="Buscar productos..."
+                           autocomplete="off">
+                </div>
+
+                <div id="contenedorResultados"
+                     class="position-absolute w-100 mt-1 shadow-lg rounded-3 d-none resultados-busqueda-phantom">
+                </div>
+            </div>
 
             <div class="d-flex align-items-center mt-3 mt-lg-0">
                 <a href="#" class="text-white me-3 fs-4" data-bs-toggle="modal" data-bs-target="#loginModal">
                     <i class="bi bi-person-circle"></i>
                 </a>
-
                 <a href="#" class="text-white fs-4 position-relative">
                     <i class="bi bi-cart3"></i>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                          style="font-size: 0.6rem;">0</span>
+                          style="font-size: 0.6rem;"
+                          th:text="${carritoCount}">0</span>
                 </a>
             </div>
-        </div>
-    </div>
-</nav>
+        </div> </div> </nav>
 
 <!-- MAIN -->
 <main class="flex-grow-1">
