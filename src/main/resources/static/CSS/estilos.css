@@ -198,14 +198,12 @@ footer h4, footer h6 {
     font-weight: bold;
     font-size: 18px;
 }
-
-/* ===== REGISTRO ===== */
-.form-control::placeholder {
+#registro-main .form-control::placeholder {
     color: #ccc !important;
     opacity: 1;
 }
 
-.form-control:focus {
+#registro-main .form-control:focus {
     background-color: #000 !important;
     box-shadow: none;
 }
