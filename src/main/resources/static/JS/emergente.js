@@ -7,7 +7,13 @@ document.addEventListener("DOMContentLoaded", function() {
             myModal.show();
         }, 1000);
     }
+    // ===== MODAL REGISTRO EXITOSO =====
+    const registroExitosoModal = document.getElementById('registroExitosoModal');
 
+    if (registroExitosoModal && registroExitosoModal.dataset.show === 'true') {
+        const modal = new bootstrap.Modal(registroExitosoModal);
+        modal.show();
+    }
     const input = document.getElementById('inputBusqueda');
     const lista = document.getElementById('contenedorResultados');
 
