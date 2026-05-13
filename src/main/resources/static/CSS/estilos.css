@@ -32,6 +32,26 @@ body {
     color: #ff0000;
 }
 
+.input-busqueda-phantom {
+    background-color: #ffffff !important;
+    border: 1px solid #444444 !important;
+    color: #000000 !important;
+    width: 250px;
+}
+
+.resultados-busqueda-phantom {
+    z-index: 1050;
+    background-color: #1a1a1a !important;
+    border: 1px solid #dc3545 !important;
+    max-height: 400px;
+    overflow-y: auto;
+    left: 0;
+}
+
+.resultados-busqueda-phantom .text-white {
+    color: #ffffff !important;
+}
+
 /* ===== MODAL ===== */
 .modal-content input::placeholder {
     color: #ccc;

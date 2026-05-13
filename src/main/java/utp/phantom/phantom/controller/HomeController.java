@@ -58,7 +58,7 @@ public class HomeController {
     @GetMapping("/api/productos/buscar")
     @ResponseBody
     public List<Producto> buscarProductosAjax(@RequestParam String term) {
-        return productoRepository.findByNombreContainingIgnoreCase(term);
+        return productoRepository.findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCase(term, term);
     }
 
     @GetMapping("/nosotros")
