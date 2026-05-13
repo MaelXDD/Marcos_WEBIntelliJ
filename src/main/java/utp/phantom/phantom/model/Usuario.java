@@ -25,7 +25,7 @@ public class Usuario {
     @Column(nullable = false)
     private String rol = "USER";
 
-    @Column(length = 8)
+    @Column(length = 8, unique = true)
     private String dni;
 
     @Column(length = 255)
@@ -33,4 +33,7 @@ public class Usuario {
 
     @Column(name = "fecha_registro")
     private LocalDateTime fechaRegistro = LocalDateTime.now();
+
+    @Column(name = "numero_telefono", length = 9)
+    private String numeroTelefono;
 }
