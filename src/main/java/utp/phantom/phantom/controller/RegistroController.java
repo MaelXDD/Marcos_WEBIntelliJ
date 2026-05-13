@@ -44,6 +44,11 @@ public class RegistroController {
             return "registro";
         }
 
+        if (dni != null && !dni.isEmpty() && usuarioService.existeDni(dni)) {
+            model.addAttribute("error", "El DNI ya está registrado");
+            return "registro";
+        }
+
         usuarioService.registrar(nombre, email, password, dni, direccion, numeroTelefono);
         return "redirect:/registro?exitoso=true";
     }

@@ -1,19 +1,32 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+    // ===== MODAL PROMOCIÓN EMERGENTE =====
+    // Solo muestra el popup si NO hay error de login
     const elementoModal = document.getElementById('promoModal');
-    if (elementoModal) {
+    const hayLoginError = document.getElementById('loginError') !== null;
+
+    if (elementoModal && !hayLoginError) {
         const myModal = new bootstrap.Modal(elementoModal);
         setTimeout(() => {
             myModal.show();
         }, 1000);
     }
+
+    // ===== MODAL LOGIN CON ERROR =====
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal && hayLoginError) {
+        const modal = new bootstrap.Modal(loginModal);
+        modal.show();
+    }
+
     // ===== MODAL REGISTRO EXITOSO =====
     const registroExitosoModal = document.getElementById('registroExitosoModal');
-
     if (registroExitosoModal && registroExitosoModal.dataset.show === 'true') {
         const modal = new bootstrap.Modal(registroExitosoModal);
         modal.show();
     }
+
+    // ===== BUSCADOR EN TIEMPO REAL =====
     const input = document.getElementById('inputBusqueda');
     const lista = document.getElementById('contenedorResultados');
 
@@ -47,16 +60,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
                             item.addEventListener('click', function() {
                                 let slug = "";
-
                                 const id = p.categoriaId;
-
                                 if (id == 1) slug = "consolas";
                                 else if (id == 2) slug = "juegos";
                                 else if (id == 3) slug = "perifericos";
                                 else if (id == 4) slug = "tarjetas";
                                 else if (id == 5) slug = "sillas";
                                 else slug = "juegos";
-
                                 window.location.href = `/categoria/${slug}`;
                             });
 
@@ -70,11 +80,22 @@ document.addEventListener("DOMContentLoaded", function() {
                 })
                 .catch(error => console.error('Error en fetch:', error));
         });
+
+        document.addEventListener('click', (e) => {
+            if (!input.contains(e.target) && !lista.contains(e.target)) {
+                lista.classList.add('d-none');
+            }
+        });
     }
 
-    document.addEventListener('click', (e) => {
-        if (input && lista && !input.contains(e.target) && !lista.contains(e.target)) {
-            lista.classList.add('d-none');
-        }
-    });
+    // ===== MODAL COMPRA =====
+    const compraModal = document.getElementById('compraModal');
+    if (compraModal) {
+        compraModal.addEventListener('show.bs.modal', function(event) {
+            const boton = event.relatedTarget;
+            document.getElementById('modalProductoNombre').textContent = boton.getAttribute('data-producto');
+            document.getElementById('modalProductoPrecio').textContent = boton.getAttribute('data-precio');
+        });
+    }
+
 });
