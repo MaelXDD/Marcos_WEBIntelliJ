@@ -32,4 +32,7 @@ public class UsuarioService {
     public boolean existeDni(String dni) {
         return usuarioRepository.findByDni(dni).isPresent();
     }
+    public boolean existeTelefono(String numeroTelefono) {
+        return usuarioRepository.findByNumeroTelefono(numeroTelefono).isPresent();
+    }
 }

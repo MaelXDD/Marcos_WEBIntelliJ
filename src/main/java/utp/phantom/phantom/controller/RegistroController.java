@@ -39,6 +39,14 @@ public class RegistroController {
             return "registro";
         }
 
+        if (!contrasenaSegura(password)) {
+            model.addAttribute("error", "La contraseña debe tener mínimo 8 caracteres, una mayúscula, un número y un símbolo (ej: !, @, #)");
+            return "registro";
+        }
+        if (numeroTelefono != null && !numeroTelefono.isEmpty() && usuarioService.existeTelefono(numeroTelefono)) {
+            model.addAttribute("error", "El número de teléfono ya está registrado");
+            return "registro";
+        }
         if (usuarioService.existeEmail(email)) {
             model.addAttribute("error", "El correo ya está registrado");
             return "registro";
@@ -51,5 +59,14 @@ public class RegistroController {
 
         usuarioService.registrar(nombre, email, password, dni, direccion, numeroTelefono);
         return "redirect:/registro?exitoso=true";
+    }
+
+    private boolean contrasenaSegura(String password) {
+        if (password.length() < 8) return false;
+        boolean tieneMayuscula = password.chars().anyMatch(Character::isUpperCase);
+        boolean tieneMinuscula = password.chars().anyMatch(Character::isLowerCase);
+        boolean tieneNumero    = password.chars().anyMatch(Character::isDigit);
+        boolean tieneSymbolo   = password.chars().anyMatch(c -> "!@#$%^&*()_+-=[]{}|;':\",./<>?".indexOf(c) >= 0);
+        return tieneMayuscula && tieneMinuscula && tieneNumero && tieneSymbolo;
     }
 }

@@ -34,6 +34,6 @@ public class Usuario {
     @Column(name = "fecha_registro")
     private LocalDateTime fechaRegistro = LocalDateTime.now();
 
-    @Column(name = "numero_telefono", length = 9)
+    @Column(name = "numero_telefono", length = 9, unique = true)
     private String numeroTelefono;
 }
