@@ -23,7 +23,6 @@ public class Producto {
 
     private String marca;
 
-    // Cambiado: ahora es el ID numérico que apunta a la tabla "categorias"
     @Column(name = "categoria_id")
     private Long categoriaId;
 

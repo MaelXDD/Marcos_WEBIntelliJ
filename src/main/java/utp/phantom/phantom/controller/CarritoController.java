@@ -22,7 +22,7 @@ public class CarritoController {
     @Autowired
     private ProductoRepository productoRepository;
 
-    // ── GET /carrito → ver el carrito ────────────────────────────
+    // Get /carrito (ver el carrito)
     @GetMapping
     public String verCarrito(HttpSession session, Model model) {
         model.addAttribute("items",  carritoService.obtenerCarrito(session));
@@ -31,7 +31,7 @@ public class CarritoController {
         return "carrito";
     }
 
-    // ── POST /carrito/agregar → agregar producto ─────────────────
+    // POST/carrito/agregar(agregar producto)
     @PostMapping("/agregar")
     public String agregar(@RequestParam Long productoId,
                           @RequestParam(defaultValue = "/") String origen,
@@ -51,7 +51,7 @@ public class CarritoController {
         return "redirect:" + origen;
     }
 
-    // ── POST /carrito/eliminar → eliminar ítem ───────────────────
+    // POST /carrito/eliminar (eliminar ítem)
     @PostMapping("/eliminar")
     public String eliminar(@RequestParam Long productoId,
                            HttpSession session) {
@@ -59,7 +59,7 @@ public class CarritoController {
         return "redirect:/carrito";
     }
 
-    // ── POST /carrito/actualizar → cambiar cantidad ──────────────
+    // POST /carrito/actualizar(cambiar cantidad)
     @PostMapping("/actualizar")
     public String actualizar(@RequestParam Long productoId,
                              @RequestParam int cantidad,
@@ -68,16 +68,14 @@ public class CarritoController {
         return "redirect:/carrito";
     }
 
-    // ── POST /carrito/vaciar → vaciar todo ───────────────────────
+    // POST /carrito/vaciar (vaciar todo)
     @PostMapping("/vaciar")
     public String vaciar(HttpSession session) {
         carritoService.vaciar(session);
         return "redirect:/carrito";
     }
 
-    // ── GET /carrito/count → devuelve cantidad de ítems (para AJAX) ──
-    // El JavaScript del modal llama a este endpoint para actualizar
-    // el badge del navbar sin recargar la página
+    // Para actualizar el contador del carrito con AJAX
     @GetMapping("/count")
     @ResponseBody
     public int contarItems(HttpSession session) {

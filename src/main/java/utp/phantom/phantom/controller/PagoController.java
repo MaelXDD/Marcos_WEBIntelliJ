@@ -37,7 +37,7 @@ public class PagoController {
         int cantidadItems = items.stream().mapToInt(ItemCarrito::getCantidad).sum();
 
         // Descontar stock de cada producto
-        // Si el stock llega a 0, el badge "Agotado" aparece solo
+        // Si el stock llega a 0, el badge agotado aparece solo
         // gracias al th:if en categoria.html
         for (ItemCarrito item : items) {
             Optional<Producto> opt = productoRepository.findById(item.getProductoId());
@@ -50,7 +50,7 @@ public class PagoController {
             }
         }
 
-        // Vaciar carrito y mostrar página de éxito
+        // Vaciar carrito y mostrar página
         carritoService.vaciar(session);
 
         model.addAttribute("total", total);
