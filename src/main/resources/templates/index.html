@@ -572,8 +572,7 @@
         document.getElementById('modalProductoPrecio').textContent = boton.getAttribute('data-precio');
     });
 
-    const loginError = /*[[${loginError}]]*/ false;
-
+    const loginError = [[${loginError}]];
     if (loginError) {
         const modal = new bootstrap.Modal(document.getElementById('loginModal'));
         modal.show();
