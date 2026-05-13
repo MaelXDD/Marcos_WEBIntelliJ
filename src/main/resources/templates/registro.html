@@ -9,6 +9,7 @@
     <title>Phantom | Registro</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
+
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm py-3">
     <div class="container">
@@ -71,9 +72,8 @@
                                         <label class="form-label small text-secondary">Nombre completo</label>
                                         <input type="text" name="nombre"
                                                class="form-control bg-black text-white border-secondary rounded-3"
-                                               placeholder="Juan Pérez" required
-                                               onfocus="this.style.borderColor='#dc3545'"
-                                               onblur="this.style.borderColor=''">
+                                               placeholder="Juan Pérez" maxlength="50" required
+                                               oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');">
                                     </div>
 
                                     <!-- DNI -->
@@ -81,9 +81,7 @@
                                         <label class="form-label small text-secondary">DNI</label>
                                         <input type="text" name="dni"
                                                class="form-control bg-black text-white border-secondary rounded-3"
-                                               placeholder="12345678" maxlength="8"
-                                               onfocus="this.style.borderColor='#dc3545'"
-                                               onblur="this.style.borderColor=''">
+                                               placeholder="12345678" maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);" required>
                                     </div>
 
                                     <!-- DIRECCIÓN -->
@@ -91,9 +89,7 @@
                                         <label class="form-label small text-secondary">Dirección</label>
                                         <input type="text" name="direccion"
                                                class="form-control bg-black text-white border-secondary rounded-3"
-                                               placeholder="Av. Arequipa 265, Cercado de Lima"
-                                               onfocus="this.style.borderColor='#dc3545'"
-                                               onblur="this.style.borderColor=''">
+                                               placeholder="Av. Arequipa 265, Cercado de Lima">
                                     </div>
 
                                     <!-- CORREO -->
@@ -101,9 +97,7 @@
                                         <label class="form-label small text-secondary">Correo electrónico</label>
                                         <input type="email" name="email"
                                                class="form-control bg-black text-white border-secondary rounded-3"
-                                               placeholder="ejemplo@correo.com" required
-                                               onfocus="this.style.borderColor='#dc3545'"
-                                               onblur="this.style.borderColor=''">
+                                               placeholder="ejemplo@correo.com" maxlength="100" required>
                                     </div>
 
                                     <!-- CONTRASEÑA -->
@@ -111,9 +105,7 @@
                                         <label class="form-label small text-secondary">Contraseña</label>
                                         <input type="password" name="password"
                                                class="form-control bg-black text-white border-secondary rounded-3"
-                                               placeholder="••••••••" required
-                                               onfocus="this.style.borderColor='#dc3545'"
-                                               onblur="this.style.borderColor=''">
+                                               placeholder="••••••••" required>
                                     </div>
 
                                     <!-- CONFIRMAR CONTRASEÑA -->
@@ -121,9 +113,7 @@
                                         <label class="form-label small text-secondary">Confirmar contraseña</label>
                                         <input type="password" name="confirmPassword"
                                                class="form-control bg-black text-white border-secondary rounded-3"
-                                               placeholder="••••••••" required
-                                               onfocus="this.style.borderColor='#dc3545'"
-                                               onblur="this.style.borderColor=''">
+                                               placeholder="••••••••" required>
                                     </div>
 
                                     <!-- TÉRMINOS -->
