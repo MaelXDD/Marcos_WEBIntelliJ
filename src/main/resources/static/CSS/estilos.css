@@ -235,3 +235,172 @@ footer h4, footer h6 {
 #registro-main .mb-3 {
     margin-bottom: 1rem !important;
 }
+/* ===== ESTILOS EXTRAÍDOS DE CARRITO.HTML ===== */
+.cart-img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #f8f8f8;
+    padding: 4px;
+}
+.resumen-card {
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.10);
+    background: #fff;
+}
+.qty-input {
+    width: 60px;
+    text-align: center;
+}
+.btn-eliminar {
+    background: transparent;
+    border: none;
+    color: #cc0000;
+    font-size: 1.2rem;
+    transition: color .2s;
+}
+.btn-eliminar:hover { color: #8b0000; }
+.btn-comprar {
+    background: #1a0b3d;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    transition: background .2s;
+}
+.btn-comprar:hover { background: #cc0000; color: #fff; }
+.empty-cart { text-align: center; padding: 80px 20px; color: #888; }
+.empty-cart i { font-size: 72px; }
+
+/* ===== DISEÑO UNIFICADO DE TARJETAS (GAMER STYLE) ===== */
+.product-card {
+    background-color: #2c2b2b; /* Fondo oscuro unificado */
+    border-radius: 15px;
+    padding: 15px;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+.product-img-wrap {
+    width: 100%;
+    height: 200px; /* Altura fija para uniformidad */
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+.product-img-wrap img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+.badge-categoria {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: #1a0b3d;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 20px;
+    align-self: flex-start;
+    margin-bottom: 10px;
+}
+.product-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 5px 0;
+    color: white !important; /* Forzar texto blanco en fondo oscuro */
+    min-height: 45px;
+}
+.product-price {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+.btn-add {
+    background: #1a0b3d;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px;
+    letter-spacing: 0.5px;
+    transition: background 0.2s;
+    width: 100%;
+    margin-top: auto; /* Empuja el botón al final si el título es corto */
+}
+.btn-add:hover {
+    background: #cc0000;
+    color: white;
+}
+
+/* ===== ESTILOS DEL MODAL DE CATEGORÍA ===== */
+.modal-img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    background: #f8f8f8;
+    border-radius: 10px;
+    padding: 6px;
+    flex-shrink: 0;
+}
+.btn-seguir {
+    background: #fff;
+    border: 2px solid #1a0b3d;
+    color: #1a0b3d;
+    font-weight: 600;
+    border-radius: 30px;
+    transition: all .2s;
+}
+.btn-seguir:hover { background: #1a0b3d; color: #fff; }
+.btn-ir-carro {
+    background: #1a0b3d;
+    color: #fff !important;
+    font-weight: 700;
+    border-radius: 30px;
+    transition: background 0.2s;
+}
+.btn-ir-carro:hover { background: #cc0000; }
+
+/* ===== ESTILOS EXTRAÍDOS DE PAGO-EXITOSO.HTML ===== */
+.success-icon {
+    font-size: 80px;
+    color: #28a745;
+    animation: popIn 0.5s ease;
+}
+@keyframes popIn {
+    0%   { transform: scale(0); opacity: 0; }
+    80%  { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+.success-card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.10);
+    max-width: 520px;
+    margin: 0 auto;
+}
+.btn-volver {
+    background: #1a0b3d;
+    color: #fff;
+    border-radius: 30px;
+    font-weight: 700;
+    padding: 12px 40px;
+    transition: background .2s;
+}
+.btn-volver:hover { background: #cc0000; color: #fff; }

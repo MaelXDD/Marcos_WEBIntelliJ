@@ -8,56 +8,6 @@
     <link rel="stylesheet" th:href="@{/CSS/estilos.css}">
     <title>Phantom | Mi Carrito</title>
 
-    <style>
-        /* ── Imagen del ítem en la tabla ── */
-        .cart-img {
-            width: 72px;
-            height: 72px;
-            object-fit: contain;
-            border-radius: 8px;
-            background: #f8f8f8;
-            padding: 4px;
-        }
-
-        /* ── Resumen de pago lateral ── */
-        .resumen-card {
-            border: none;
-            border-radius: 14px;
-            box-shadow: 0 4px 20px rgba(0,0,0,.10);
-            background: #fff;
-        }
-
-        /* ── Input de cantidad pequeño ── */
-        .qty-input {
-            width: 60px;
-            text-align: center;
-        }
-
-        /* ── Botón eliminar (rojo suave) ── */
-        .btn-eliminar {
-            background: transparent;
-            border: none;
-            color: #cc0000;
-            font-size: 1.2rem;
-            transition: color .2s;
-        }
-        .btn-eliminar:hover { color: #8b0000; }
-
-        /* ── Botón comprar ── */
-        .btn-comprar {
-            background: #1a0b3d;
-            color: #fff;
-            font-weight: 700;
-            border-radius: 10px;
-            letter-spacing: 0.5px;
-            transition: background .2s;
-        }
-        .btn-comprar:hover { background: #cc0000; color: #fff; }
-
-        /* ── Estado vacío ── */
-        .empty-cart { text-align: center; padding: 80px 20px; color: #888; }
-        .empty-cart i { font-size: 72px; }
-    </style>
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
