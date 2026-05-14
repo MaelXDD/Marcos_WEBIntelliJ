@@ -22,7 +22,7 @@ body {
     font-family: 'Segoe UI', Roboto, sans-serif;
 }
 
-/*  NAVBAR */
+/* BARRA DE NAVEGACIÓN */
 .navbar .bi {
     transition: color 0.3s ease;
     color: #fff;
@@ -79,7 +79,7 @@ footer .bi-facebook:hover { color: #1877f2 !important; }
 footer .bi-instagram:hover { color: #e4405f !important; }
 footer .bi-tiktok:hover { color: #00f2ea !important; }
 
-/*  FOOTER PRO  */
+
 footer {
     background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
 }
@@ -105,19 +105,19 @@ footer {
     transform: scale(1.2);
 }
 
-/* INPUT */
+
 footer input {
     border-radius: 50px;
     padding-left: 15px;
 }
 
-/* FIX PLACEHOLDER (IMPORTANTE) */
+
 footer input::placeholder {
     color: #bbb !important;
     opacity: 1;
 }
 
-/* FOCUS INPUT */
+
 footer input:focus {
     outline: none;
     box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
@@ -138,7 +138,7 @@ footer hr {
     opacity: 0.2;
 }
 
-/* GLOW GAMER */
+
 footer h4, footer h6 {
     text-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
 }
@@ -274,7 +274,7 @@ footer h4, footer h6 {
 .empty-cart { text-align: center; padding: 80px 20px; color: #888; }
 .empty-cart i { font-size: 72px; }
 
-/* DISEÑO UNIFICADO DE TARJETAS (GAMER STYLE) */
+/* TARJETAS (GAMER) */
 .product-card {
     background-color: #FFFFFF;
     border-radius: 15px;
@@ -349,7 +349,7 @@ footer h4, footer h6 {
     color: white;
 }
 
-/* ESTILOS DEL MODAL DE CATEGORÍA  */
+/* MODAL DE CATEGORÍA  */
 .modal-img {
     width: 72px;
     height: 72px;
