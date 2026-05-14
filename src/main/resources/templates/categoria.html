@@ -215,10 +215,12 @@
             <div class="col-6 col-md-2">
                 <h6 class="fw-bold text-uppercase mb-3">Tienda</h6>
                 <ul class="list-unstyled small">
-                    <li><a href="#" class="footer-link">Videojuegos</a></li>
-                    <li><a href="#" class="footer-link">Consolas</a></li>
-                    <li><a href="#" class="footer-link">Accesorios</a></li>
-                    <li><a href="#" class="footer-link">Ofertas</a></li>
+                    <ul class="list-unstyled small">
+                        <li><a th:href="@{/categoria/juegos}" class="footer-link">Videojuegos</a></li>
+                        <li><a th:href="@{/categoria/consolas}" class="footer-link">Consolas</a></li>
+                        <li><a th:href="@{/categoria/tarjetas}" class="footer-link">Coleccionables</a></li>
+                        <li><a th:href="@{/categoria/perifericos}" class="footer-link">Periféricos</a></li>
+                    </ul>
                 </ul>
             </div>
             <div class="col-6 col-md-2">
@@ -226,8 +228,6 @@
                 <ul class="list-unstyled small">
                     <li><a th:href="@{/nosotros}" class="footer-link">Nosotros</a></li>
                     <li><a th:href="@{/mision}" class="footer-link">Misión y Visión</a></li>
-                    <li><a href="#" class="footer-link">Tiendas</a></li>
-                    <li><a href="#" class="footer-link">Libro de Reclamaciones</a></li>
                 </ul>
             </div>
             <div class="col-md-4">

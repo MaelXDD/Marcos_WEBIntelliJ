@@ -1,4 +1,4 @@
-/* ===== CAROUSEL ===== */
+/* CAROUSEL */
 .carousel-item {
     background: radial-gradient(circle, #1a0b3d 0%, #000000 100%);
 }
@@ -15,14 +15,14 @@
     display: block;
 }
 
-/* ===== BODY ===== */
+/* BODY */
 body {
     background-color: #fff;
     color: #000000;
     font-family: 'Segoe UI', Roboto, sans-serif;
 }
 
-/* ===== NAVBAR ===== */
+/*  NAVBAR */
 .navbar .bi {
     transition: color 0.3s ease;
     color: #fff;
@@ -52,12 +52,12 @@ body {
     color: #ffffff !important;
 }
 
-/* ===== MODAL ===== */
+/*  MODAL  */
 .modal-content input::placeholder {
     color: #ccc;
 }
 
-/* ===== NOSOTROS ===== */
+/* NOSOTROS  */
 #nosotros img {
     transition: transform 0.5s ease;
 }
@@ -66,7 +66,7 @@ body {
     transform: scale(1.02);
 }
 
-/* ===== FOOTER ===== */
+/*  FOOTER  */
 footer a {
     transition: 0.3s;
 }
@@ -79,7 +79,7 @@ footer .bi-facebook:hover { color: #1877f2 !important; }
 footer .bi-instagram:hover { color: #e4405f !important; }
 footer .bi-tiktok:hover { color: #00f2ea !important; }
 
-/* ===== FOOTER PRO ===== */
+/*  FOOTER PRO  */
 footer {
     background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
 }
@@ -111,7 +111,7 @@ footer input {
     padding-left: 15px;
 }
 
-/* 🔥 FIX PLACEHOLDER (IMPORTANTE) */
+/* FIX PLACEHOLDER (IMPORTANTE) */
 footer input::placeholder {
     color: #bbb !important;
     opacity: 1;
@@ -143,7 +143,7 @@ footer h4, footer h6 {
     text-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
 }
 
-/* ===== PROMOCIONES ===== */
+/*  PROMOCIONES  */
 .img-promo {
     width: 100%;
     max-height: 180px;
