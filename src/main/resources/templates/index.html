@@ -45,7 +45,7 @@
                 </a>
                 <a th:href="@{/carrito}" class="text-white fs-4 position-relative">
                     <i class="bi bi-cart3"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-carrito"
                           style="font-size: 0.6rem;"
                           th:text="${carritoCount}">0</span>
                 </a>
@@ -160,8 +160,13 @@
                             <p class="text-secondary text-decoration-line-through mb-1">S/ 2,999</p>
                             <p class="fs-3 fw-bold text-danger mb-3">S/ 2,499</p>
                             <button class="btn btn-danger w-100 fw-bold py-2 text-uppercase" style="letter-spacing: 1px;"
-                                    data-bs-toggle="modal" data-bs-target="#compraModal"
-                                    data-producto="Pack PS5 + Mando + Juego" data-precio="S/ 2,499">
+                                    data-id="15"
+                                    data-nombre="Pack PlayStation 5"
+                                    data-precio="2499.00"
+                                    data-imagen="/Imagenes/PS5GOD.jpg"
+                                    data-marca="PlayStation"
+                                    data-origen="/"
+                                    onclick="agregarAlCarrito(this)">
                                 <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
                             </button>
                         </div>
@@ -204,8 +209,13 @@
                             <p class="text-secondary text-decoration-line-through mb-1">S/ 1,899</p>
                             <p class="fs-3 fw-bold text-danger mb-3">S/ 1,549</p>
                             <button class="btn btn-danger w-100 fw-bold py-2 text-uppercase" style="letter-spacing: 1px;"
-                                    data-bs-toggle="modal" data-bs-target="#compraModal"
-                                    data-producto="Pack Nintendo Switch + Joy-Con + Juego" data-precio="S/ 1,549">
+                                    data-id="16"
+                                    data-nombre="Pack Nintendo Switch"
+                                    data-precio="1549.00"
+                                    data-imagen="/Imagenes/SwitchMario.jpg"
+                                    data-marca="Nintendo"
+                                    data-origen="/"
+                                    onclick="agregarAlCarrito(this)">
                                 <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
                             </button>
                         </div>
@@ -245,8 +255,13 @@
                             <p class="text-secondary text-decoration-line-through mb-1">S/ 2,799</p>
                             <p class="fs-3 fw-bold text-danger mb-3">S/ 2,299</p>
                             <button class="btn btn-danger w-100 fw-bold py-2 text-uppercase" style="letter-spacing: 1px;"
-                                    data-bs-toggle="modal" data-bs-target="#compraModal"
-                                    data-producto="Pack Xbox + Mando + Juego" data-precio="S/ 2,299">
+                                    data-id="17"
+                                    data-nombre="Pack Xbox Series X"
+                                    data-precio="2299.00"
+                                    data-imagen="/Imagenes/XboxFIFA.jpg"
+                                    data-marca="Microsoft"
+                                    data-origen="/"
+                                    onclick="agregarAlCarrito(this)">
                                 <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
                             </button>
                         </div>
@@ -446,7 +461,37 @@
     </div>
 </footer>
 
+<!-- Modal carrito (mismo que en categoria.html) -->
+<div class="modal fade" id="modalCarrito" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-check-circle-fill text-success fs-4 me-2"></i>
+                    <span class="fw-bold fs-6">Producto agregado a tu Carro</span>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
+                </div>
+                <hr class="my-2">
+                <div class="d-flex align-items-center gap-3 my-3">
+                    <img id="modalImg" src="" alt="producto" class="modal-img">
+                    <div>
+                        <p class="text-muted small mb-1" id="modalMarca">Marca</p>
+                        <p class="fw-semibold mb-1" id="modalNombre">Nombre</p>
+                        <p class="fw-bold text-danger mb-0 fs-5" id="modalPrecio">S/ 0.00</p>
+                    </div>
+                </div>
+                <hr class="my-2">
+                <div class="d-flex gap-2 mt-3">
+                    <button class="btn btn-seguir w-50 py-2" data-bs-dismiss="modal">Seguir comprando</button>
+                    <a href="/carrito" class="btn btn-ir-carro w-50 py-2 text-center text-decoration-none">Ir al Carro</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/JS/emergente.js}"></script>
+<script th:src="@{/JS/carrito.js}"></script>
 </body>
 </html>
