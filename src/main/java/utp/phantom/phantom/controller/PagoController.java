@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import utp.phantom.phantom.model.ItemCarrito;
@@ -25,6 +26,7 @@ public class PagoController {
     private ProductoRepository productoRepository;
 
     @PostMapping("/procesar")
+    @Transactional
     public String procesarPago(HttpSession session, Model model) {
 
         List<ItemCarrito> items = carritoService.obtenerCarrito(session);
@@ -33,27 +35,21 @@ public class PagoController {
             return "redirect:/carrito";
         }
 
-        double total = carritoService.calcularTotal(session);
-        int cantidadItems = items.stream().mapToInt(ItemCarrito::getCantidad).sum();
+        double total         = carritoService.calcularTotal(session);
+        int    cantidadItems = items.stream().mapToInt(ItemCarrito::getCantidad).sum();
 
-        // Descontar stock de cada producto
-        // Si el stock llega a 0, el badge agotado aparece solo
-        // gracias al th:if en categoria.html
         for (ItemCarrito item : items) {
             Optional<Producto> opt = productoRepository.findById(item.getProductoId());
             if (opt.isPresent()) {
-                Producto producto = opt.get();
-                int stockActual = producto.getStock() != null ? producto.getStock() : 0;
-                int nuevoStock = Math.max(0, stockActual - item.getCantidad());
-                producto.setStock(nuevoStock);
-                productoRepository.save(producto);
+                Producto p = opt.get();
+                int nuevoStock = Math.max(0, (p.getStock() != null ? p.getStock() : 0) - item.getCantidad());
+                p.setStock(nuevoStock);
+                productoRepository.save(p);
             }
         }
 
-        // Vaciar carrito y mostrar página
         carritoService.vaciar(session);
-
-        model.addAttribute("total", total);
+        model.addAttribute("total",         total);
         model.addAttribute("cantidadItems", cantidadItems);
         return "pago-exitoso";
     }

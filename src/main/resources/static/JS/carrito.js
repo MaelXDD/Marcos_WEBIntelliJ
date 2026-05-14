@@ -1,21 +1,23 @@
-// Agregar productos al carrito
 function agregarAlCarrito(btn) {
-    const id = btn.dataset.id;
+    const id     = btn.dataset.id;
     const origen = btn.dataset.origen;
 
-    // Datos del modal
     document.getElementById('modalNombre').textContent = btn.dataset.nombre;
-    document.getElementById('modalPrecio').textContent = btn.dataset.precio;
+    document.getElementById('modalMarca').textContent  = btn.dataset.marca || '';
+    document.getElementById('modalPrecio').textContent = 'S/ ' + btn.dataset.precio;
 
-    // Petición
-    fetch(`/carrito/agregar/${id}?origen=${origen}`, {
-        method: 'POST'
-    })
-        .then(response => response.text())
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
+    const img = document.getElementById('modalImg');
+    img.src = btn.dataset.imagen || '/Imagenes/consolatarjeta.jpg';
+    img.onerror = () => { img.src = '/Imagenes/consolatarjeta.jpg'; };
+
+    fetch('/carrito/agregar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'productoId=' + id + '&origen=' + encodeURIComponent(origen)
+    }).then(() => {
+        new bootstrap.Modal(document.getElementById('modalCarrito')).show();
+        fetch('/carrito/count').then(r => r.text()).then(c => {
+            document.querySelectorAll('.badge-carrito').forEach(b => b.textContent = c);
         });
+    }).catch(err => console.error('Error:', err));
 }

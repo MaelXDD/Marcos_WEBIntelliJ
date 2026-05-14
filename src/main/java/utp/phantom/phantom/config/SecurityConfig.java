@@ -26,10 +26,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .userDetailsService(customUserDetailsService)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/nosotros", "/mision", "/pago-exitoso.html", "/api/productos/buscar", "/registro", "/login",
+                        .requestMatchers(
+                                "/", "/nosotros", "/mision",
+                                "/registro", "/login",
                                 "/CSS/**", "/Imagenes/**", "/JS/**",
                                 "/imagenes/**", "/categoria/**",
-                                "/carrito/**").permitAll()
+                                "/carrito/**",
+                                "/pago/**"          // ← esto faltaba
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
