@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .userDetailsService(customUserDetailsService)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/", "/nosotros", "/mision",
+                                "/", "/api/productos/buscar", "/nosotros", "/mision",
                                 "/registro", "/login",
                                 "/CSS/**", "/Imagenes/**", "/JS/**",
                                 "/imagenes/**", "/categoria/**",
