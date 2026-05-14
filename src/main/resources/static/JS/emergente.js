@@ -1,6 +1,6 @@
     document.addEventListener("DOMContentLoaded", function() {
 
-        // ===== MODAL PROMOCIÓN EMERGENTE =====
+        //  MODAL PROMOCIÓN EMERGENTE
         // Solo muestra el popup si NO hay error de login
         const elementoModal = document.getElementById('promoModal');
         const hayLoginError = document.getElementById('loginError') !== null;
@@ -12,21 +12,21 @@
             }, 1000);
         }
 
-        // ===== MODAL LOGIN CON ERROR =====
+        // MODAL LOGIN CON ERROR
         const loginModal = document.getElementById('loginModal');
         if (loginModal && hayLoginError) {
             const modal = new bootstrap.Modal(loginModal);
             modal.show();
         }
 
-        // ===== MODAL REGISTRO EXITOSO =====
+        // MODAL REGISTRO EXITOSO
         const registroExitosoModal = document.getElementById('registroExitosoModal');
         if (registroExitosoModal && registroExitosoModal.dataset.show === 'true') {
             const modal = new bootstrap.Modal(registroExitosoModal);
             modal.show();
         }
 
-        // ===== BUSCADOR EN TIEMPO REAL =====
+        // BUSCADOR EN TIEMPO REAL
         const input = document.getElementById('inputBusqueda');
         const lista = document.getElementById('contenedorResultados');
 
@@ -88,7 +88,7 @@
             });
         }
 
-        // ===== MODAL COMPRA =====
+        // MODAL COMPRA
         const compraModal = document.getElementById('compraModal');
         if (compraModal) {
             compraModal.addEventListener('show.bs.modal', function(event) {

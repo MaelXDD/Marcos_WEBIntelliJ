@@ -235,7 +235,7 @@ footer h4, footer h6 {
 #registro-main .mb-3 {
     margin-bottom: 1rem !important;
 }
-/* ===== ESTILOS EXTRAÍDOS DE CARRITO.HTML ===== */
+/*  CARRITO */
 .cart-img {
     width: 72px;
     height: 72px;
@@ -274,9 +274,9 @@ footer h4, footer h6 {
 .empty-cart { text-align: center; padding: 80px 20px; color: #888; }
 .empty-cart i { font-size: 72px; }
 
-/* ===== DISEÑO UNIFICADO DE TARJETAS (GAMER STYLE) ===== */
+/* DISEÑO UNIFICADO DE TARJETAS (GAMER STYLE) */
 .product-card {
-    background-color: #FFFFFF; /* Fondo oscuro unificado */
+    background-color: #FFFFFF;
     border-radius: 15px;
     padding: 15px;
     position: relative;
@@ -292,7 +292,7 @@ footer h4, footer h6 {
 }
 .product-img-wrap {
     width: 100%;
-    height: 200px; /* Altura fija para uniformidad */
+    height: 200px;
     background: white;
     border-radius: 10px;
     padding: 10px;
@@ -342,14 +342,14 @@ footer h4, footer h6 {
     letter-spacing: 0.5px;
     transition: background 0.2s;
     width: 100%;
-    margin-top: auto; /* Empuja el botón al final si el título es corto */
+    margin-top: auto;
 }
 .btn-add:hover {
     background: #cc0000;
     color: white;
 }
 
-/* ===== ESTILOS DEL MODAL DE CATEGORÍA ===== */
+/* ESTILOS DEL MODAL DE CATEGORÍA  */
 .modal-img {
     width: 72px;
     height: 72px;
@@ -377,7 +377,7 @@ footer h4, footer h6 {
 }
 .btn-ir-carro:hover { background: #cc0000; }
 
-/* ===== ESTILOS EXTRAÍDOS DE PAGO-EXITOSO.HTML ===== */
+/*  PAGO-EXITOSO */
 .success-icon {
     font-size: 80px;
     color: #28a745;

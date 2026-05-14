@@ -7,7 +7,7 @@ function agregarAlCarrito(btn) {
     document.getElementById('modalNombre').textContent = btn.dataset.nombre;
     document.getElementById('modalPrecio').textContent = btn.dataset.precio;
 
-    // Petición AJAX
+    // Petición
     fetch(`/carrito/agregar/${id}?origen=${origen}`, {
         method: 'POST'
     })
