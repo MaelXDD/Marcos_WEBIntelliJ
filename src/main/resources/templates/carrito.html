@@ -222,10 +222,10 @@
                         </span>
                     </div>
 
-                    <!-- Botón de pago -->
-                    <!-- Formulario de pago: POST a /pago/procesar -->
-                    <form th:action="@{/pago/procesar}" method="post">
-                        <button type="submit" class="btn btn-comprar w-100 py-3 fs-6">
+                    <!-- Botón comprar -->
+                    <form th:action="@{/carrito/comprar}" method="post">
+                        <button type="submit"
+                                class="btn btn-comprar w-100 py-3 fs-6">
                             <i class="bi bi-credit-card-fill me-2"></i>
                             Proceder al pago
                         </button>
