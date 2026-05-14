@@ -56,7 +56,10 @@ public class RegistroController {
             model.addAttribute("error", "El DNI ya está registrado");
             return "registro";
         }
-
+        if (dni != null && !dni.isEmpty() && !dni.matches("\\d{8}")) {
+            model.addAttribute("error", "El número de DNI debe tener exactamente 8 dígitos");
+            return "registro";
+        }
         usuarioService.registrar(nombre, email, password, dni, direccion, numeroTelefono);
         return "redirect:/registro?exitoso=true";
     }

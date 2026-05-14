@@ -84,7 +84,7 @@
                                         <label class="form-label small text-secondary">Nombre completo</label>
                                         <input type="text" name="nombre"
                                                class="form-control bg-black text-white border-secondary rounded-3"
-                                               placeholder="Juan Pérez" maxlength="50" required
+                                               placeholder="Sebastian Espinal" maxlength="50" required
                                                oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');">
                                     </div>
 
@@ -93,7 +93,8 @@
                                         <label class="form-label small text-secondary">DNI</label>
                                         <input type="text" name="dni"
                                                class="form-control bg-black text-white border-secondary rounded-3"
-                                               placeholder="12345678" maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);" required>
+                                               placeholder="12345678" maxlength="8" minlength="8" pattern="\d{8}"
+                                               title="El número de DNI debe tener exactamente 8 dígitos">
                                     </div>
 
                                     <!-- DIRECCIÓN -->
@@ -109,7 +110,7 @@
                                         <label class="form-label small text-secondary">Correo electrónico</label>
                                         <input type="email" name="email"
                                                class="form-control bg-black text-white border-secondary rounded-3"
-                                               placeholder="ejemplo@correo.com" maxlength="100" required>
+                                               placeholder="utp@gmail.com" maxlength="100" required>
                                     </div>
                                     <!-- TELÉFONO -->
                                     <div class="mb-3">
