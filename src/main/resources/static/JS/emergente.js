@@ -1,7 +1,6 @@
     document.addEventListener("DOMContentLoaded", function() {
 
         //  MODAL PROMOCIÓN EMERGENTE
-        // Solo muestra el popup si NO hay error de login
         const elementoModal = document.getElementById('promoModal');
         const hayLoginError = document.getElementById('loginError') !== null;
 

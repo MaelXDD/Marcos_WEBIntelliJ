@@ -32,7 +32,7 @@ public class SecurityConfig {
                                 "/CSS/**", "/Imagenes/**", "/JS/**",
                                 "/imagenes/**", "/categoria/**",
                                 "/carrito/**",
-                                "/pago/**"          // ← esto faltaba
+                                "/pago/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
