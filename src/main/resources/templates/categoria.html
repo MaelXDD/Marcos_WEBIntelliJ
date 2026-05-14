@@ -125,29 +125,19 @@
                             </div>
 
                             <form th:action="@{/carrito/agregar}" method="post">
-                                    <input type="hidden"
-                                           name="productoId"
-                                           th:value="${producto.id}">
-
-                                    <input type="hidden"
-                                           name="origen"
-                                           th:value="'/categoria/' + ${slug}">
-
-                                    <button type="submit"
-                                            class="btn btn-add w-100 py-2"
-                                            th:disabled="${producto.stock != null and producto.stock <= 0}">
-
-                                        <i class="bi bi-cart-plus me-1"></i>
-
-                                        <span th:if="${producto.stock != null and producto.stock > 0}">
-                                            Agregar al carrito
-                                        </span>
-
-                                        <span th:if="${producto.stock != null and producto.stock <= 0}">
-                                            Agotado
-                                         </span>
-
-                                    </button>
+                                <button type="button"
+                                        class="btn btn-add w-100 py-2"
+                                        th:disabled="${producto.stock != null and producto.stock <= 0}"
+                                        th:attr="data-id=${producto.id},
+                 data-nombre=${producto.nombre},
+                 data-precio='S/ ' + ${#numbers.formatDecimal(producto.precio,1,2)},
+                 data-imagen=${producto.imagenUrl},
+                 data-marca=${producto.marca}"
+                                        onclick="agregarAlCarrito(this)">
+                                    <i class="bi bi-cart-plus me-1"></i>
+                                    <span th:if="${producto.stock != null and producto.stock > 0}">Agregar al carrito</span>
+                                    <span th:if="${producto.stock != null and producto.stock <= 0}">Agotado</span>
+                                </button>
                                 </form>
                         </div>
                     </div>
