@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Phantom | Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/admin.css}"/>
+</head>
+<body>
+
+<nav class="navbar-ts">
+    <div class="brand">PHANTOM</div>
+    <a href="/admin/productos" class="nav-btn"><i class="bi bi-arrow-left"></i> Volver</a>
+</nav>
+
+<div class="main main-form">
+    <div class="form-card">
+        <div class="form-header">
+            <div class="form-title" th:text="${titulo}">Producto</div>
+            <div class="form-subtitle">// Completa la información técnica del producto</div>
+        </div>
+
+        <form th:action="@{/admin/productos/guardar}" th:object="${producto}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="form-body">
+
+                <div class="field-group">
+                    <label class="field-label">Nombre del producto</label>
+                    <input type="text" th:field="*{nombre}" class="field-input"
+                           placeholder="Ej. PlayStation 5 Digital Edition" required/>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Categoría</label>
+                    <select name="categoria.id" class="field-select" required>
+                        <option value="">— Selecciona una categoría —</option>
+                        <option th:each="cat : ${categorias}"
+                                th:value="${cat.id}"
+                                th:text="${cat.nombre}"
+                                th:selected="${producto.categoria != null and producto.categoria.id == cat.id}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Marca</label>
+                    <input type="text" th:field="*{marca}" class="field-input"
+                           placeholder="Ej. Logitech, Razer, Nintendo..." />
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">URL de la Imagen</label>
+                    <input type="text" th:field="*{imagenUrl}" class="field-input"
+                           placeholder="https://ejemplo.com/imagen.jpg" />
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Descripción</label>
+                    <textarea th:field="*{descripcion}" class="field-textarea"
+                              placeholder="Especificaciones, marca, modelo..."></textarea>
+                </div>
+
+                <div class="row-grid">
+                    <div class="field-group">
+                        <label class="field-label">Precio (S/)</label>
+                        <input type="number" step="0.01" th:field="*{precio}" class="field-input"
+                               placeholder="0.00" required/>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Stock inicial</label>
+                        <input type="number" th:field="*{stock}" class="field-input"
+                               placeholder="0" required/>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-footer">
+                <a href="/admin/productos" class="btn-cancel"><i class="bi bi-x"></i> Cancelar</a>
+                <button type="submit" class="btn-save">
+                    <i class="bi bi-cloud-arrow-up-fill"></i>
+                    <span th:text="${producto.id == null ? 'Registrar Producto' : 'Actualizar Producto'}">Guardar</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

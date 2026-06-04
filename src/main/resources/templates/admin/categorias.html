@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Phantom | Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/admin.css}"/>
+</head>
+<body>
+
+<nav class="navbar-ts">
+    <div class="brand">PHANTOM</div>
+    <div style="display:flex;gap:.75rem;">
+        <a href="/admin/productos" class="nav-btn"><i class="bi bi-box-seam"></i> Productos</a>
+        <a href="/admin/productos/categorias/nueva" class="nav-btn primary"><i class="bi bi-plus-lg"></i> Nueva Categoría</a>
+    </div>
+</nav>
+
+<div class="main">
+
+    <div class="page-header">
+        <div>
+            <div class="page-title">Gestión de <span>Categorías</span></div>
+            <div class="page-sub">// Solo se pueden eliminar categorías sin productos</div>
+        </div>
+    </div>
+
+    <div class="alert-error" th:if="${errorCat}">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span th:text="${errorCat}"></span>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Productos</th>
+                <th>Acción</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(categorias)}">
+                <td colspan="5">
+                    <div class="empty">
+                        <i class="bi bi-tags"></i>
+                        No hay categorías registradas.
+                    </div>
+                </td>
+            </tr>
+            <tr th:each="cat : ${categorias}">
+                <td style="color:var(--muted);font-family:'Space Mono',monospace;font-size:.8rem;" th:text="${cat.id}">1</td>
+                <td style="font-weight:600;" th:text="${cat.nombre}">—</td>
+                <td style="color:var(--muted);font-size:.85rem;" th:text="${cat.descripcion != null ? cat.descripcion : '—'}">—</td>
+                <td>
+                    <span th:if="${cat.productos == null or #lists.isEmpty(cat.productos)}"
+                          class="badge-count count-ok">Vacía</span>
+                    <span th:if="${cat.productos != null and not #lists.isEmpty(cat.productos)}"
+                          class="badge-count count-has"
+                          th:text="${#lists.size(cat.productos)} + ' producto(s)'">—</span>
+                </td>
+                <td>
+                    <a th:if="${cat.productos == null or #lists.isEmpty(cat.productos)}"
+                       th:href="@{/admin/productos/categorias/eliminar/{id}(id=${cat.id})}"
+                       class="action-btn btn-del"
+                       onclick="return confirm('¿Eliminar esta categoría?')">
+                        <i class="bi bi-trash-fill"></i> Eliminar
+                    </a>
+                    <span th:if="${cat.productos != null and not #lists.isEmpty(cat.productos)}"
+                          class="action-btn btn-disabled"
+                          title="Tiene productos asociados">
+                        <i class="bi bi-lock-fill"></i> Bloqueado
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>
