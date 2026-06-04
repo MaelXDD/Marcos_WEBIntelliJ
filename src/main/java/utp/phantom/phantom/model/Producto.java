@@ -12,7 +12,7 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 150)
     private String nombre;
 
     @Column(length = 1000)
@@ -21,13 +21,21 @@ public class Producto {
     @Column(nullable = false)
     private Double precio;
 
+    @Column(length = 100)
     private String marca;
 
-    @Column(name = "categoria_id")
+    // Mantenemos este campo primitivo read-only para compatibilidad con JS existente
+    @Column(name = "categoria_id", insertable = false, updatable = false)
     private Long categoriaId;
 
-    @Column(name = "imagen_url")
+    // Relación completa usada por el panel administrativo
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "categoria_id", nullable = false)
+    private Categoria categoria;
+
+    @Column(name = "imagen_url", length = 1000)
     private String imagenUrl;
 
+    @Column(nullable = false)
     private Integer stock;
 }
