@@ -13,7 +13,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin/productos")
-public class AdminProductoController {
+public class    AdminProductoController {
 
     @Autowired
     private ProductoService productoService;

@@ -32,7 +32,8 @@ public class SecurityConfig {
                                 "/CSS/**", "/Imagenes/**", "/JS/**",
                                 "/imagenes/**", "/categoria/**",
                                 "/carrito/**",
-                                "/pago/**"
+                                "/pago/**",
+                                "/admin/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
