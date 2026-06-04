@@ -1,15 +1,7 @@
 package utp.phantom.phantom.repository;
 
-import utp.phantom.phantom.entity.Categoria;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import org.springframework.stereotype.Repository;
-
-
-
-@Repository
+import utp.phantom.phantom.model.Categoria;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
-
 }

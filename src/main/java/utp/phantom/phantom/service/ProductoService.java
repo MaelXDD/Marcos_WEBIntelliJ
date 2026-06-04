@@ -6,7 +6,6 @@ import utp.phantom.phantom.model.Categoria;
 import utp.phantom.phantom.model.Producto;
 import utp.phantom.phantom.repository.CategoriaRepository;
 import utp.phantom.phantom.repository.ProductoRepository;
-
 import java.util.List;
 import java.util.Optional;
 
