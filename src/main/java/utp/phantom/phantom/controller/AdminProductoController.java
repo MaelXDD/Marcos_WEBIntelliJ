@@ -22,15 +22,12 @@ public class    AdminProductoController {
     public String listar(@RequestParam(required = false) String keyword,
                          @RequestParam(required = false) String filtro,
                          Model model) {
-
         List<Producto> listaFinal;
-
         if ("stock_bajo".equals(filtro)) {
             listaFinal = productoService.obtenerStockBajo(5);
         } else {
             listaFinal = productoService.buscarProductos(keyword);
         }
-
         model.addAttribute("productos", listaFinal);
         model.addAttribute("keyword", keyword);
         return "admin/lista";
@@ -40,7 +37,6 @@ public class    AdminProductoController {
     public String nuevo(Model model) {
         Producto productoNuevo = new Producto();
         productoNuevo.setCategoria(new Categoria());
-
         model.addAttribute("producto", productoNuevo);
         model.addAttribute("categorias", productoService.listarCategorias());
         model.addAttribute("titulo", "Nuevo Producto");
