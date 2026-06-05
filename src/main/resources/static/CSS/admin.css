@@ -157,3 +157,20 @@ tbody tr:hover { background: rgba(230,57,70,.04); }
     border: none; background: var(--accent); color: #fff; cursor: pointer; transition: background .2s;
 }
 .btn-save:hover { background: var(--accent2); }
+
+/* Estilos para el ordenamiento de tablas */
+th.sortable {
+    transition: background-color 0.2s, color 0.2s;
+    user-select: none; /* Evita que el texto se seleccione al hacer doble click */
+}
+
+th.sortable:hover {
+    background-color: var(--border);
+    color: var(--text);
+}
+
+.sort-icon {
+    font-size: 0.8rem;
+    margin-left: 5px;
+    transition: all 0.2s;
+}

@@ -66,14 +66,13 @@
         <table>
             <thead>
             <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Categoría</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Acciones</th>
-            </tr>
+                <th class="sortable" data-type="number"># <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                <th class="sortable" data-type="string">Nombre <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                <th class="sortable" data-type="string">Descripción <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                <th class="sortable" data-type="string">Categoría <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                <th class="sortable" data-type="number">Precio <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                <th class="sortable" data-type="number">Stock <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                <th>Acciones</th> </tr>
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(productos)}">
@@ -109,5 +108,58 @@
     </div>
 
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const headers = document.querySelectorAll('th.sortable');
+
+        headers.forEach(th => {
+            th.style.cursor = 'pointer';
+
+            th.addEventListener('click', () => {
+                const table = th.closest('table');
+                const tbody = table.querySelector('tbody');
+                const index = Array.from(th.parentNode.children).indexOf(th);
+                const isNumeric = th.dataset.type === 'number';
+
+
+                const currentOrder = th.dataset.order === 'asc' ? 'desc' : 'asc';
+
+                headers.forEach(h => {
+                    h.dataset.order = '';
+                    const icon = h.querySelector('.sort-icon');
+                    if(icon) icon.className = 'bi bi-arrow-down-up sort-icon text-muted';
+                });
+
+                th.dataset.order = currentOrder;
+                const activeIcon = th.querySelector('.sort-icon');
+                if(activeIcon) {
+                    activeIcon.className = currentOrder === 'asc'
+                        ? 'bi bi-arrow-up sort-icon text-danger'
+                        : 'bi bi-arrow-down sort-icon text-danger';
+                }
+
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+
+                if(rows.length === 1 && rows[0].querySelector('.empty')) return;
+
+                rows.sort((a, b) => {
+
+                    let valA = a.children[index].innerText.trim().replace(/S\/\s*/g, '');
+                    let valB = b.children[index].innerText.trim().replace(/S\/\s*/g, '');
+
+                    if (isNumeric) {
+                        valA = parseFloat(valA);
+                        valB = parseFloat(valB);
+                        return currentOrder === 'asc' ? valA - valB : valB - valA;
+                    } else {
+                        return currentOrder === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                    }
+                });
+
+                tbody.append(...rows);
+            });
+        });
+    });
+</script>
 </body>
 </html>
