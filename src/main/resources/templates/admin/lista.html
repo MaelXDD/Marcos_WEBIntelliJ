@@ -36,7 +36,8 @@
         </div>
         <div class="stat-card">
             <div class="stat-label">Stock Bajo (≤ 5)</div>
-            <div class="stat-value text-warning-custom" th:text="${productosStockBajo}">0</div>
+            <div class="stat-value text-warning-custom"
+                 th:text="${#lists.size(productos.?[stock <= 5])}">0</div>
         </div>
         <div class="stat-card">
             <div class="stat-label">Valor Total Inventario</div>
