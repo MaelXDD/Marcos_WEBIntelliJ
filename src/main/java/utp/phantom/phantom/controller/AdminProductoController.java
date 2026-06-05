@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import utp.phantom.phantom.model.Categoria;
 import utp.phantom.phantom.model.Producto;
+import utp.phantom.phantom.repository.VentaRepository;
 import utp.phantom.phantom.service.ProductoService;
 
 import java.util.List;
@@ -17,6 +18,18 @@ public class    AdminProductoController {
 
     @Autowired
     private ProductoService productoService;
+
+    @Autowired
+    private VentaRepository ventaRepository;
+
+    @GetMapping("/ventas")
+    public String reporteVentas(Model model){
+
+        model.addAttribute("ventas",
+                ventaRepository.findAll());
+
+        return "admin/ventas";
+    }
 
     @GetMapping
     public String listar(@RequestParam(required = false) String keyword,
