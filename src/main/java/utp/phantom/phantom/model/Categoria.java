@@ -1,8 +1,10 @@
 package utp.phantom.phantom.model;
 
 import jakarta.persistence.*;
-        import lombok.Data;
+import lombok.Data;
 import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 @Entity
@@ -20,6 +22,7 @@ public class Categoria {
     @Column(length = 255)
     private String descripcion;
 
+    @JsonIgnore // 2. Agrega esta anotación aquí
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Producto> productos;

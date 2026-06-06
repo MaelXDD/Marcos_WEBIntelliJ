@@ -3,6 +3,7 @@ package utp.phantom.phantom.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Data
 @Entity
@@ -20,6 +21,7 @@ public class Perfil {
     private String biografia;
 
     // RELACIÓN @OneToOne: La clave foránea estará en esta tabla
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     @ToString.Exclude
