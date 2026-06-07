@@ -2,6 +2,8 @@ package utp.phantom.phantom.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import utp.phantom.phantom.model.Venta;
 import utp.phantom.phantom.repository.ProductoRepository;
 import utp.phantom.phantom.repository.VentaRepository;
 import utp.phantom.phantom.service.CarritoService;
+import utp.phantom.phantom.service.CustomUserDetailsService.CustomUserDetails;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -34,11 +37,22 @@ public class PagoController {
     @Autowired
     private VentaRepository ventaRepository;
 
+    private void agregarUsuarioAutenticado(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()
+                && !auth.getName().equals("anonymousUser")) {
+            if (auth.getPrincipal() instanceof CustomUserDetails userDetails) {
+                String primerNombre = userDetails.getNombre().split(" ")[0];
+                model.addAttribute("usuarioNombre", primerNombre);
+            } else {
+                model.addAttribute("usuarioNombre", auth.getName());
+            }
+        }
+    }
+
     @PostMapping("/procesar")
     @Transactional
     public String procesarPago(HttpSession session, Model model) {
-
-
 
         List<ItemCarrito> items = carritoService.obtenerCarrito(session);
 
@@ -60,47 +74,31 @@ public class PagoController {
         }
 
         Venta venta = new Venta();
-
         venta.setFecha(LocalDateTime.now());
         venta.setTotal(BigDecimal.valueOf(total));
         venta.setCantidadItems(cantidadItems);
 
         List<DetalleVenta> detalles = new ArrayList<>();
 
-        for(ItemCarrito item : items){
-
-            Producto producto =
-                    productoRepository.findById(item.getProductoId())
-                            .orElseThrow();
-
+        for (ItemCarrito item : items) {
+            Producto producto = productoRepository.findById(item.getProductoId()).orElseThrow();
             DetalleVenta detalle = new DetalleVenta();
-
             detalle.setVenta(venta);
             detalle.setProducto(producto);
             detalle.setCantidad(item.getCantidad());
-            detalle.setPrecioUnitario(
-                    BigDecimal.valueOf(item.getPrecio())
-            );
-
-            detalle.setSubtotal(
-                    BigDecimal.valueOf(
-                            item.getCantidad() * item.getPrecio()
-                    )
-            );
-
+            detalle.setPrecioUnitario(BigDecimal.valueOf(item.getPrecio()));
+            detalle.setSubtotal(BigDecimal.valueOf(item.getCantidad() * item.getPrecio()));
             detalles.add(detalle);
         }
 
         venta.setDetalles(detalles);
-
         ventaRepository.save(venta);
 
         carritoService.vaciar(session);
         model.addAttribute("total",         total);
         model.addAttribute("cantidadItems", cantidadItems);
+        model.addAttribute("carritoCount",  0);
+        agregarUsuarioAutenticado(model);
         return "pago-exitoso";
-
-
-
     }
 }

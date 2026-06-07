@@ -2,6 +2,8 @@ package utp.phantom.phantom.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import utp.phantom.phantom.model.Producto;
 import utp.phantom.phantom.repository.ProductoRepository;
 import utp.phantom.phantom.service.CarritoService;
+import utp.phantom.phantom.service.CustomUserDetailsService.CustomUserDetails;
 
 import java.util.Optional;
 
@@ -22,16 +25,29 @@ public class CarritoController {
     @Autowired
     private ProductoRepository productoRepository;
 
-    // Get /carrito (ver el carrito)
+    private void agregarUsuarioAutenticado(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()
+                && !auth.getName().equals("anonymousUser")) {
+            if (auth.getPrincipal() instanceof CustomUserDetails userDetails) {
+                String nombreCompleto = userDetails.getNombre();
+                String primerNombre = nombreCompleto.split(" ")[0];
+                model.addAttribute("usuarioNombre", primerNombre);
+            } else {
+                model.addAttribute("usuarioNombre", auth.getName());
+            }
+        }
+    }
+
     @GetMapping
     public String verCarrito(HttpSession session, Model model) {
         model.addAttribute("items",  carritoService.obtenerCarrito(session));
         model.addAttribute("total",  carritoService.calcularTotal(session));
         model.addAttribute("cuenta", carritoService.contarItems(session));
+        agregarUsuarioAutenticado(model);
         return "carrito";
     }
 
-    // POST/carrito/agregar(agregar producto)
     @PostMapping("/agregar")
     public String agregar(@RequestParam Long productoId,
                           @RequestParam(defaultValue = "/") String origen,
@@ -51,7 +67,6 @@ public class CarritoController {
         return "redirect:" + origen;
     }
 
-    // POST /carrito/eliminar (eliminar ítem)
     @PostMapping("/eliminar")
     public String eliminar(@RequestParam Long productoId,
                            HttpSession session) {
@@ -59,7 +74,6 @@ public class CarritoController {
         return "redirect:/carrito";
     }
 
-    // POST /carrito/actualizar(cambiar cantidad)
     @PostMapping("/actualizar")
     public String actualizar(@RequestParam Long productoId,
                              @RequestParam int cantidad,
@@ -68,14 +82,12 @@ public class CarritoController {
         return "redirect:/carrito";
     }
 
-    // POST /carrito/vaciar (vaciar todo)
     @PostMapping("/vaciar")
     public String vaciar(HttpSession session) {
         carritoService.vaciar(session);
         return "redirect:/carrito";
     }
 
-    // Para actualizar el contador del carrito con AJAX
     @GetMapping("/count")
     @ResponseBody
     public int contarItems(HttpSession session) {

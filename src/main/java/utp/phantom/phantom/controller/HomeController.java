@@ -2,6 +2,9 @@ package utp.phantom.phantom.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import utp.phantom.phantom.service.CustomUserDetailsService.CustomUserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,14 +47,28 @@ public class HomeController {
         model.addAttribute("carritoCount", carritoService.contarItems(session));
     }
 
+    private void agregarUsuarioAutenticado(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()
+                && !auth.getName().equals("anonymousUser")) {
+            if (auth.getPrincipal() instanceof CustomUserDetails userDetails) {
+                String nombreCompleto = userDetails.getNombre();
+                String primerNombre = nombreCompleto.split(" ")[0];
+                model.addAttribute("usuarioNombre", primerNombre);
+            } else {
+                model.addAttribute("usuarioNombre", auth.getName());
+            }
+        }
+    }
+
     @GetMapping("/")
     public String index(@RequestParam(required = false) String loginError,
                         Model model, HttpSession session) {
         if (loginError != null) {
             model.addAttribute("loginError", true);
         }
-
         agregarContadorCarrito(model, session);
+        agregarUsuarioAutenticado(model);
         return "index";
     }
 
@@ -64,12 +81,14 @@ public class HomeController {
     @GetMapping("/nosotros")
     public String nosotros(Model model, HttpSession session) {
         agregarContadorCarrito(model, session);
+        agregarUsuarioAutenticado(model);
         return "nosotros";
     }
 
     @GetMapping("/mision")
     public String mision(Model model, HttpSession session) {
         agregarContadorCarrito(model, session);
+        agregarUsuarioAutenticado(model);
         return "mision";
     }
 
@@ -89,6 +108,7 @@ public class HomeController {
         model.addAttribute("productos", productoRepository.findByCategoriaId(categoriaId));
 
         agregarContadorCarrito(model, session);
+        agregarUsuarioAutenticado(model);
 
         return "categoria";
     }

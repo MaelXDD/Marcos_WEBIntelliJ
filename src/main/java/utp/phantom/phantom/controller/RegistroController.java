@@ -34,6 +34,13 @@ public class RegistroController {
             @RequestParam(required = false) String numeroTelefono,
             Model model) {
 
+        // Helper para rellenar el formulario con los datos ingresados
+        model.addAttribute("nombre", nombre);
+        model.addAttribute("email", email);
+        model.addAttribute("dni", dni);
+        model.addAttribute("direccion", direccion);
+        model.addAttribute("numeroTelefono", numeroTelefono);
+
         if (!password.equals(confirmPassword)) {
             model.addAttribute("error", "Las contraseñas no coinciden");
             return "registro";
@@ -43,10 +50,12 @@ public class RegistroController {
             model.addAttribute("error", "La contraseña debe tener mínimo 8 caracteres, una mayúscula, un número y un símbolo (ej: !, @, #)");
             return "registro";
         }
+
         if (numeroTelefono != null && !numeroTelefono.isEmpty() && usuarioService.existeTelefono(numeroTelefono)) {
             model.addAttribute("error", "El número de teléfono ya está registrado");
             return "registro";
         }
+
         if (usuarioService.existeEmail(email)) {
             model.addAttribute("error", "El correo ya está registrado");
             return "registro";
@@ -56,10 +65,12 @@ public class RegistroController {
             model.addAttribute("error", "El DNI ya está registrado");
             return "registro";
         }
+
         if (dni != null && !dni.isEmpty() && !dni.matches("\\d{8}")) {
             model.addAttribute("error", "El número de DNI debe tener exactamente 8 dígitos");
             return "registro";
         }
+
         usuarioService.registrar(nombre, email, password, dni, direccion, numeroTelefono);
         return "redirect:/registro?exitoso=true";
     }
