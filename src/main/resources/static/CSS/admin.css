@@ -174,3 +174,25 @@ th.sortable:hover {
     margin-left: 5px;
     transition: all 0.2s;
 }
+
+/* Reporte de ventas */
+
+.stat-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.table-wrap {
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+.precio {
+    color: var(--success);
+    font-size: 1rem;
+}
+
+tbody tr td:first-child {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+}
