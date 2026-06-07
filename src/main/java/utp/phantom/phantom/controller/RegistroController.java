@@ -34,24 +34,33 @@ public class RegistroController {
             @RequestParam(required = false) String numeroTelefono,
             Model model) {
 
-        // Helper para rellenar el formulario con los datos ingresados
         model.addAttribute("nombre", nombre);
         model.addAttribute("email", email);
         model.addAttribute("dni", dni);
         model.addAttribute("direccion", direccion);
         model.addAttribute("numeroTelefono", numeroTelefono);
 
-        if (!password.equals(confirmPassword)) {
-            model.addAttribute("error", "Las contraseñas no coinciden");
+        if (dni == null || dni.trim().isEmpty()) {
+            model.addAttribute("error", "El DNI es obligatorio");
             return "registro";
         }
 
-        if (!contrasenaSegura(password)) {
-            model.addAttribute("error", "La contraseña debe tener mínimo 8 caracteres, una mayúscula, un número y un símbolo (ej: !, @, #)");
+        if (!dni.matches("\\d{8}")) {
+            model.addAttribute("error", "El DNI debe tener exactamente 8 dígitos");
             return "registro";
         }
 
-        if (numeroTelefono != null && !numeroTelefono.isEmpty() && usuarioService.existeTelefono(numeroTelefono)) {
+        if (usuarioService.existeDni(dni)) {
+            model.addAttribute("error", "El DNI ya está registrado");
+            return "registro";
+        }
+
+        if (numeroTelefono == null || numeroTelefono.trim().isEmpty()) {
+            model.addAttribute("error", "El número de teléfono es obligatorio");
+            return "registro";
+        }
+
+        if (usuarioService.existeTelefono(numeroTelefono)) {
             model.addAttribute("error", "El número de teléfono ya está registrado");
             return "registro";
         }
@@ -61,13 +70,13 @@ public class RegistroController {
             return "registro";
         }
 
-        if (dni != null && !dni.isEmpty() && usuarioService.existeDni(dni)) {
-            model.addAttribute("error", "El DNI ya está registrado");
+        if (!password.equals(confirmPassword)) {
+            model.addAttribute("error", "Las contraseñas no coinciden");
             return "registro";
         }
 
-        if (dni != null && !dni.isEmpty() && !dni.matches("\\d{8}")) {
-            model.addAttribute("error", "El número de DNI debe tener exactamente 8 dígitos");
+        if (!contrasenaSegura(password)) {
+            model.addAttribute("error", "La contraseña debe tener mínimo 8 caracteres, una mayúscula, un número y un símbolo (ej: !, @, #)");
             return "registro";
         }
 

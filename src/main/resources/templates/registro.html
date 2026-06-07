@@ -17,7 +17,6 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mx-auto text-uppercase">
                 <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/juegos}">Videojuegos</a></li>
@@ -25,7 +24,6 @@
                 <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/tarjetas}">Coleccionables</a></li>
                 <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/perifericos}">Periféricos</a></li>
             </ul>
-
             <div class="position-relative me-3">
                 <div class="d-flex">
                     <input id="inputBusqueda"
@@ -34,12 +32,10 @@
                            placeholder="Buscar productos..."
                            autocomplete="off">
                 </div>
-
                 <div id="contenedorResultados"
                      class="position-absolute w-100 mt-1 shadow-lg rounded-3 d-none resultados-busqueda-phantom">
                 </div>
             </div>
-
             <div class="d-flex align-items-center mt-3 mt-lg-0">
                 <a href="#" class="text-white me-3 fs-4" data-bs-toggle="modal" data-bs-target="#loginModal">
                     <i class="bi bi-person-circle"></i>
@@ -51,7 +47,9 @@
                           th:text="${carritoCount}">0</span>
                 </a>
             </div>
-        </div> </div> </nav>
+        </div>
+    </div>
+</nav>
 
 <main id="registro-main" class="flex-grow-1 d-flex align-items-center py-5" style="background: radial-gradient(circle, #1a0b3d 0%, #000000 100%);">
     <div class="container">
@@ -87,7 +85,6 @@
                                                placeholder="Sebastian Espinal" maxlength="50" required
                                                th:value="${nombre}"
                                                oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');">
-
                                     </div>
 
                                     <!-- DNI -->
@@ -95,7 +92,7 @@
                                         <label class="form-label small text-secondary">DNI</label>
                                         <input type="text" name="dni"
                                                class="form-control bg-black text-white border-secondary rounded-3"
-                                               placeholder="12345678" maxlength="8"
+                                               placeholder="12345678" maxlength="8" required
                                                th:value="${dni}"
                                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);">
                                     </div>
@@ -117,12 +114,13 @@
                                                placeholder="ejemplo@correo.com" maxlength="100" required
                                                th:value="${email}">
                                     </div>
+
                                     <!-- TELÉFONO -->
                                     <div class="mb-3">
                                         <label class="form-label small text-secondary">Número de teléfono</label>
                                         <input type="text" name="numeroTelefono"
                                                class="form-control bg-black text-white border-secondary rounded-3"
-                                               placeholder="999888777" maxlength="9"
+                                               placeholder="999888777" maxlength="9" required
                                                th:value="${numeroTelefono}"
                                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 9);">
                                     </div>
@@ -130,17 +128,27 @@
                                     <!-- CONTRASEÑA -->
                                     <div class="mb-3">
                                         <label class="form-label small text-secondary">Contraseña</label>
-                                        <input type="password" name="password"
-                                               class="form-control bg-black text-white border-secondary rounded-3"
-                                               placeholder="••••••••" required>
+                                        <div class="input-group">
+                                            <input type="password" name="password" id="password"
+                                                   class="form-control bg-black text-white border-secondary rounded-start-3"
+                                                   placeholder="••••••••" required>
+                                            <button class="btn btn-outline-secondary" type="button" data-toggle-password="password">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <!-- CONFIRMAR CONTRASEÑA -->
                                     <div class="mb-4">
                                         <label class="form-label small text-secondary">Confirmar contraseña</label>
-                                        <input type="password" name="confirmPassword"
-                                               class="form-control bg-black text-white border-secondary rounded-3"
-                                               placeholder="••••••••" required>
+                                        <div class="input-group">
+                                            <input type="password" name="confirmPassword" id="confirmPassword"
+                                                   class="form-control bg-black text-white border-secondary rounded-start-3"
+                                                   placeholder="••••••••" required>
+                                            <button class="btn btn-outline-secondary" type="button" data-toggle-password="confirmPassword">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <!-- TÉRMINOS -->
@@ -159,6 +167,7 @@
                                     <button type="submit" class="btn btn-danger w-100 fw-bold rounded-pill py-2">
                                         CREAR CUENTA
                                     </button>
+
                                 </form>
                             </div>
                         </div>
@@ -245,12 +254,10 @@
             <div class="col-6 col-md-2">
                 <h6 class="fw-bold text-uppercase mb-3">Tienda</h6>
                 <ul class="list-unstyled small">
-                    <ul class="list-unstyled small">
-                        <li><a th:href="@{/categoria/juegos}" class="footer-link">Videojuegos</a></li>
-                        <li><a th:href="@{/categoria/consolas}" class="footer-link">Consolas</a></li>
-                        <li><a th:href="@{/categoria/tarjetas}" class="footer-link">Coleccionables</a></li>
-                        <li><a th:href="@{/categoria/perifericos}" class="footer-link">Periféricos</a></li>
-                    </ul>
+                    <li><a th:href="@{/categoria/juegos}" class="footer-link">Videojuegos</a></li>
+                    <li><a th:href="@{/categoria/consolas}" class="footer-link">Consolas</a></li>
+                    <li><a th:href="@{/categoria/tarjetas}" class="footer-link">Coleccionables</a></li>
+                    <li><a th:href="@{/categoria/perifericos}" class="footer-link">Periféricos</a></li>
                 </ul>
             </div>
             <div class="col-6 col-md-2">
@@ -273,8 +280,6 @@
     </div>
 </footer>
 
-
-<!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/JS/emergente.js}"></script>
 </body>
