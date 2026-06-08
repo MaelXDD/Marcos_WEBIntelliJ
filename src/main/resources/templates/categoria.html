@@ -152,7 +152,7 @@
                                         th:disabled="${producto.stock != null and producto.stock <= 0}"
                                         th:attr="data-id=${producto.id},
                  data-nombre=${producto.nombre},
-                 data-precio='S/ ' + ${#numbers.formatDecimal(producto.precio,1,2)},
+                 data-precio=${#numbers.formatDecimal(producto.precio,1,2)},
                  data-imagen=${producto.imagenUrl},
                  data-marca=${producto.marca}"
                                         onclick="agregarAlCarrito(this)">
