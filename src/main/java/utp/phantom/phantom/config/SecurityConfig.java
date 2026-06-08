@@ -54,10 +54,11 @@ public class SecurityConfig {
                                 "/registro", "/login",
                                 "/CSS/**", "/Imagenes/**", "/JS/**",
                                 "/imagenes/**", "/categoria/**",
-                                "/carrito/**", "/pago/**",
+                                "/carrito/**",
                                 "/api/v1/productos/**",
                                 "/api/v1/usuarios/**"
                         ).permitAll()
+                        .requestMatchers("/pago/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
