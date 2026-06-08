@@ -42,6 +42,7 @@
                 <th>Estado</th>
                 <th class="sortable" data-type="number">Total <i class="bi bi-arrow-down-up sort-icon text-muted"></i></th>
                 <th>Items</th>
+                <th class="sortable" data-type="string">N° Orden <i class="bi bi-arrow-down-up sort-icon text-muted"></i></th>
             </tr>
             </thead>
             <tbody>
@@ -79,6 +80,7 @@
                     </td>
                 </tr>
             </th:block>
+            <td style="color:var(--muted); font-family: 'Space Mono', monospace; font-weight: bold;" th:text="${venta.numeroOrden}"></td>
             </tbody>
         </table>
     </div>

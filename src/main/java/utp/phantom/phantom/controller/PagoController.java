@@ -82,6 +82,12 @@ public class PagoController {
         venta.setTotal(BigDecimal.valueOf(total));
         venta.setCantidadItems(cantidadItems);
 
+        // ---- NUEVO CÓDIGO: Generar el número de orden ----
+        int randomNum = (int) (Math.random() * 900000) + 100000;
+        String numeroOrden = "PH-" + randomNum;
+        venta.setNumeroOrden(numeroOrden);
+        // --------------------------------------------------
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.getPrincipal() instanceof CustomUserDetails userDetails) {
             usuarioRepository.findByEmail(userDetails.getUsername())
@@ -89,6 +95,7 @@ public class PagoController {
         }
 
         List<DetalleVenta> detalles = new ArrayList<>();
+        // ... (el ciclo for que crea los DetalleVenta se mantiene igual) ...
         for (ItemCarrito item : items) {
             Producto producto = productoRepository.findById(item.getProductoId()).orElseThrow();
             DetalleVenta detalle = new DetalleVenta();
@@ -107,6 +114,10 @@ public class PagoController {
         model.addAttribute("total", total);
         model.addAttribute("cantidadItems", cantidadItems);
         model.addAttribute("carritoCount", 0);
+
+        // ENVIAR EL NÚMERO DE ORDEN A LA VISTA
+        model.addAttribute("numeroOrden", numeroOrden);
+
         agregarUsuarioAutenticado(model);
 
         return "pago-exitoso";

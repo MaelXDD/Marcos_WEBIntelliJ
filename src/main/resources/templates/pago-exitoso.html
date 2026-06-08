@@ -87,7 +87,7 @@
 
             <p class="order-number mb-4">
                 N° DE ORDEN:
-                <strong th:text="'PH-' + ${#numbers.formatInteger(T(java.lang.Math).random() * 900000 + 100000, 6)}">
+                <strong th:text="${numeroOrden}">
                     PH-123456
                 </strong>
             </p>

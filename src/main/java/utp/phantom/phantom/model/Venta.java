@@ -21,6 +21,9 @@ public class Venta {
 
     private Integer cantidadItems;
 
+    @Column(name = "numero_orden", length = 10, unique = true)
+    private String numeroOrden;
+
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<DetalleVenta> detalles;
 
