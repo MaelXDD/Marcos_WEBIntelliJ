@@ -2,7 +2,6 @@ package utp.phantom.phantom.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,7 +21,13 @@ public class Venta {
 
     private Integer cantidadItems;
 
-    @OneToMany(mappedBy = "venta",
-            cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<DetalleVenta> detalles;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    @Transient
+    private String estado = "Pagado";
 }

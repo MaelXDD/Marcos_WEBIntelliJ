@@ -9,6 +9,7 @@
     --muted:    #6b6b85;
     --success:  #06d6a0;
     --warning:  #ffd166;
+    --red:      var(--accent);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -173,6 +174,52 @@ th.sortable:hover {
     font-size: 0.8rem;
     margin-left: 5px;
     transition: all 0.2s;
+}
+
+/* Estilos para el desplegable de detalles de ventas */
+
+.detalle-container {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 5px 0;
+}
+
+.detalle-title {
+    color: var(--red);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.detalle-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.detalle-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 8px 0;
+    font-size: 0.9rem;
+}
+
+/* Cantidad destacada */
+.detalle-qty {
+    color: var(--red);
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.detalle-price {
+    font-family: 'Space Mono', monospace;
+    font-weight: 600;
+    color: #fff;
 }
 
 /* Reporte de ventas */

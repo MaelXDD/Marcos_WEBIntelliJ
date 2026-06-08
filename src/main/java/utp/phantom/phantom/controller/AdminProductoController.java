@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import utp.phantom.phantom.model.Categoria;
 import utp.phantom.phantom.model.Producto;
+import utp.phantom.phantom.model.Venta;
+import utp.phantom.phantom.repository.UsuarioRepository;
 import utp.phantom.phantom.repository.VentaRepository;
 import utp.phantom.phantom.service.ProductoService;
 
@@ -14,7 +16,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin/productos")
-public class    AdminProductoController {
+public class AdminProductoController {
 
     @Autowired
     private ProductoService productoService;
@@ -22,12 +24,23 @@ public class    AdminProductoController {
     @Autowired
     private VentaRepository ventaRepository;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     @GetMapping("/ventas")
-    public String reporteVentas(Model model){
+    public String reporteVentas(@RequestParam(required = false) String keyword, Model model) {
+        List<Venta> ventas = ventaRepository.findAll();
 
-        model.addAttribute("ventas",
-                ventaRepository.findAll());
+        if (keyword != null && !keyword.isEmpty()) {
+            String k = keyword.toLowerCase();
+            ventas = ventas.stream().filter(v ->
+                    (v.getUsuario() != null && v.getUsuario().getNombre().toLowerCase().contains(k)) ||
+                            String.valueOf(v.getId()).contains(k)
+            ).toList();
+        }
 
+        model.addAttribute("ventas", ventas);
+        model.addAttribute("keyword", keyword);
         return "admin/ventas";
     }
 

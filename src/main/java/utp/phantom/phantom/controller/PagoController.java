@@ -14,6 +14,7 @@ import utp.phantom.phantom.model.ItemCarrito;
 import utp.phantom.phantom.model.Producto;
 import utp.phantom.phantom.model.Venta;
 import utp.phantom.phantom.repository.ProductoRepository;
+import utp.phantom.phantom.repository.UsuarioRepository;
 import utp.phantom.phantom.repository.VentaRepository;
 import utp.phantom.phantom.service.CarritoService;
 import utp.phantom.phantom.service.CustomUserDetailsService.CustomUserDetails;
@@ -36,6 +37,9 @@ public class PagoController {
 
     @Autowired
     private VentaRepository ventaRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     private void agregarUsuarioAutenticado(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -60,8 +64,8 @@ public class PagoController {
             return "redirect:/carrito";
         }
 
-        double total         = carritoService.calcularTotal(session);
-        int    cantidadItems = items.stream().mapToInt(ItemCarrito::getCantidad).sum();
+        double total = carritoService.calcularTotal(session);
+        int cantidadItems = items.stream().mapToInt(ItemCarrito::getCantidad).sum();
 
         for (ItemCarrito item : items) {
             Optional<Producto> opt = productoRepository.findById(item.getProductoId());
@@ -78,8 +82,13 @@ public class PagoController {
         venta.setTotal(BigDecimal.valueOf(total));
         venta.setCantidadItems(cantidadItems);
 
-        List<DetalleVenta> detalles = new ArrayList<>();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.getPrincipal() instanceof CustomUserDetails userDetails) {
+            usuarioRepository.findByEmail(userDetails.getUsername())
+                    .ifPresent(venta::setUsuario);
+        }
 
+        List<DetalleVenta> detalles = new ArrayList<>();
         for (ItemCarrito item : items) {
             Producto producto = productoRepository.findById(item.getProductoId()).orElseThrow();
             DetalleVenta detalle = new DetalleVenta();
@@ -95,10 +104,11 @@ public class PagoController {
         ventaRepository.save(venta);
 
         carritoService.vaciar(session);
-        model.addAttribute("total",         total);
+        model.addAttribute("total", total);
         model.addAttribute("cantidadItems", cantidadItems);
-        model.addAttribute("carritoCount",  0);
+        model.addAttribute("carritoCount", 0);
         agregarUsuarioAutenticado(model);
+
         return "pago-exitoso";
     }
 }
