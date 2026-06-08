@@ -55,8 +55,8 @@ public class SecurityConfig {
                                 "/CSS/**", "/Imagenes/**", "/JS/**",
                                 "/imagenes/**", "/categoria/**",
                                 "/carrito/**",
-                                "/api/v1/productos/**",
-                                "/api/v1/usuarios/**"
+                                "/api/v1/productos", "/api/v1/productos/**",
+                                "/api/v1/usuarios", "/api/v1/usuarios/**"
                         ).permitAll()
                         .requestMatchers("/pago/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")

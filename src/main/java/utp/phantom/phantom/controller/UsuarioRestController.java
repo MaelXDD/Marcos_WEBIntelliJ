@@ -2,6 +2,7 @@ package utp.phantom.phantom.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import utp.phantom.phantom.model.Usuario;
 import utp.phantom.phantom.repository.UsuarioRepository;
@@ -16,6 +17,10 @@ public class UsuarioRestController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // PATCH: Actualización parcial de un usuario
     @PatchMapping("/{id}")
     public ResponseEntity<Usuario> actualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> actualizaciones) {
@@ -58,6 +63,8 @@ public class UsuarioRestController {
     // POST: Crear usuario (puedes usar tu UsuarioService.registrar aquí si prefieres)
     @PostMapping
     public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario) {
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+
         Usuario guardado = usuarioRepository.save(usuario);
         return ResponseEntity.ok(guardado);
     }
