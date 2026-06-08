@@ -26,7 +26,7 @@
 
     <form th:action="@{/admin/productos/ventas}" method="get" class="search-bar">
         <input type="text" name="keyword" class="search-input"
-               placeholder="Buscar por ID o usuario..."
+               placeholder="Buscar por ID, usuario o N° Orden..."
                th:value="${keyword}"/>
         <button type="submit" class="search-btn"><i class="bi bi-search"></i> Buscar</button>
         <a href="/admin/productos/ventas" class="nav-btn"><i class="bi bi-x"></i> Limpiar</a>

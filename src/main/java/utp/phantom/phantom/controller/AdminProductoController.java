@@ -35,7 +35,8 @@ public class AdminProductoController {
             String k = keyword.toLowerCase();
             ventas = ventas.stream().filter(v ->
                     (v.getUsuario() != null && v.getUsuario().getNombre().toLowerCase().contains(k)) ||
-                            String.valueOf(v.getId()).contains(k)
+                            String.valueOf(v.getId()).contains(k) ||
+                            (v.getNumeroOrden() != null && v.getNumeroOrden().toLowerCase().contains(k))
             ).toList();
         }
 
