@@ -62,17 +62,19 @@
                         </a>
                     </td>
                     <td th:text="${venta.cantidadItems}"></td>
+                    <td style="color:var(--muted); font-family: 'Space Mono', monospace; font-weight: bold;" th:text="${venta.numeroOrden != null ? venta.numeroOrden : '—'}"></td>
                 </tr>
+
                 <tr class="collapse" th:id="'detalle-' + ${venta.id}">
-                    <td colspan="6" style="padding: 10px 20px;">
+                    <td colspan="7" style="padding: 10px 20px;">
                         <div class="detalle-container">
                             <h6 class="detalle-title"><i class="bi bi-box-seam"></i> Productos detallados</h6>
                             <ul class="detalle-list">
                                 <li class="detalle-item" th:each="detalle : ${venta.detalles}">
-                                        <span style="color: #ccc;">
-                                            <span class="detalle-qty" th:text="${detalle.cantidad + 'x'}"></span>
-                                            <span th:text="${detalle.producto != null ? detalle.producto.nombre : 'Producto borrado'}"></span>
-                                        </span>
+                                    <span style="color: #ccc;">
+                                        <span class="detalle-qty" th:text="${detalle.cantidad + 'x'}"></span>
+                                        <span th:text="${detalle.producto != null ? detalle.producto.nombre : 'Producto borrado'}"></span>
+                                    </span>
                                     <span class="detalle-price" th:text="'S/ ' + ${#numbers.formatDecimal(detalle.precioUnitario != null ? detalle.precioUnitario : 0, 1, 2)}">S/ 0.00</span>
                                 </li>
                             </ul>
@@ -80,7 +82,6 @@
                     </td>
                 </tr>
             </th:block>
-            <td style="color:var(--muted); font-family: 'Space Mono', monospace; font-weight: bold;" th:text="${venta.numeroOrden}"></td>
             </tbody>
         </table>
     </div>
