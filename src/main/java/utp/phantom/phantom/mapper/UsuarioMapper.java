@@ -7,7 +7,7 @@ import utp.phantom.phantom.model.Usuario;
 @Component
 public class UsuarioMapper {
 
-    // Entidad → DTO (la contraseña NO se incluye en la respuesta)
+    // Entidad → DTO
     public UsuarioDTO toDTO(Usuario usuario) {
         if (usuario == null) return null;
 
@@ -15,7 +15,6 @@ public class UsuarioMapper {
         dto.setId(usuario.getId());
         dto.setNombre(usuario.getNombre());
         dto.setEmail(usuario.getEmail());
-        // dto.setPassword() → se omite intencionalmente por seguridad
         dto.setRol(usuario.getRol());
         dto.setDni(usuario.getDni());
         dto.setDireccion(usuario.getDireccion());
@@ -24,7 +23,7 @@ public class UsuarioMapper {
         return dto;
     }
 
-    // DTO → Entidad (para registro/creación)
+    // DTO → Entidad
     public Usuario toEntity(UsuarioDTO dto) {
         if (dto == null) return null;
 
@@ -32,7 +31,6 @@ public class UsuarioMapper {
         usuario.setId(dto.getId());
         usuario.setNombre(dto.getNombre());
         usuario.setEmail(dto.getEmail());
-        // La contraseña se encripta en el Service, no aquí
         if (dto.getPassword() != null) usuario.setPassword(dto.getPassword());
         if (dto.getRol() != null) usuario.setRol(dto.getRol());
         usuario.setDni(dto.getDni());
@@ -48,6 +46,5 @@ public class UsuarioMapper {
         if (dto.getDireccion() != null)       usuario.setDireccion(dto.getDireccion());
         if (dto.getNumeroTelefono() != null)  usuario.setNumeroTelefono(dto.getNumeroTelefono());
         if (dto.getRol() != null)             usuario.setRol(dto.getRol());
-        // La contraseña se actualiza solo si viene en el DTO y el Service la encripta
     }
 }

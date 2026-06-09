@@ -21,7 +21,7 @@ public class ProductoMapper {
         dto.setImagenUrl(producto.getImagenUrl());
         dto.setStock(producto.getStock());
 
-        // Extraer solo id y nombre de la categoría (evita exponer toda la lista de productos)
+        // Extraer solo id y nombre de la categoría
         if (producto.getCategoria() != null) {
             dto.setCategoriaId(producto.getCategoria().getId());
             dto.setCategoriaNombre(producto.getCategoria().getNombre());
@@ -43,7 +43,7 @@ public class ProductoMapper {
         producto.setImagenUrl(dto.getImagenUrl());
         producto.setStock(dto.getStock());
 
-        // Asignar solo el ID de categoría; el service resuelve la entidad completa
+
         if (dto.getCategoriaId() != null) {
             Categoria categoria = new Categoria();
             categoria.setId(dto.getCategoriaId());
