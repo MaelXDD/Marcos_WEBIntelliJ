@@ -30,7 +30,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
     }
 
-    // ===== CLASE INTERNA =====
     public static class CustomUserDetails implements UserDetails {
 
         private final String email;

@@ -44,10 +44,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // 1. DESHABILITAR CSRF PARA PERMITIR POST, PUT Y DELETE EN LA API
+                // DESHABILITAR CSRF PARA PERMITIR POST, PUT Y DELETE EN LA API
                 .csrf(csrf -> csrf.disable())
 
-                // 2. CONFIGURACIÓN DE RUTAS
+                // CONFIGURACIÓN DE RUTAS
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/", "/api/productos/buscar", "/nosotros", "/mision",

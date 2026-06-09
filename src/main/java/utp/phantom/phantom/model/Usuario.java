@@ -19,7 +19,6 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @NotBlank verifica que no sea nulo ni esté vacío (o con solo espacios)
     @NotBlank(message = "El nombre es obligatorio")
     @Size(min = 2, max = 100, message = "El nombre debe tener entre 2 y 100 caracteres")
     @Column(nullable = false)
@@ -38,7 +37,6 @@ public class Usuario {
     @Column(nullable = false)
     private String rol = "USER";
 
-    // @Pattern nos asegura que tenga el formato numérico exacto
     @Pattern(regexp = "\\d{8}", message = "El DNI debe tener exactamente 8 dígitos")
     @Column(length = 8, unique = true)
     private String dni;
@@ -54,7 +52,7 @@ public class Usuario {
     @Column(name = "numero_telefono", length = 9, unique = true)
     private String numeroTelefono;
 
-    // RELACIÓN @OneToOne (Un usuario tiene un solo perfil)
+    // RELACIÓN @OneToOne
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude // Evita bucles infinitos al imprimir el objeto
     private Perfil perfil;

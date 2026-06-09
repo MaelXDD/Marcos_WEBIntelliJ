@@ -22,7 +22,7 @@ public class Categoria {
     @Column(length = 255)
     private String descripcion;
 
-    @JsonIgnore // 2. Agrega esta anotación aquí
+    @JsonIgnore
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Producto> productos;

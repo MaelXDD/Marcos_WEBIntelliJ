@@ -20,7 +20,6 @@ public class Perfil {
     @Column(name = "biografia")
     private String biografia;
 
-    // RELACIÓN @OneToOne: La clave foránea estará en esta tabla
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)

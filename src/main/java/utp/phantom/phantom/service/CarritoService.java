@@ -35,10 +35,8 @@ public class CarritoService {
                 .findFirst();
 
         if (existente.isPresent()) {
-            // Ya existe → solo incrementar cantidad
             existente.get().setCantidad(existente.get().getCantidad() + 1);
         } else {
-            // No existe → agregar nuevo ítem con cantidad 1
             carrito.add(new ItemCarrito(productoId, nombre, precio, imagenUrl, 1));
         }
 
@@ -57,7 +55,6 @@ public class CarritoService {
         List<ItemCarrito> carrito = obtenerCarrito(session);
 
         if (cantidad <= 0) {
-            // Si la cantidad llega a 0 o menos, eliminar el ítem
             eliminar(session, productoId);
             return;
         }

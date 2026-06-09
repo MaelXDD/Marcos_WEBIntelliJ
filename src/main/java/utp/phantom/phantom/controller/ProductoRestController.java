@@ -9,8 +9,8 @@ import utp.phantom.phantom.service.ProductoService;
 import java.util.List;
 import java.util.Optional;
 
-@RestController // Indica que esta clase es una API REST (devuelve JSON)
-@RequestMapping("/api/v1/productos") // Ruta base para esta API
+@RestController
+@RequestMapping("/api/v1/productos")
 public class ProductoRestController {
 
     @Autowired
@@ -27,7 +27,6 @@ public class ProductoRestController {
     public ResponseEntity<Producto> obtenerPorId(@PathVariable Long id) {
         Optional<Producto> producto = productoService.obtenerProducto(id);
 
-        // Si existe devuelve código 200 (OK), si no, 404 (Not Found)
         return producto.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -35,7 +34,6 @@ public class ProductoRestController {
     // POST: Crear un nuevo producto
     @PostMapping
     public ResponseEntity<Producto> crearProducto(@RequestBody Producto producto) {
-        // @RequestBody mapea el JSON que envíes en la petición al objeto Producto
         productoService.guardarProducto(producto);
         return ResponseEntity.ok(producto);
     }
@@ -47,7 +45,6 @@ public class ProductoRestController {
 
         if (productoExistente.isPresent()) {
             Producto p = productoExistente.get();
-            // Actualizamos los campos
             p.setNombre(productoDetalles.getNombre());
             p.setDescripcion(productoDetalles.getDescripcion());
             p.setPrecio(productoDetalles.getPrecio());

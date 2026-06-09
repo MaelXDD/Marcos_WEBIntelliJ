@@ -20,7 +20,7 @@ public class Etiqueta {
     @Column(nullable = false, unique = true, length = 50)
     private String nombre;
 
-    // RELACIÓN @ManyToMany (Lado inverso): Mapeado por el atributo 'etiquetas' en Producto
+
     @ManyToMany(mappedBy = "etiquetas", fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Producto> productos;

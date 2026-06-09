@@ -26,7 +26,6 @@ public class Producto {
     @Column(length = 1000)
     private String descripcion;
 
-    // @NotNull se usa para objetos numéricos, @PositiveOrZero evita precios negativos
     @NotNull(message = "El precio es obligatorio")
     @PositiveOrZero(message = "El precio debe ser 0 o mayor")
     @Column(nullable = false)
@@ -51,7 +50,6 @@ public class Producto {
     @Column(nullable = false)
     private Integer stock;
 
-    // RELACIÓN @ManyToMany: Genera una tabla intermedia automáticamente
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "producto_etiqueta",

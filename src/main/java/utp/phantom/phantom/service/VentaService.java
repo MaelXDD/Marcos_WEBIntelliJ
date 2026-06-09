@@ -30,14 +30,10 @@ public class VentaService {
     @Autowired
     private ProductoRepository productoRepository;
 
-    /**
-     * Procesa una venta completa: descuenta stock, genera número de orden,
-     * crea la Venta y sus DetalleVenta.
-     */
     @Transactional
     public Venta procesarVenta(List<ItemCarrito> items, Usuario usuario) {
 
-        // 1. Descontar stock de cada producto
+        //  Descontar stock de cada producto
         for (ItemCarrito item : items) {
             Optional<Producto> opt = productoRepository.findById(item.getProductoId());
             if (opt.isPresent()) {
@@ -48,15 +44,15 @@ public class VentaService {
             }
         }
 
-        // 2. Calcular totales
+        // Calcular totales
         double total = items.stream().mapToDouble(ItemCarrito::getSubtotal).sum();
         int cantidadItems = items.stream().mapToInt(ItemCarrito::getCantidad).sum();
 
-        // 3. Generar número de orden único
+        // Generar número de orden único
         int randomNum = (int) (Math.random() * 900000) + 100000;
         String numeroOrden = "PH-" + randomNum;
 
-        // 4. Crear la Venta
+        //  Crear la Venta
         Venta venta = new Venta();
         venta.setFecha(LocalDateTime.now());
         venta.setTotal(BigDecimal.valueOf(total));
@@ -64,7 +60,7 @@ public class VentaService {
         venta.setNumeroOrden(numeroOrden);
         venta.setUsuario(usuario);
 
-        // 5. Crear los DetalleVenta
+        // Crear los DetalleVenta
         List<DetalleVenta> detalles = new ArrayList<>();
         for (ItemCarrito item : items) {
             Producto producto = productoRepository.findById(item.getProductoId()).orElseThrow();
@@ -76,37 +72,29 @@ public class VentaService {
             detalle.setSubtotal(BigDecimal.valueOf(item.getCantidad() * item.getPrecio()));
             detalles.add(detalle);
         }
-
         venta.setDetalles(detalles);
-
-        // 6. Guardar y retornar
         return ventaRepository.save(venta);
     }
 
-    /**
-     * Retorna todas las ventas registradas.
-     */
+     // Retorna todas las ventas registradas.//
+
     public List<Venta> listarVentas() {
         return ventaRepository.findAll();
     }
 
-    /**
-     * Busca una venta por su ID.
-     */
+     //Busca una venta por su ID.//
+
     public Optional<Venta> obtenerVenta(Long id) {
         return ventaRepository.findById(id);
     }
 
-    /**
-     * Retorna los detalles de una venta específica.
-     */
+     //Retorna los detalles de una venta específica//
+
     public List<DetalleVenta> obtenerDetallesPorVenta(Long ventaId) {
         return detalleVentaRepository.findByVentaId(ventaId);
     }
+     //Cuenta el total de ventas registradas//
 
-    /**
-     * Cuenta el total de ventas registradas.
-     */
     public long contarVentas() {
         return ventaRepository.count();
     }

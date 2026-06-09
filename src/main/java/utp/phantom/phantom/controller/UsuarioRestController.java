@@ -26,7 +26,6 @@ public class UsuarioRestController {
     public ResponseEntity<Usuario> actualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> actualizaciones) {
         return usuarioRepository.findById(id).map(usuario -> {
 
-            // Solo actualizamos si el campo viene presente en el JSON
             if (actualizaciones.containsKey("nombre")) {
                 usuario.setNombre((String) actualizaciones.get("nombre"));
             }
@@ -60,7 +59,7 @@ public class UsuarioRestController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // POST: Crear usuario (puedes usar tu UsuarioService.registrar aquí si prefieres)
+    // POST: Crear usuario
     @PostMapping
     public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario) {
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
@@ -78,7 +77,6 @@ public class UsuarioRestController {
             Usuario u = existente.get();
             u.setNombre(detalles.getNombre());
             u.setEmail(detalles.getEmail());
-            // Nota: en un caso real, la contraseña debería encriptarse de nuevo si se cambia
             u.setPassword(detalles.getPassword());
             u.setRol(detalles.getRol());
             u.setDni(detalles.getDni());
