@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: phantom-web-app
+    env: docker
+    plan: free
+    region: oregon
+    envVars:
+      - key: SERVER_PORT
+        value: "8089"
