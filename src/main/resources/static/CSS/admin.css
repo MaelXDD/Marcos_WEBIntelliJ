@@ -23,8 +23,8 @@ body {
 
 /* NAVBAR */
 .navbar-ts {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
+    background-color: #12121a !important;
+    border-bottom: 1px solid #1e1e2e;
     padding: 0 2rem;
     height: 64px;
     display: flex;
@@ -242,4 +242,61 @@ th.sortable:hover {
 tbody tr td:first-child {
     font-family: 'Space Mono', monospace;
     font-weight: 700;
+}
+/* --- RESPONSIVE / ADAPTACIÓN A MÓVILES --- */
+
+@media (max-width: 768px) {
+    .navbar-ts {
+        padding: 0 1rem;
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    .nav-links {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .main {
+        padding: 1.5rem 1rem;
+    }
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .search-bar {
+        flex-direction: column;
+    }
+    .stats-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .row-grid {
+        grid-template-columns: 1fr;
+    }
+    .form-body {
+        padding: 1rem;
+    }
+    .table-wrap {
+        overflow-x: auto;
+    }
+    table {
+        min-width: 600px;
+    }
+}
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 1.6rem;
+    }
+    .nav-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+@media (min-width: 992px) {
+    .navbar-collapse {
+        display: flex !important;
+        flex-basis: auto;
+    }
 }
