@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import utp.phantom.phantom.model.Producto;
 import utp.phantom.phantom.repository.ProductoRepository;
 import utp.phantom.phantom.service.CarritoService;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,9 @@ public class HomeController {
 
     @Autowired
     private CarritoService carritoService;
+
+    @Value("${google.maps.api-key}")
+    private String mapsApiKey;
 
     private static final Map<String, Long> CATEGORIA_IDS = Map.of(
             "consolas",    1L,
@@ -82,6 +86,7 @@ public class HomeController {
     public String nosotros(Model model, HttpSession session) {
         agregarContadorCarrito(model, session);
         agregarUsuarioAutenticado(model);
+        model.addAttribute("mapsApiKey",mapsApiKey);
         return "nosotros";
     }
 
