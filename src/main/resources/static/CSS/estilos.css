@@ -404,3 +404,22 @@ footer h4, footer h6 {
     transition: background .2s;
 }
 .btn-volver:hover { background: #cc0000; color: #fff; }
+
+/*  Mapa Google */
+
+gmpx-store-locator {
+    --gmpx-fixed-panel-width-row-layout: 22em;
+    --gmpx-font-family-base: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 15px;
+}
+
+
+#store-locator-container {
+    height: 650px !important;
+    max-width: 1300px;
+    margin: 0 auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border: 1px solid #dee2e6;
+}
