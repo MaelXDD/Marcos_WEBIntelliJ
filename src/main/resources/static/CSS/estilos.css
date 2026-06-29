@@ -423,3 +423,140 @@ gmpx-store-locator {
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     border: 1px solid #dee2e6;
 }
+
+/*PERFIL DE USUARIO */
+
+.perfil-hero {
+    background: linear-gradient(135deg, #1a0b3d 0%, #000000 100%);
+    padding: 50px 20px 40px;
+    border-bottom: 3px solid #cc0000;
+}
+
+.perfil-avatar-icon {
+    font-size: 80px;
+    color: #ffffff;
+    opacity: 0.9;
+}
+
+/* Tabs */
+.perfil-tabs {
+    border-bottom: 2px solid #dee2e6;
+}
+
+.perfil-tabs .nav-link {
+    color: #6c757d;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    padding: 10px 20px;
+    transition: color 0.2s;
+}
+
+.perfil-tabs .nav-link:hover {
+    color: #1a0b3d;
+}
+
+.perfil-tabs .nav-link.active {
+    color: #1a0b3d;
+    border-bottom: 3px solid #cc0000;
+    background: transparent;
+}
+
+/* Card */
+.perfil-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
+}
+
+.perfil-card-title {
+    font-weight: 700;
+    color: #1a0b3d;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* Inputs */
+.perfil-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #495057;
+}
+
+.perfil-input {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.perfil-input:focus {
+    border-color: #1a0b3d;
+    box-shadow: 0 0 0 3px rgba(26, 11, 61, 0.1);
+    outline: none;
+}
+
+.perfil-readonly {
+    background-color: #f8f9fa !important;
+    color: #6c757d !important;
+    cursor: not-allowed;
+}
+
+.perfil-hint {
+    font-size: 0.78rem;
+    color: #adb5bd;
+    margin-top: 4px;
+}
+
+/* Botón principal */
+.btn-perfil-primary {
+    background: #1a0b3d;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 11px 24px;
+    border: none;
+    letter-spacing: 0.5px;
+    transition: background 0.2s;
+}
+
+.btn-perfil-primary:hover {
+    background: #cc0000;
+    color: #fff;
+}
+
+/* Órdenes del historial */
+.perfil-orden-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    border: 1px solid #e9ecef;
+    transition: box-shadow 0.2s;
+}
+
+.perfil-orden-card:hover {
+    box-shadow: 0 4px 20px rgba(26, 11, 61, 0.12);
+}
+
+.perfil-orden-id {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #1a0b3d;
+}
+
+.perfil-orden-item {
+    font-size: 0.9rem;
+    color: #495057;
+    padding: 4px 0;
+}
+
+.perfil-divider {
+    border-color: #f0f0f0;
+    margin: 12px 0;
+}
+

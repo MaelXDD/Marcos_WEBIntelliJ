@@ -55,6 +55,13 @@
                         <i class="bi bi-person-check-fill text-success me-1"></i>
                         Hola, <span th:text="${usuarioNombre}" class="fw-bold text-danger"></span>
                     </span>
+
+                    <a th:href="@{/perfil}"
+                       class="btn btn-outline-light rounded-pill fw-bold text-nowrap"
+                       style="font-size: 0.8rem; padding: 5px 14px; letter-spacing: 0.5px;">
+                        <i class="bi bi-person-fill me-1"></i> Mi Perfil
+                    </a>
+
                     <form th:action="@{/logout}" method="post" class="mb-0">
                         <button type="submit"
                                 class="btn btn-danger rounded-pill fw-bold text-nowrap"

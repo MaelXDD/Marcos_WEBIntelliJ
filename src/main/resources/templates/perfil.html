@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/CSS/estilos.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <title>Mi Perfil | PHANTOM</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- BARRA DE NAVEGACIÓN (igual que index) -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm py-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-3" th:href="@{/}" style="letter-spacing: 3px;">PHANTOM</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto text-uppercase">
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/juegos}">Videojuegos</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/consolas}">Consolas</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/tarjetas}">Coleccionables</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/perifericos}">Periféricos</a></li>
+            </ul>
+            <div class="d-flex align-items-center mt-3 mt-lg-0">
+                <div th:if="${usuarioNombre != null}" class="d-flex align-items-center gap-2 me-3">
+                    <span class="text-white small text-nowrap">
+                        <i class="bi bi-person-check-fill text-success me-1"></i>
+                        Hola, <span th:text="${usuarioNombre}" class="fw-bold text-danger"></span>
+                    </span>
+                    <a th:href="@{/perfil}"
+                       class="btn btn-outline-light rounded-pill fw-bold text-nowrap"
+                       style="font-size:0.8rem; padding:5px 14px; letter-spacing:0.5px;">
+                        <i class="bi bi-person-fill me-1"></i> Mi Perfil
+                    </a>
+                    <form th:action="@{/logout}" method="post" class="mb-0">
+                        <button type="submit"
+                                class="btn btn-danger rounded-pill fw-bold text-nowrap"
+                                style="font-size:0.8rem; padding:5px 14px; letter-spacing:0.5px;">
+                            Cerrar sesión
+                        </button>
+                    </form>
+                </div>
+                <a th:href="@{/carrito}" class="text-white fs-4 position-relative">
+                    <i class="bi bi-cart3"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-carrito"
+                          style="font-size:0.6rem;"
+                          th:text="${carritoCount}">0</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="flex-grow-1">
+
+    <!-- HERO del perfil -->
+    <div class="perfil-hero">
+        <div class="container text-center">
+            <i class="bi bi-person-circle perfil-avatar-icon"></i>
+            <h1 class="fw-bold mt-3 mb-1" th:text="${usuario.nombre}">Nombre Usuario</h1>
+            <p class="text-muted mb-0" th:text="${usuario.email}">email@ejemplo.com</p>
+            <p class="text-muted small" th:text="'Miembro desde ' + ${#temporals.format(usuario.fechaRegistro, 'MMMM yyyy')}">Miembro desde enero 2025</p>
+        </div>
+    </div>
+
+    <div class="container py-4">
+
+        <!-- Alertas -->
+        <div class="alert alert-success alert-dismissible fade show" th:if="${param.actualizado}" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> Datos actualizados correctamente.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div class="alert alert-success alert-dismissible fade show" th:if="${param.passwordCambiado}" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> Contraseña cambiada correctamente.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div class="alert alert-danger alert-dismissible fade show" th:if="${param.errorPassword}" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <span th:text="${param.errorPassword}">Error</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs perfil-tabs mb-4" id="perfilTabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#datos">
+                    <i class="bi bi-person-lines-fill me-1"></i> Mis Datos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#seguridad"
+                   th:classappend="${param.errorPassword != null or param.passwordCambiado != null} ? ' active' : ''">
+                    <i class="bi bi-shield-lock-fill me-1"></i> Seguridad
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#historial">
+                    <i class="bi bi-bag-check-fill me-1"></i> Historial de Compras
+                    <span class="badge bg-danger ms-1" th:text="${#lists.size(historial)}"
+                          th:if="${not #lists.isEmpty(historial)}">0</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+
+            <!-- TAB: Datos personales -->
+            <div class="tab-pane fade show active" id="datos"
+                 th:classappend="${param.errorPassword != null or param.passwordCambiado != null} ? ' ' : 'show active'">
+                <div class="row justify-content-center">
+                    <div class="col-lg-7">
+                        <div class="perfil-card">
+                            <h5 class="perfil-card-title">
+                                <i class="bi bi-pencil-square me-2"></i>Editar información personal
+                            </h5>
+                            <form th:action="@{/perfil/actualizar}" method="post">
+                                <div class="mb-3">
+                                    <label class="form-label perfil-label">Nombre completo</label>
+                                    <input type="text" name="nombre" class="form-control perfil-input"
+                                           th:value="${usuario.nombre}" required/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label perfil-label">Correo electrónico</label>
+                                    <input type="email" class="form-control perfil-input perfil-readonly"
+                                           th:value="${usuario.email}" readonly/>
+                                    <div class="form-text perfil-hint"><i class="bi bi-lock-fill me-1"></i>El email no se puede modificar.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label perfil-label">DNI</label>
+                                    <input type="text" class="form-control perfil-input perfil-readonly"
+                                           th:value="${usuario.dni}" readonly/>
+                                    <div class="form-text perfil-hint"><i class="bi bi-lock-fill me-1"></i>El DNI no se puede modificar.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label perfil-label">Dirección de entrega</label>
+                                    <input type="text" name="direccion" class="form-control perfil-input"
+                                           th:value="${usuario.direccion}" placeholder="Ej: Av. Javier Prado 123, Lima"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label perfil-label">Teléfono</label>
+                                    <input type="text" name="telefono" class="form-control perfil-input"
+                                           th:value="${usuario.numeroTelefono}" placeholder="9 dígitos" maxlength="9"/>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label perfil-label">Biografía</label>
+                                    <textarea name="biografia" class="form-control perfil-input" rows="3"
+                                              placeholder="Cuéntanos algo sobre ti..."
+                                              th:text="${perfil.biografia}"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-perfil-primary w-100">
+                                    <i class="bi bi-save2-fill me-2"></i>Guardar cambios
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: Seguridad -->
+            <div class="tab-pane fade" id="seguridad">
+                <div class="row justify-content-center">
+                    <div class="col-lg-7">
+                        <div class="perfil-card">
+                            <h5 class="perfil-card-title">
+                                <i class="bi bi-shield-lock-fill me-2"></i>Cambiar contraseña
+                            </h5>
+                            <form th:action="@{/perfil/cambiar-password}" method="post">
+                                <div class="mb-3">
+                                    <label class="form-label perfil-label">Contraseña actual</label>
+                                    <input type="password" name="passwordActual" class="form-control perfil-input"
+                                           required placeholder="Tu contraseña actual"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label perfil-label">Nueva contraseña</label>
+                                    <input type="password" name="passwordNuevo" class="form-control perfil-input"
+                                           required placeholder="Mínimo 8 caracteres"/>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label perfil-label">Confirmar nueva contraseña</label>
+                                    <input type="password" name="passwordConfirm" class="form-control perfil-input"
+                                           required placeholder="Repite la nueva contraseña"/>
+                                </div>
+                                <button type="submit" class="btn btn-perfil-primary w-100">
+                                    <i class="bi bi-key-fill me-2"></i>Cambiar contraseña
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: Historial -->
+            <div class="tab-pane fade" id="historial">
+
+                <!-- Sin compras -->
+                <div class="text-center py-5" th:if="${#lists.isEmpty(historial)}">
+                    <i class="bi bi-bag-x fs-1 text-muted"></i>
+                    <p class="text-muted mt-3">Aún no has realizado ninguna compra.</p>
+                    <a th:href="@{/}" class="btn btn-perfil-primary mt-2">
+                        <i class="bi bi-shop me-2"></i>Ir a la tienda
+                    </a>
+                </div>
+
+                <!-- Con compras -->
+                <div class="row g-3" th:if="${not #lists.isEmpty(historial)}">
+                    <div class="col-12" th:each="venta : ${historial}">
+                        <div class="perfil-orden-card">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <span class="perfil-orden-id"
+                                          th:text="${venta.numeroOrden != null ? venta.numeroOrden : '#' + venta.id}">
+                                        PH-123456
+                                    </span>
+                                    <p class="text-muted small mb-0"
+                                       th:text="${#temporals.format(venta.fecha, 'dd/MM/yyyy HH:mm')}">
+                                        01/01/2025 14:30
+                                    </p>
+                                </div>
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle-fill me-1"></i>Pagado
+                                </span>
+                            </div>
+                            <hr class="perfil-divider">
+                            <div th:each="detalle : ${venta.detalles}"
+                                 class="d-flex justify-content-between perfil-orden-item">
+                                <span th:text="${detalle.producto.nombre + ' ×' + detalle.cantidad}">Producto ×1</span>
+                                <span class="fw-semibold"
+                                      th:text="'S/ ' + ${#numbers.formatDecimal(detalle.subtotal, 1, 2)}">S/ 0.00</span>
+                            </div>
+                            <hr class="perfil-divider">
+                            <div class="d-flex justify-content-end">
+                                <span class="text-muted me-2">Total:</span>
+                                <span class="fw-bold text-danger"
+                                      th:text="'S/ ' + ${#numbers.formatDecimal(venta.total, 1, 2)}">S/ 0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div><!-- /tab-content -->
+    </div><!-- /container -->
+</main>
+
+<!-- FOOTER igual al proyecto -->
+<footer class="text-white pt-5 pb-3 mt-auto">
+    <div class="container">
+        <div class="text-center">
+            <p class="text-muted small mb-0">© 2025 PHANTOM. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Activar tab de seguridad si hay error/éxito de password
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('errorPassword') || params.has('passwordCambiado')) {
+        const tabSeguridad = document.querySelector('[href="#seguridad"]');
+        const tabDatos = document.querySelector('[href="#datos"]');
+        if (tabSeguridad && tabDatos) {
+            tabDatos.classList.remove('active');
+            document.getElementById('datos').classList.remove('show', 'active');
+            tabSeguridad.classList.add('active');
+            document.getElementById('seguridad').classList.add('show', 'active');
+        }
+    }
+</script>
+</body>
+</html>

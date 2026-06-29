@@ -59,6 +59,7 @@ public class SecurityConfig {
                                 "/api/v1/usuarios", "/api/v1/usuarios/**"
                         ).permitAll()
                         .requestMatchers("/pago/**").authenticated()
+                        .requestMatchers("/perfil/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
