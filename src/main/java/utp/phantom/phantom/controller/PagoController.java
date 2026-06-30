@@ -1,13 +1,21 @@
 package utp.phantom.phantom.controller;
 
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.checkout.Session;
+import com.stripe.param.checkout.SessionCreateParams;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import utp.phantom.phantom.model.ItemCarrito;
 import utp.phantom.phantom.model.Usuario;
 import utp.phantom.phantom.model.Venta;
@@ -16,6 +24,7 @@ import utp.phantom.phantom.service.CarritoService;
 import utp.phantom.phantom.service.CustomUserDetailsService.CustomUserDetails;
 import utp.phantom.phantom.service.VentaService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -31,6 +40,14 @@ public class PagoController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Value("${stripe.secret.key}")
+    private String stripeSecretKey;
+
+    @PostConstruct
+    public void init() {
+        Stripe.apiKey = stripeSecretKey;
+    }
+
     private void agregarUsuarioAutenticado(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()
@@ -44,6 +61,8 @@ public class PagoController {
         }
     }
 
+    // Paso 1: el botón "Proceder al pago" llega aquí.
+    // En vez de registrar la venta directo, creamos una sesión de Stripe.
     @PostMapping("/procesar")
     public String procesarPago(HttpSession session, Model model) {
 
@@ -53,14 +72,77 @@ public class PagoController {
             return "redirect:/carrito";
         }
 
-        // Obtener usuario autenticado
+        List<SessionCreateParams.LineItem> lineItems = new ArrayList<>();
+
+        for (ItemCarrito item : items) {
+            SessionCreateParams.LineItem lineItem = SessionCreateParams.LineItem.builder()
+                    .setQuantity((long) item.getCantidad())
+                    .setPriceData(
+                            SessionCreateParams.LineItem.PriceData.builder()
+                                    .setCurrency("pen")
+                                    .setUnitAmount((long) (item.getPrecio() * 100))
+                                    .setProductData(
+                                            SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                                    .setName(item.getNombre())
+                                                    .build()
+                                    )
+                                    .build()
+                    )
+                    .build();
+            lineItems.add(lineItem);
+        }
+
+        try {
+            SessionCreateParams params = SessionCreateParams.builder()
+                    .setMode(SessionCreateParams.Mode.PAYMENT)
+                    .setSuccessUrl("http://localhost:8089/pago/confirmar?session_id={CHECKOUT_SESSION_ID}")
+                    .setCancelUrl("http://localhost:8089/carrito")
+                    .addAllLineItem(lineItems)
+                    .build();
+
+            Session checkoutSession = Session.create(params);
+            return "redirect:" + checkoutSession.getUrl();
+
+        } catch (StripeException e) {
+            model.addAttribute("erroresPago", List.of("Error al conectar con Stripe: " + e.getMessage()));
+            agregarUsuarioAutenticado(model);
+            model.addAttribute("items", items);
+            model.addAttribute("total", carritoService.calcularTotal(session));
+            model.addAttribute("cuenta", carritoService.contarItems(session));
+            return "carrito";
+        }
+    }
+
+    // Paso 2: Stripe redirige aquí SOLO si el pago (de prueba) fue exitoso.
+    // Aquí sí ejecutamos tu lógica original de VentaService.
+    @GetMapping("/confirmar")
+    public String confirmarPago(@RequestParam("session_id") String sessionId,
+                                HttpSession session,
+                                Model model) {
+
+        try {
+            Session checkoutSession = Session.retrieve(sessionId);
+
+            if (!"paid".equals(checkoutSession.getPaymentStatus())) {
+                return "redirect:/carrito";
+            }
+
+        } catch (StripeException e) {
+            return "redirect:/carrito";
+        }
+
+        List<ItemCarrito> items = carritoService.obtenerCarrito(session);
+
+        if (items.isEmpty()) {
+            return "redirect:/";
+        }
+
         Usuario usuarioActual = null;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.getPrincipal() instanceof CustomUserDetails userDetails) {
             usuarioActual = usuarioRepository.findByEmail(userDetails.getUsername()).orElse(null);
         }
 
-        // Delegar toda la lógica al VentaService
         Venta venta = ventaService.procesarVenta(items, usuarioActual);
 
         carritoService.vaciar(session);
