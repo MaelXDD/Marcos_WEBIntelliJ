@@ -98,12 +98,19 @@
             <tr th:each="p : ${productos}" th:classappend="${p.stock <= 5} ? 'row-low-stock' : ''">
                 <td style="color:var(--muted);font-family:'Space Mono',monospace;font-size:.8rem;" th:text="${p.id}">1</td>
                 <td style="font-weight:600;" th:text="${p.nombre}">—</td>
-                <td style="color:var(--muted);font-size:.85rem;" th:text="${p.descripcion}">—</td>
+                <td>
+                    <div th:text="${p.descripcion}"
+                         style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-width: 250px; white-space: normal;">
+                        Descripción del producto
+                    </div>
+                </td>
                 <td><span class="badge-cat" th:text="${p.categoria != null ? p.categoria.nombre : '—'}">—</span></td>
                 <td><span class="precio">S/ <span th:text="${#numbers.formatDecimal(p.precio,1,2)}">0.00</span></span></td>
                 <td>
-                    <span th:if="${p.stock > 5}"  class="badge-stock stock-ok"  th:text="${p.stock} + ' und.'">—</span>
-                    <span th:if="${p.stock <= 5}" class="badge-stock stock-low" th:text="${p.stock} + ' und.'">—</span>
+                   <span th:class="${p.stock == 0} ? 'badge bg-danger' : 'badge bg-dark'"
+                    th:text="${p.stock == 0} ? 'Sin Stock (0)' : ${p.stock}">
+                       0
+                   </span>
                 </td>
                 <td style="display:flex;gap:.5rem;flex-wrap:wrap;">
                     <a th:href="@{/admin/productos/editar/{id}(id=${p.id})}" class="action-btn btn-edit">

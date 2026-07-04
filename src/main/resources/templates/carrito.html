@@ -162,7 +162,8 @@
                                                    name="cantidad"
                                                    class="form-control form-control-sm qty-input d-inline-block"
                                                    th:value="${item.cantidad}"
-                                                   min="1" max="99"
+                                                   min="1"
+                                                   th:max="${item.stock}"
                                                    onchange="this.form.submit()">
                                         </form>
                                     </td>

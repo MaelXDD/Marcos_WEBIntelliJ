@@ -58,7 +58,8 @@ public class CarritoController {
         if (opt.isPresent()) {
             Producto p = opt.get();
             carritoService.agregar(session,
-                    p.getId(), p.getNombre(), p.getPrecio(), p.getImagenUrl());
+                    p.getId(), p.getNombre(), p.getPrecio(), p.getImagenUrl(), p.getStock());
+
             flash.addFlashAttribute("mensajeOk",
                     "\"" + p.getNombre() + "\" agregado al carrito.");
         } else {

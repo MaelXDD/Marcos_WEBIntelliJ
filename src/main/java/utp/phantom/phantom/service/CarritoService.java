@@ -26,21 +26,24 @@ public class CarritoService {
 
     public void agregar(HttpSession session,
                         Long productoId, String nombre,
-                        Double precio, String imagenUrl) {
+                        Double precio, String imagenUrl, int stock) { // <-- Añadido int stock
 
         List<ItemCarrito> carrito = obtenerCarrito(session);
-
         Optional<ItemCarrito> existente = carrito.stream()
                 .filter(i -> i.getProductoId().equals(productoId))
                 .findFirst();
 
         if (existente.isPresent()) {
-            existente.get().setCantidad(existente.get().getCantidad() + 1);
-        } else {
-            carrito.add(new ItemCarrito(productoId, nombre, precio, imagenUrl, 1));
-        }
+            ItemCarrito item = existente.get();
 
-        session.setAttribute(SESSION_KEY, carrito); // guardar en sesión
+            if (item.getCantidad() < item.getStock()) {
+                item.setCantidad(item.getCantidad() + 1);
+            }
+        } else {
+
+            carrito.add(new ItemCarrito(productoId, nombre, precio, imagenUrl, 1, stock));
+        }
+        session.setAttribute(SESSION_KEY, carrito);
     }
 
     public void eliminar(HttpSession session, Long productoId) {
@@ -62,10 +65,18 @@ public class CarritoService {
         carrito.stream()
                 .filter(i -> i.getProductoId().equals(productoId))
                 .findFirst()
-                .ifPresent(i -> i.setCantidad(cantidad));
+                .ifPresent(i -> {
+
+                    if (cantidad > i.getStock()) {
+                        i.setCantidad(i.getStock());
+                    } else {
+                        i.setCantidad(cantidad);
+                    }
+                });
 
         session.setAttribute(SESSION_KEY, carrito);
     }
+
 
     public void vaciar(HttpSession session) {
         session.removeAttribute(SESSION_KEY);
