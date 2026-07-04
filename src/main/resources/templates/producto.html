@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/CSS/estilos.css}">
+    <title th:text="'Phantom | ' + ${producto.nombre}">Phantom | Producto</title>
+    <style>
+        .img-principal {
+            width: 100%;
+            height: 420px;
+            object-fit: contain;
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 24px rgba(0,0,0,.08);
+        }
+        .badge-marca {
+            background: #1a0b3d;
+            color: #fff;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .precio-principal {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #cc0000;
+        }
+        .qty-control {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            border: 2px solid #1a0b3d;
+            border-radius: 10px;
+            overflow: hidden;
+            width: fit-content;
+        }
+        .qty-control button {
+            background: #1a0b3d;
+            color: #fff;
+            border: none;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background .2s;
+        }
+        .qty-control button:hover { background: #cc0000; }
+        .qty-control input {
+            width: 60px;
+            text-align: center;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            outline: none;
+        }
+        .btn-agregar {
+            background: #1a0b3d;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            border-radius: 10px;
+            padding: 14px 32px;
+            transition: background .2s;
+            letter-spacing: 0.5px;
+        }
+        .btn-agregar:hover { background: #cc0000; color: #fff; }
+        .btn-carrito {
+            background: transparent;
+            color: #1a0b3d;
+            font-weight: 700;
+            border: 2px solid #1a0b3d;
+            border-radius: 10px;
+            padding: 14px 32px;
+            transition: all .2s;
+        }
+        .btn-carrito:hover { background: #1a0b3d; color: #fff; }
+        .beneficio-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+        .beneficio-card i { font-size: 1.8rem; color: #1a0b3d; }
+        .stock-badge {
+            font-size: 0.9rem;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .tab-desc { border-bottom: 3px solid #1a0b3d; }
+        .producto-relacionado img {
+            height: 140px;
+            object-fit: contain;
+            background: #f8f8f8;
+            border-radius: 10px;
+            padding: 10px;
+            width: 100%;
+        }
+        .producto-relacionado:hover { transform: translateY(-4px); transition: .2s; }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm py-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-3" th:href="@{/}" style="letter-spacing:3px;">PHANTOM</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto text-uppercase">
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/juegos}">Videojuegos</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/consolas}">Consolas</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/tarjetas}">Coleccionables</a></li>
+                <li class="nav-item"><a class="nav-link px-4 fs-6" th:href="@{/categoria/perifericos}">Periféricos</a></li>
+            </ul>
+            <div class="d-flex align-items-center mt-3 mt-lg-0">
+                <div th:if="${usuarioNombre == null}">
+                    <a href="#" class="text-white me-3 fs-4" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <i class="bi bi-person-circle"></i>
+                    </a>
+                </div>
+                <div th:if="${usuarioNombre != null}" class="d-flex align-items-center gap-2 me-3">
+                    <span class="text-white small text-nowrap">
+                        <i class="bi bi-person-check-fill text-success me-1"></i>
+                        Hola, <span th:text="${usuarioNombre}" class="fw-bold text-danger"></span>
+                    </span>
+                    <form th:action="@{/logout}" method="post" class="mb-0">
+                        <button type="submit" class="btn btn-danger rounded-pill fw-bold text-nowrap"
+                                style="font-size:0.8rem; padding:5px 14px;">Cerrar sesión</button>
+                    </form>
+                </div>
+                <a th:href="@{/carrito}" class="text-white fs-4 position-relative">
+                    <i class="bi bi-cart3"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-carrito"
+                          style="font-size:.6rem;" th:text="${carritoCount}">0</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="flex-grow-1 py-4">
+    <div class="container">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+                <li class="breadcrumb-item">
+                    <a th:href="@{/categoria/{slug}(slug=${producto.categoria.nombre.toLowerCase()})}"
+                       th:text="${producto.categoria.nombre}">Categoría</a>
+                </li>
+                <li class="breadcrumb-item active" th:text="${producto.nombre}">Producto</li>
+            </ol>
+        </nav>
+
+        <!-- SECCIÓN PRINCIPAL -->
+        <div class="row g-5 bg-white rounded-4 p-4 shadow-sm mb-5">
+
+            <!-- Imagen -->
+            <div class="col-md-5 d-flex align-items-center justify-content-center">
+                <img th:src="${producto.imagenUrl}"
+                     th:alt="${producto.nombre}"
+                     class="img-principal"
+                     onerror="this.src='/Imagenes/consolatarjeta.jpg'">
+            </div>
+
+            <!-- Info -->
+            <div class="col-md-7">
+
+                <span class="badge-marca mb-3 d-inline-block"
+                      th:text="${producto.marca != null ? producto.marca : 'Sin marca'}">Marca</span>
+
+                <h1 class="fw-bold mb-2" style="font-size:1.8rem;" th:text="${producto.nombre}">Nombre</h1>
+
+                <!-- Estrellas decorativas -->
+                <div class="mb-3">
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-half text-warning"></i>
+                    <span class="text-muted small ms-2">(4.5 / 5)</span>
+                </div>
+
+                <hr>
+
+                <!-- Precio -->
+                <div class="mb-3">
+                    <span class="precio-principal"
+                          th:text="'S/ ' + ${#numbers.formatDecimal(producto.precio, 1, 2)}">S/ 0.00</span>
+                    <span class="ms-2 text-muted text-decoration-line-through small">
+                        S/ <span th:text="${#numbers.formatDecimal(producto.precio * 1.15, 1, 2)}">0.00</span>
+                    </span>
+                    <span class="badge bg-danger ms-2">-15%</span>
+                </div>
+
+                <!-- Stock -->
+                <div class="mb-4">
+                    <span class="stock-badge bg-success text-white"
+                          th:if="${producto.stock != null and producto.stock > 5}">
+                        <i class="bi bi-check-circle me-1"></i> En stock
+                    </span>
+                    <span class="stock-badge bg-warning text-dark"
+                          th:if="${producto.stock != null and producto.stock > 0 and producto.stock <= 5}"
+                          th:text="'¡Solo ' + ${producto.stock} + ' disponibles!'">Pocas unidades</span>
+                    <span class="stock-badge bg-secondary text-white"
+                          th:if="${producto.stock != null and producto.stock <= 0}">Agotado</span>
+                </div>
+
+                <!-- Selector de cantidad -->
+                <div class="mb-4" th:if="${producto.stock != null and producto.stock > 0}">
+                    <p class="fw-semibold mb-2">Cantidad:</p>
+                    <div class="qty-control">
+                        <button type="button" onclick="cambiarCantidad(-1)"><i class="bi bi-dash"></i></button>
+                        <input type="number" id="cantidadInput" value="1" min="1"
+                               th:max="${producto.stock}">
+                        <button type="button" onclick="cambiarCantidad(1)"><i class="bi bi-plus"></i></button>
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="d-flex gap-3 flex-wrap mb-4">
+                    <button type="button"
+                            class="btn-agregar"
+                            th:disabled="${producto.stock != null and producto.stock <= 0}"
+                            th:data-id="${producto.id}"
+                            th:data-nombre="${producto.nombre}"
+                            th:data-precio="${#numbers.formatDecimal(producto.precio, 1, 2)}"
+                            th:data-imagen="${producto.imagenUrl}"
+                            th:data-marca="${producto.marca != null ? producto.marca : ''}"
+                            data-origen="/"
+                            onclick="agregarConCantidad(this)">
+                        <i class="bi bi-cart-plus me-2"></i>
+                        <span th:if="${producto.stock != null and producto.stock > 0}">Agregar al carrito</span>
+                        <span th:if="${producto.stock != null and producto.stock <= 0}">Agotado</span>
+                    </button>
+                    <a th:href="@{/carrito}" class="btn-carrito">
+                        <i class="bi bi-cart3 me-2"></i>Ver carrito
+                    </a>
+                </div>
+
+                <!-- Beneficios -->
+                <div class="row g-3">
+                    <div class="col-4">
+                        <div class="beneficio-card">
+                            <i class="bi bi-truck d-block mb-1"></i>
+                            <p class="small fw-semibold mb-0">Envío gratis</p>
+                            <p class="small text-muted mb-0">A todo el Perú</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="beneficio-card">
+                            <i class="bi bi-shield-check d-block mb-1"></i>
+                            <p class="small fw-semibold mb-0">Garantía</p>
+                            <p class="small text-muted mb-0">12 meses oficial</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="beneficio-card">
+                            <i class="bi bi-arrow-counterclockwise d-block mb-1"></i>
+                            <p class="small fw-semibold mb-0">Devolución</p>
+                            <p class="small text-muted mb-0">30 días</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- DESCRIPCIÓN -->
+        <div class="bg-white rounded-4 p-4 shadow-sm mb-5">
+            <h5 class="fw-bold mb-1 pb-2 tab-desc d-inline-block">Descripción del producto</h5>
+            <p class="text-muted mt-3 mb-0" th:text="${producto.descripcion}">Sin descripción disponible.</p>
+        </div>
+
+    </div>
+</main>
+
+<!-- Modal carrito -->
+<div class="modal fade" id="modalCarrito" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-check-circle-fill text-success fs-4 me-2"></i>
+                    <span class="fw-bold fs-6">Producto agregado a tu Carro</span>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
+                </div>
+                <hr class="my-2">
+                <div class="d-flex align-items-center gap-3 my-3">
+                    <img id="modalImg" src="" alt="producto" class="modal-img">
+                    <div>
+                        <p class="text-muted small mb-1" id="modalMarca">Marca</p>
+                        <p class="fw-semibold mb-1" id="modalNombre">Nombre</p>
+                        <p class="fw-bold text-danger mb-0 fs-5" id="modalPrecio">S/ 0.00</p>
+                    </div>
+                </div>
+                <hr class="my-2">
+                <div class="d-flex gap-2 mt-3">
+                    <button class="btn btn-seguir w-50 py-2" data-bs-dismiss="modal">Seguir comprando</button>
+                    <a href="/carrito" class="btn btn-ir-carro w-50 py-2 text-center text-decoration-none">Ir al Carro</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-black text-white pt-5 border-top border-secondary">
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-md-4">
+                <h4 class="fw-bold text-danger mb-3">PHANTOM</h4>
+                <p class="text-secondary small">Tu tienda gamer de confianza en Perú. Consolas, videojuegos y accesorios al mejor precio.</p>
+                <div class="mt-3">
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white me-3 fs-5 social-icon"><i class="bi bi-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold text-uppercase mb-3">Tienda</h6>
+                <ul class="list-unstyled small">
+                    <ul class="list-unstyled small">
+                        <li><a th:href="@{/categoria/juegos}" class="footer-link">Videojuegos</a></li>
+                        <li><a th:href="@{/categoria/consolas}" class="footer-link">Consolas</a></li>
+                        <li><a th:href="@{/categoria/tarjetas}" class="footer-link">Coleccionables</a></li>
+                        <li><a th:href="@{/categoria/perifericos}" class="footer-link">Periféricos</a></li>
+                    </ul>
+                </ul>
+            </div>
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold text-uppercase mb-3">Empresa</h6>
+                <ul class="list-unstyled small">
+                    <li><a th:href="@{/nosotros}" class="footer-link">Nosotros</a></li>
+                    <li><a th:href="@{/mision}" class="footer-link">Misión y Visión</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h6 class="fw-bold text-uppercase mb-3">Contacto</h6>
+                <p class="small text-secondary mb-2"><i class="bi bi-geo-alt-fill me-2 text-danger"></i> Lima, Perú</p>
+                <p class="small text-secondary mb-2"><i class="bi bi-envelope-fill me-2 text-danger"></i> soporte@phantom.pe</p>
+                <p class="small text-secondary mb-3"><i class="bi bi-telephone-fill me-2 text-danger"></i> +51 999 888 777</p>
+            </div>
+        </div>
+        <hr class="border-secondary my-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small text-secondary pb-3">
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/JS/carrito.js}"></script>
+<script>
+    function cambiarCantidad(delta) {
+        const input = document.getElementById('cantidadInput');
+        const max = parseInt(input.max) || 99;
+        let val = parseInt(input.value) + delta;
+        if (val < 1) val = 1;
+        if (val > max) val = max;
+        input.value = val;
+    }
+
+    function agregarConCantidad(btn) {
+        const cantidad = parseInt(document.getElementById('cantidadInput')?.value || 1);
+        for (let i = 0; i < cantidad; i++) {
+            agregarAlCarrito(btn);
+        }
+    }
+</script>
+</body>
+</html>

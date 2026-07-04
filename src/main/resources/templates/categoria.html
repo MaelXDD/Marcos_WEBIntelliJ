@@ -118,17 +118,20 @@
                 <div class="col-6 col-sm-4 col-md-3" th:each="producto : ${productos}">
                     <div class="product-card h-100 d-flex flex-column">
 
-                        <div class="product-img-wrap">
-                            <img th:src="${producto.imagenUrl}"
-                                 th:alt="${producto.nombre}"
-                                 onerror="this.src='/Imagenes/consolatarjeta.jpg'">
-                        </div>
-
+                        <a th:href="@{/producto/{id}(id=${producto.id})}">
+                            <div class="product-img-wrap">
+                                <img th:src="${producto.imagenUrl}"
+                                     th:alt="${producto.nombre}"
+                                     onerror="this.src='/Imagenes/consolatarjeta.jpg'">
+                            </div>
+                        </a>
                         <div class="p-3 d-flex flex-column flex-grow-1">
                             <span class="badge-categoria mb-2 d-inline-block"
                                   th:text="${producto.marca != null ? producto.marca : ''}">Marca</span>
 
-                            <p class="product-title mb-2" th:text="${producto.nombre}">Nombre del producto</p>
+                            <a th:href="@{/producto/{id}(id=${producto.id})}" class="text-decoration-none text-white">
+                                <p class="product-title mb-2" th:text="${producto.nombre}">Nombre del producto</p>
+                            </a>
 
                             <p class="text-muted small mb-3 flex-grow-1"
                                th:text="${producto.descripcion != null ? #strings.abbreviate(producto.descripcion, 80) : ''}">

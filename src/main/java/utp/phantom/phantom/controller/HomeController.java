@@ -82,11 +82,25 @@ public class HomeController {
         return productoRepository.findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCase(term, term);
     }
 
+    // ── Nueva ruta: detalle de producto ──────────────────────────
+    @GetMapping("/producto/{id}")
+    public String detalleProducto(@PathVariable Long id,
+                                  Model model, HttpSession session) {
+        return productoRepository.findById(id)
+                .map(producto -> {
+                    model.addAttribute("producto", producto);
+                    agregarContadorCarrito(model, session);
+                    agregarUsuarioAutenticado(model);
+                    return "producto";
+                })
+                .orElse("redirect:/");
+    }
+
     @GetMapping("/nosotros")
     public String nosotros(Model model, HttpSession session) {
         agregarContadorCarrito(model, session);
         agregarUsuarioAutenticado(model);
-        model.addAttribute("mapsApiKey",mapsApiKey);
+        model.addAttribute("mapsApiKey", mapsApiKey);
         return "nosotros";
     }
 

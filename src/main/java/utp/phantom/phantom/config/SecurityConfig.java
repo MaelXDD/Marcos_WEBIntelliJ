@@ -55,6 +55,7 @@ public class SecurityConfig {
                                 "/CSS/**", "/Imagenes/**", "/JS/**",
                                 "/imagenes/**", "/categoria/**",
                                 "/carrito/**",
+                                "/producto/**",
                                 "/api/v1/productos", "/api/v1/productos/**",
                                 "/api/v1/usuarios", "/api/v1/usuarios/**"
                         ).permitAll()
