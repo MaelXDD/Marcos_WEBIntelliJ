@@ -32,24 +32,27 @@ body {
     color: #ff0000;
 }
 
-.input-busqueda-phantom {
-    background-color: #ffffff !important;
-    border: 1px solid #444444 !important;
-    color: #000000 !important;
-    width: 250px;
-}
+/* Barra de Busqueda */
 
 .resultados-busqueda-phantom {
-    z-index: 1050;
-    background-color: #1a1a1a !important;
+    z-index: 1060 !important;
+    background-color: #ffffff !important;
     border: 1px solid #dc3545 !important;
     max-height: 400px;
     overflow-y: auto;
     left: 0;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
 }
 
-.resultados-busqueda-phantom .text-white {
-    color: #ffffff !important;
+.suggestion-item {
+    color: #000000 !important;
+    padding: 10px 15px;
+    transition: background 0.2s;
+}
+
+.suggestion-item:hover {
+    background-color: #f8d7da !important;
+    cursor: pointer;
 }
 
 /*  MODAL  */

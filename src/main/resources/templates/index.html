@@ -29,13 +29,15 @@
             <div class="position-relative me-3">
                 <div class="d-flex">
                     <input id="inputBusqueda"
+                           name="query"
                            class="form-control me-2 py-2 input-busqueda-phantom"
                            type="search"
                            placeholder="Buscar productos..."
                            autocomplete="off">
                 </div>
-                <div id="contenedorResultados"
-                     class="position-absolute w-100 mt-1 shadow-lg rounded-3 d-none resultados-busqueda-phantom">
+                <div id="suggestionsBox"
+                     class="position-absolute w-100 mt-1 shadow-lg rounded-3 d-none resultados-busqueda-phantom"
+                     style="z-index: 1050; background: white;">
                 </div>
             </div>
 
@@ -145,7 +147,10 @@
         </div>
     </section>
 
-
+    <div class="container my-5">
+        <div id="productGrid" class="row g-4">
+        </div>
+    </div>
 
     <!-- HERO PROMOCIONES -->
     <section class="py-5 text-white text-center" style="background: radial-gradient(circle, #1a0b3d 0%, #000000 100%);">

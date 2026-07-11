@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -80,6 +81,22 @@ public class HomeController {
     @ResponseBody
     public List<Producto> buscarProductosAjax(@RequestParam String term) {
         return productoRepository.findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCase(term, term);
+    }
+
+    @GetMapping("/buscar")
+    public String manejarBusqueda(@RequestParam String query) {
+        System.out.println("Buscando: " + query);
+
+        List<Producto> resultados = productoRepository.findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCase(query, query);
+
+        if (!resultados.isEmpty()) {
+            Long id = resultados.get(0).getId();
+            System.out.println("Redirigiendo a: /producto/" + id);
+            return "redirect:/producto/" + id;
+        }
+
+        System.out.println("No se encontró nada, volviendo al inicio.");
+        return "redirect:/";
     }
 
     // ── Nueva ruta: detalle de producto ──────────────────────────

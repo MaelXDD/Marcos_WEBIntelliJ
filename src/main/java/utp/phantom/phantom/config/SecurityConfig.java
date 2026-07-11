@@ -50,7 +50,7 @@ public class SecurityConfig {
                 // CONFIGURACIÓN DE RUTAS
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/", "/api/productos/buscar", "/nosotros", "/mision",
+                                "/", "/buscar", "/api/productos/buscar", "/nosotros", "/mision",
                                 "/registro", "/login",
                                 "/CSS/**", "/Imagenes/**", "/JS/**",
                                 "/imagenes/**", "/categoria/**",

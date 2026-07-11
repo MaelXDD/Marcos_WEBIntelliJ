@@ -25,56 +25,70 @@ document.addEventListener("DOMContentLoaded", function() {
         modal.show();
     }
 
-    // BUSCADOR EN TIEMPO REAL
+    // Barra de Busqueda
     const input = document.getElementById('inputBusqueda');
-    const lista = document.getElementById('contenedorResultados');
+    const suggestionsBox = document.getElementById('suggestionsBox');
+    const productGrid = document.getElementById('productGrid');
 
     if (input) {
-        input.addEventListener('input', function() {
-            const texto = input.value.trim();
-
-            if (texto.length < 2) {
-                lista.classList.add('d-none');
-                return;
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const term = this.value.trim();
+                if (term) {
+                    window.location.href = window.location.origin + '/buscar?query=' + encodeURIComponent(term);
+                }
             }
-
-            fetch(`/api/productos/buscar?term=${encodeURIComponent(texto)}`)
-                .then(response => response.json())
-                .then(productos => {
-                    lista.innerHTML = '';
-                    if (productos.length > 0) {
-                        productos.forEach(p => {
-                            const item = document.createElement('div');
-                            item.className = 'd-flex align-items-center p-2 border-bottom border-secondary result-item';
-                            item.style.cursor = 'pointer';
-
-                            item.innerHTML = `
-                                    <img src="${p.imagenUrl || '/Imagenes/consolatarjeta.jpg'}" 
-                                         style="width: 40px; height: 40px; object-fit: contain;" class="bg-white rounded p-1">
-                                    <div class="ms-3">
-                                        <div class="text-white small fw-bold">${p.nombre}</div>
-                                        <div class="text-danger small fw-bold">S/ ${p.precio.toFixed(2)}</div>
-                                    </div>
-                                `;
-
-                            item.addEventListener('click', function() {
-                                window.location.href = `/producto/${p.id}`;
-                            });
-
-                            lista.appendChild(item);
-                        });
-                        lista.classList.remove('d-none');
-                    } else {
-                        lista.innerHTML = '<div class="p-3 text-secondary small text-center">No hay resultados</div>';
-                        lista.classList.remove('d-none');
-                    }
-                })
-                .catch(error => console.error('Error en fetch:', error));
         });
 
-        document.addEventListener('click', (e) => {
-            if (!input.contains(e.target) && !lista.contains(e.target)) {
-                lista.classList.add('d-none');
+        input.addEventListener('input', async function() {
+            const term = this.value.trim();
+            if (term.length < 1) {
+                suggestionsBox.classList.add('d-none');
+                return;
+            }
+            try {
+                const response = await fetch(`/api/v1/productos/keywords?term=${encodeURIComponent(term)}`);
+                const keywords = await response.json();
+                suggestionsBox.innerHTML = '';
+
+                if (keywords.length > 0) {
+                    keywords.forEach(word => {
+                        const item = document.createElement('div');
+
+                        item.className = 'p-2 suggestion-item d-block text-dark';
+                        item.style.cursor = 'pointer';
+                        item.textContent = word;
+
+                        item.addEventListener('mousedown', function(eventoDeClic) {
+                            eventoDeClic.preventDefault();
+                            eventoDeClic.stopPropagation();
+
+                            const texto = word.toLowerCase().trim();
+                            const categorias = ["consolas", "juegos", "perifericos", "tarjetas", "sillas"];
+
+                            if (categorias.includes(texto)) {
+                                window.location.assign(window.location.origin + `/categoria/${texto}`);
+                            } else {
+                                window.location.assign(window.location.origin + `/buscar?query=${encodeURIComponent(word)}`);
+                            }
+                        }, true);
+
+                        suggestionsBox.appendChild(item);
+                    });
+                    suggestionsBox.classList.remove('d-none');
+                } else {
+                    suggestionsBox.classList.add('d-none');
+                }
+            } catch (error) { console.error('Error:', error); }
+        });
+
+        document.addEventListener('click', function(e) {
+            const clickDentroDelInput = input.contains(e.target);
+            const clickDentroDeSugerencias = suggestionsBox.contains(e.target);
+
+            if (!clickDentroDelInput && !clickDentroDeSugerencias) {
+                suggestionsBox.classList.add('d-none');
             }
         });
     }
