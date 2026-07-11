@@ -60,9 +60,9 @@
     <div class="perfil-hero">
         <div class="container text-center">
             <i class="bi bi-person-circle perfil-avatar-icon"></i>
-            <h1 class="fw-bold mt-3 mb-1" th:text="${usuario.nombre}">Nombre Usuario</h1>
-            <p class="text-muted mb-0" th:text="${usuario.email}">email@ejemplo.com</p>
-            <p class="text-muted small" th:text="'Miembro desde ' + ${#temporals.format(usuario.fechaRegistro, 'MMMM yyyy')}">Miembro desde enero 2025</p>
+            <h1 class="fw-bold mt-3 mb-1 text-white" th:text="${usuario.nombre}">Nombre Usuario</h1>
+            <p class="small text-white mb-0" th:text="${usuario.email}">email@ejemplo.com</p>
+            <p class="small text-white" th:text="'Miembro desde ' + ${#temporals.format(usuario.fechaRegistro, 'MMMM yyyy')}">Miembro desde enero 2025</p>
         </div>
     </div>
 
