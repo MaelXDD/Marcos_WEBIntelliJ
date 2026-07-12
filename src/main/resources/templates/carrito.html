@@ -96,6 +96,14 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
 
+        <div class="alert alert-danger alert-dismissible fade show"
+             role="alert"
+             th:if="${mensajeError}">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <span th:text="${mensajeError}">Ha ocurrido un error.</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
         <!-- Alerta de error de stock al procesar pago -->
         <div class="alert alert-danger alert-dismissible fade show"
              role="alert"

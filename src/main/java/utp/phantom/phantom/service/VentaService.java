@@ -11,6 +11,7 @@ import utp.phantom.phantom.model.Venta;
 import utp.phantom.phantom.repository.DetalleVentaRepository;
 import utp.phantom.phantom.repository.ProductoRepository;
 import utp.phantom.phantom.repository.VentaRepository;
+import utp.phantom.phantom.exception.StockInsuficienteException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -30,8 +31,29 @@ public class VentaService {
     @Autowired
     private ProductoRepository productoRepository;
 
+    public List<String> validarStock(List<ItemCarrito> items) {
+        List<String> errores = new ArrayList<>();
+        for (ItemCarrito item : items) {
+            Optional<Producto> opt = productoRepository.findById(item.getProductoId());
+            if (opt.isEmpty()) {
+                errores.add("El producto \"" + item.getNombre() + "\" ya no está disponible.");
+                continue;
+            }
+            Producto p = opt.get();
+            int stockActual = p.getStock() != null ? p.getStock() : 0;
+            if (item.getCantidad() > stockActual) {
+                errores.add("Solo hay " + stockActual + " unidades disponibles de \"" + p.getNombre() + "\".");
+            }
+        }
+        return errores;
+    }
+
     @Transactional
     public Venta procesarVenta(List<ItemCarrito> items, Usuario usuario) {
+        List<String> errores = validarStock(items);
+        if (!errores.isEmpty()) {
+            throw new StockInsuficienteException(errores);
+        }
 
         //  Descontar stock de cada producto
         for (ItemCarrito item : items) {

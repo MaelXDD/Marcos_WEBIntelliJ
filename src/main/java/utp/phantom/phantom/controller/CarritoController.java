@@ -12,6 +12,12 @@ import utp.phantom.phantom.model.Producto;
 import utp.phantom.phantom.repository.ProductoRepository;
 import utp.phantom.phantom.service.CarritoService;
 import utp.phantom.phantom.service.CustomUserDetailsService.CustomUserDetails;
+import utp.phantom.phantom.exception.ResourceNotFoundException;
+import utp.phantom.phantom.exception.StockInsuficienteException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseBody;
+import java.util.Map;
 
 import java.util.Optional;
 
@@ -49,25 +55,27 @@ public class CarritoController {
     }
 
     @PostMapping("/agregar")
-    public String agregar(@RequestParam Long productoId,
-                          @RequestParam(defaultValue = "/") String origen,
-                          HttpSession session,
-                          RedirectAttributes flash) {
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> agregar(@RequestParam Long productoId,
+                                                       @RequestParam(defaultValue = "/") String origen,
+                                                       HttpSession session) {
 
         Optional<Producto> opt = productoRepository.findById(productoId);
-        if (opt.isPresent()) {
-            Producto p = opt.get();
+        if (opt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("success", false, "message", "Producto no encontrado."));
+        }
+
+        Producto p = opt.get();
+        try {
             carritoService.agregar(session,
                     p.getId(), p.getNombre(), p.getPrecio(), p.getImagenUrl(), p.getStock());
-
-            flash.addFlashAttribute("mensajeOk",
-                    "\"" + p.getNombre() + "\" agregado al carrito.");
-        } else {
-            flash.addFlashAttribute("mensajeError", "Producto no encontrado.");
+            return ResponseEntity.ok(Map.of("success", true, "message",
+                    "\"" + p.getNombre() + "\" agregado al carrito."));
+        } catch (StockInsuficienteException e) {
+            return ResponseEntity.badRequest().body(Map.of("success", false, "message", e.getMessage()));
         }
-        return "redirect:" + origen;
     }
-
     @PostMapping("/eliminar")
     public String eliminar(@RequestParam Long productoId,
                            HttpSession session) {
@@ -78,8 +86,13 @@ public class CarritoController {
     @PostMapping("/actualizar")
     public String actualizar(@RequestParam Long productoId,
                              @RequestParam int cantidad,
-                             HttpSession session) {
-        carritoService.actualizarCantidad(session, productoId, cantidad);
+                             HttpSession session,
+                             RedirectAttributes flash) {
+        try {
+            carritoService.actualizarCantidad(session, productoId, cantidad);
+        } catch (StockInsuficienteException | ResourceNotFoundException e) {
+            flash.addFlashAttribute("mensajeError", e.getMessage());
+        }
         return "redirect:/carrito";
     }
 

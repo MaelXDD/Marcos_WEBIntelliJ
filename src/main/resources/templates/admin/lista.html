@@ -95,8 +95,8 @@
                     </div>
                 </td>
             </tr>
-            <tr th:each="p : ${productos}" th:classappend="${p.stock <= 5} ? 'row-low-stock' : ''">
-                <td style="color:var(--muted);font-family:'Space Mono',monospace;font-size:.8rem;" th:text="${p.id}">1</td>
+            <tr th:each="p : ${productos}" th:classappend="${p.stock == 0} ? 'row-out-stock' : ''">
+                <td style="font-weight:600;color:var(--muted);" th:text="${p.id}">1</td>
                 <td style="font-weight:600;" th:text="${p.nombre}">—</td>
                 <td>
                     <div th:text="${p.descripcion}"
@@ -106,10 +106,10 @@
                 </td>
                 <td><span class="badge-cat" th:text="${p.categoria != null ? p.categoria.nombre : '—'}">—</span></td>
                 <td><span class="precio">S/ <span th:text="${#numbers.formatDecimal(p.precio,1,2)}">0.00</span></span></td>
-                <td>
+                <td style="text-align:center;">
                    <span th:class="${p.stock == 0} ? 'badge bg-danger' : 'badge bg-dark'"
-                    th:text="${p.stock == 0} ? 'Sin Stock (0)' : ${p.stock}">
-                       0
+                   th:text="${p.stock == 0} ? 'Sin Stock' : ${p.stock}">
+                   0
                    </span>
                 </td>
                 <td style="display:flex;gap:.5rem;flex-wrap:wrap;">

@@ -23,6 +23,8 @@ import utp.phantom.phantom.repository.UsuarioRepository;
 import utp.phantom.phantom.service.CarritoService;
 import utp.phantom.phantom.service.CustomUserDetailsService.CustomUserDetails;
 import utp.phantom.phantom.service.VentaService;
+import utp.phantom.phantom.exception.StockInsuficienteException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +120,8 @@ public class PagoController {
     @GetMapping("/confirmar")
     public String confirmarPago(@RequestParam("session_id") String sessionId,
                                 HttpSession session,
-                                Model model) {
+                                Model model,
+                                RedirectAttributes flash) {
 
         try {
             Session checkoutSession = Session.retrieve(sessionId);
@@ -143,7 +146,13 @@ public class PagoController {
             usuarioActual = usuarioRepository.findByEmail(userDetails.getUsername()).orElse(null);
         }
 
-        Venta venta = ventaService.procesarVenta(items, usuarioActual);
+        Venta venta;
+        try {
+            venta = ventaService.procesarVenta(items, usuarioActual);
+        } catch (StockInsuficienteException e) {
+            flash.addFlashAttribute("erroresPago", e.getErrores());
+            return "redirect:/carrito";                               
+        }
 
         carritoService.vaciar(session);
         model.addAttribute("total", venta.getTotal());
