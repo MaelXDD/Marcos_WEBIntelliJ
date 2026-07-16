@@ -28,18 +28,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        // Solo aplica el filtro JWT a rutas /api/v1/**
-        // Las rutas Thymeleaf siguen usando la sesión de Spring Security
+
         if (!path.startsWith("/api/v1/")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Busca el header Authorization: Bearer <token>
+
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            // Sin token: responde 401 directamente
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write("{\"error\": \"Token JWT requerido. Use Authorization: Bearer <token>\"}");
@@ -55,7 +53,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Token válido: autentica al usuario en el contexto de Spring Security
+
         String email = jwtUtil.extraerEmail(token);
         String rol   = jwtUtil.extraerRol(token);
 

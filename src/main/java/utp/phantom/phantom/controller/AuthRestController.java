@@ -24,11 +24,7 @@ public class AuthRestController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    /**
-     * POST /api/auth/login
-     * Body: { "email": "...", "password": "..." }
-     * Responde con el token JWT si las credenciales son correctas.
-     */
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credenciales) {
 
@@ -54,7 +50,7 @@ public class AuthRestController {
                     .body(Map.of("error", "Credenciales incorrectas"));
         }
 
-        // Genera el token con email y rol del usuario
+
         String token = jwtUtil.generarToken(usuario.getEmail(), usuario.getRol());
 
         return ResponseEntity.ok(Map.of(

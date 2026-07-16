@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -83,23 +82,22 @@ public class HomeController {
         return productoRepository.findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCase(term, term);
     }
 
+
     @GetMapping("/buscar")
-    public String manejarBusqueda(@RequestParam String query) {
-        System.out.println("Buscando: " + query);
+    public String manejarBusqueda(@RequestParam String query,
+                                  Model model, HttpSession session) {
+        List<Producto> resultados = productoRepository
+                .findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCase(query, query);
 
-        List<Producto> resultados = productoRepository.findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCase(query, query);
+        model.addAttribute("resultados", resultados);
+        model.addAttribute("query", query);
+        model.addAttribute("totalResultados", resultados.size());
+        agregarContadorCarrito(model, session);
+        agregarUsuarioAutenticado(model);
 
-        if (!resultados.isEmpty()) {
-            Long id = resultados.get(0).getId();
-            System.out.println("Redirigiendo a: /producto/" + id);
-            return "redirect:/producto/" + id;
-        }
-
-        System.out.println("No se encontró nada, volviendo al inicio.");
-        return "redirect:/";
+        return "resultados-busqueda";
     }
 
-    // ── Nueva ruta: detalle de producto ──────────────────────────
     @GetMapping("/producto/{id}")
     public String detalleProducto(@PathVariable Long id,
                                   Model model, HttpSession session) {

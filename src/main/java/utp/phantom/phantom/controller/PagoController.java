@@ -63,8 +63,7 @@ public class PagoController {
         }
     }
 
-    // Paso 1: el botón "Proceder al pago" llega aquí.
-    // En vez de registrar la venta directo, creamos una sesión de Stripe.
+
     @PostMapping("/procesar")
     public String procesarPago(HttpSession session, Model model) {
 
@@ -115,8 +114,7 @@ public class PagoController {
         }
     }
 
-    // Paso 2: Stripe redirige aquí SOLO si el pago (de prueba) fue exitoso.
-    // Aquí sí ejecutamos tu lógica original de VentaService.
+
     @GetMapping("/confirmar")
     public String confirmarPago(@RequestParam("session_id") String sessionId,
                                 HttpSession session,

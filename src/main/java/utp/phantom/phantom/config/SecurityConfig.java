@@ -49,13 +49,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // DESHABILITAR CSRF PARA PERMITIR POST, PUT Y DELETE EN LA API
+
                 .csrf(csrf -> csrf.disable())
 
-                // CONFIGURACIÓN DE RUTAS
+
                 .authorizeHttpRequests(auth -> auth
 
-                        // ── Rutas públicas (Thymeleaf + buscador) ──────────────
+
                         .requestMatchers(
                                 "/", "/buscar", "/api/productos/buscar", "/nosotros", "/mision",
                                 "/registro", "/login",
@@ -65,21 +65,20 @@ public class SecurityConfig {
                                 "/producto/**"
                         ).permitAll()
 
-                        // ── Login JWT (obtener token) — público ────────────────
+
                         .requestMatchers("/api/auth/**").permitAll()
 
-                        // ── API REST v1: Spring Security las deja pasar,
-                        //    pero el JwtAuthenticationFilter valida el token ────
+
                         .requestMatchers("/api/v1/**").permitAll()
 
-                        // ── Rutas Thymeleaf protegidas con sesión ──────────────
+
                         .requestMatchers("/pago/**").authenticated()
                         .requestMatchers("/perfil/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
 
-                // Login web con formulario (Thymeleaf) — no afecta a la API
+
                 .formLogin(form -> form
                         .loginPage("/login")
                         .successHandler(customSuccessHandler())
@@ -91,10 +90,6 @@ public class SecurityConfig {
                         .permitAll()
                 )
 
-                // Filtro JWT se ejecuta ANTES del filtro de autenticación de Spring.
-                // Intercepta /api/v1/** y valida el token manualmente.
-                // Las rutas Thymeleaf no son afectadas porque el filtro
-                // hace return sin tocarlas si el path no empieza con /api/v1/
                 .addFilterBefore(jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class);
 

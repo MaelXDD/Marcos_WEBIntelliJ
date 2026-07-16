@@ -29,7 +29,7 @@ public class PerfilController {
     @Autowired
     private CarritoService carritoService;
 
-    // ─── Utilidad: obtiene el email del usuario autenticado ───────────────────
+
     private String getEmailAutenticado() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.getPrincipal() instanceof CustomUserDetails userDetails) {
@@ -38,7 +38,7 @@ public class PerfilController {
         return null;
     }
 
-    // ─── Utilidad: agrega atributos comunes al modelo ─────────────────────────
+
     private void agregarAtributosComunes(Model model, HttpSession session) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.getPrincipal() instanceof CustomUserDetails userDetails) {
@@ -47,7 +47,7 @@ public class PerfilController {
         model.addAttribute("carritoCount", carritoService.obtenerCarrito(session).size());
     }
 
-    // ─── GET /perfil ──────────────────────────────────────────────────────────
+
     @GetMapping
     public String verPerfil(Model model, HttpSession session) {
         String email = getEmailAutenticado();
@@ -65,7 +65,7 @@ public class PerfilController {
         return "perfil";
     }
 
-    // ─── POST /perfil/actualizar ──────────────────────────────────────────────
+
     @PostMapping("/actualizar")
     public String actualizarDatos(
             @RequestParam String nombre,
@@ -82,7 +82,7 @@ public class PerfilController {
         return "redirect:/perfil?actualizado=true";
     }
 
-    // ─── POST /perfil/cambiar-password ────────────────────────────────────────
+
     @PostMapping("/cambiar-password")
     public String cambiarPassword(
             @RequestParam String passwordActual,
