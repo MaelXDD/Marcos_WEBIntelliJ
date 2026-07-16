@@ -28,17 +28,13 @@ public class PerfilService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    /**
-     * Obtiene el usuario autenticado por email.
-     */
+
     public Usuario obtenerUsuarioPorEmail(String email) {
         return usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + email));
     }
 
-    /**
-     * Obtiene o crea el perfil del usuario si aún no tiene uno.
-     */
+
     public Perfil obtenerOCrearPerfil(Usuario usuario) {
         return perfilRepository.findByUsuario(usuario).orElseGet(() -> {
             Perfil nuevo = new Perfil();
@@ -49,9 +45,7 @@ public class PerfilService {
         });
     }
 
-    /**
-     * Actualiza los datos personales del usuario (nombre, dirección, teléfono).
-     */
+
     @Transactional
     public void actualizarDatosPersonales(String email, String nombre,
                                           String direccion, String telefono,
@@ -67,10 +61,7 @@ public class PerfilService {
         perfilRepository.save(perfil);
     }
 
-    /**
-     * Cambia la contraseña del usuario validando la contraseña actual.
-     * Retorna null si fue exitoso, o un mensaje de error si falló.
-     */
+
     @Transactional
     public String cambiarPassword(String email, String passwordActual,
                                   String passwordNuevo, String passwordConfirm) {
@@ -91,9 +82,7 @@ public class PerfilService {
         return null;
     }
 
-    /**
-     * Retorna el historial de compras del usuario ordenado por fecha descendente.
-     */
+    
     public List<Venta> obtenerHistorialCompras(Usuario usuario) {
         return ventaRepository.findByUsuarioOrderByFechaDesc(usuario);
     }
