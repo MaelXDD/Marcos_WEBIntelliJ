@@ -45,17 +45,11 @@ public class SecurityConfig {
             }
         };
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-
                 .csrf(csrf -> csrf.disable())
-
-
                 .authorizeHttpRequests(auth -> auth
-
-
                         .requestMatchers(
                                 "/", "/buscar", "/api/productos/buscar", "/nosotros", "/mision",
                                 "/registro", "/login",
@@ -64,21 +58,13 @@ public class SecurityConfig {
                                 "/carrito/**",
                                 "/producto/**"
                         ).permitAll()
-
-
                         .requestMatchers("/api/auth/**").permitAll()
-
-
                         .requestMatchers("/api/v1/**").permitAll()
-
-
                         .requestMatchers("/pago/**").authenticated()
                         .requestMatchers("/perfil/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-
-
                 .formLogin(form -> form
                         .loginPage("/login")
                         .successHandler(customSuccessHandler())
@@ -89,7 +75,6 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/")
                         .permitAll()
                 )
-
                 .addFilterBefore(jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class);
 

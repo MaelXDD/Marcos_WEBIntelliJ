@@ -50,12 +50,4 @@ public class Producto {
     @Column(nullable = false)
     private Integer stock;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "producto_etiqueta",
-            joinColumns = @JoinColumn(name = "producto_id"),
-            inverseJoinColumns = @JoinColumn(name = "etiqueta_id")
-    )
-    @ToString.Exclude
-    private List<Etiqueta> etiquetas;
 }
