@@ -14,9 +14,6 @@ public class Perfil {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "avatar_url")
-    private String avatarUrl;
-
     @Column(name = "biografia")
     private String biografia;
 

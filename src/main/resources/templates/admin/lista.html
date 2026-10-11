@@ -79,6 +79,7 @@
             <thead>
             <tr>
                 <th class="sortable" data-type="number"># <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                <th>Imagen</th>
                 <th class="sortable" data-type="string">Nombre <i class="bi bi-arrow-down-up sort-icon"></i></th>
                 <th class="sortable" data-type="string">Descripción <i class="bi bi-arrow-down-up sort-icon"></i></th>
                 <th class="sortable" data-type="string">Categoría <i class="bi bi-arrow-down-up sort-icon"></i></th>
@@ -88,7 +89,7 @@
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(productos)}">
-                <td colspan="7">
+                <td colspan="8">
                     <div class="empty">
                         <i class="bi bi-inbox"></i>
                         No hay productos registrados.
@@ -97,6 +98,11 @@
             </tr>
             <tr th:each="p : ${productos}" th:classappend="${p.stock == 0} ? 'row-out-stock' : ''">
                 <td style="font-weight:600;color:var(--muted);" th:text="${p.id}">1</td>
+                <td>
+                    <img th:if="${p.imagenUrl != null and !#strings.isEmpty(p.imagenUrl)}"
+                         th:src="${p.imagenUrl}" alt="" loading="lazy"
+                         style="width:48px;height:48px;object-fit:cover;border-radius:6px;background:#fff;"/>
+                </td>
                 <td style="font-weight:600;" th:text="${p.nombre}">—</td>
                 <td>
                     <div th:text="${p.descripcion}"

@@ -40,7 +40,6 @@ public class PerfilService {
             Perfil nuevo = new Perfil();
             nuevo.setUsuario(usuario);
             nuevo.setBiografia("");
-            nuevo.setAvatarUrl("");
             return perfilRepository.save(nuevo);
         });
     }

@@ -23,7 +23,8 @@
             <div class="form-subtitle">// Completa la información técnica del producto</div>
         </div>
 
-        <form th:action="@{/admin/productos/guardar}" th:object="${producto}" method="post">
+        <form th:action="@{/admin/productos/guardar}" th:object="${producto}" method="post"
+              enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}"/>
 
             <div class="form-body">
@@ -53,9 +54,25 @@
                 </div>
 
                 <div class="field-group">
-                    <label class="field-label">URL de la Imagen</label>
-                    <input type="text" th:field="*{imagenUrl}" class="field-input"
-                           placeholder="https://ejemplo.com/imagen.jpg" />
+                    <label class="field-label">Imagen del producto</label>
+
+                    <div th:if="${errorImagen}" class="alert alert-danger py-2" role="alert"
+                         th:text="${errorImagen}">Error</div>
+
+                    <!-- Imagen actual (solo informativa: el servidor toma la URL vigente de la BD) -->
+                    <input type="hidden" th:field="*{imagenUrl}"/>
+                    <img id="previewImagen" alt="Vista previa"
+                         th:src="${producto.imagenUrl}"
+                         th:style="${producto.imagenUrl != null and !#strings.isEmpty(producto.imagenUrl)}
+                                   ? 'max-width:180px;max-height:180px;border-radius:8px;margin-bottom:10px;display:block;object-fit:cover;'
+                                   : 'max-width:180px;max-height:180px;border-radius:8px;margin-bottom:10px;display:none;object-fit:cover;'"/>
+
+                    <input type="file" id="imagen" name="imagen" class="field-input"
+                           accept="image/jpeg,image/png,image/webp"/>
+                    <small class="text-muted" th:text="${producto.id == null}
+                           ? 'JPG, PNG o WEBP. Máximo 5 MB. Se sube automáticamente al guardar.'
+                           : 'Déjalo vacío para conservar la imagen actual; si eliges otra, reemplaza a la anterior.'">
+                    </small>
                 </div>
 
                 <div class="field-group">
@@ -89,5 +106,20 @@
         </form>
     </div>
 </div>
+<script>
+    // Vista previa local de la imagen elegida y validación rápida de tamaño (el servidor valida de nuevo).
+    document.getElementById('imagen').addEventListener('change', function () {
+        const archivo = this.files[0];
+        const preview = document.getElementById('previewImagen');
+        if (!archivo) return;
+        if (archivo.size > 5 * 1024 * 1024) {
+            alert('La imagen supera el tamaño máximo permitido (5 MB).');
+            this.value = '';
+            return;
+        }
+        preview.src = URL.createObjectURL(archivo);
+        preview.style.display = 'block';
+    });
+</script>
 </body>
 </html>

@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.List;
 
@@ -28,7 +30,8 @@ public class Producto {
 
     @NotNull(message = "El precio es obligatorio")
     @PositiveOrZero(message = "El precio debe ser 0 o mayor")
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 10, scale = 2)
+    @JdbcTypeCode(SqlTypes.NUMERIC)
     private Double precio;
 
     @Column(length = 100)

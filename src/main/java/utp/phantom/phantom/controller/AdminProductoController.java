@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import utp.phantom.phantom.exception.StorageException;
 import utp.phantom.phantom.model.Categoria;
 import utp.phantom.phantom.model.Producto;
 import utp.phantom.phantom.model.Venta;
@@ -71,8 +73,19 @@ public class AdminProductoController {
     }
 
     @PostMapping("/guardar")
-    public String guardar(@ModelAttribute Producto producto) {
-        productoService.guardarProducto(producto);
+    public String guardar(@ModelAttribute Producto producto,
+                          @RequestParam(value = "imagen", required = false) MultipartFile imagen,
+                          Model model) {
+        try {
+            productoService.guardarProducto(producto, imagen);
+        } catch (IllegalArgumentException | StorageException e) {
+            // Se vuelve al formulario conservando lo que el admin ya había escrito.
+            model.addAttribute("producto", producto);
+            model.addAttribute("categorias", productoService.listarCategorias());
+            model.addAttribute("titulo", producto.getId() == null ? "Nuevo Producto" : "Editar Producto");
+            model.addAttribute("errorImagen", e.getMessage());
+            return "admin/form";
+        }
         return "redirect:/admin/productos";
     }
 
